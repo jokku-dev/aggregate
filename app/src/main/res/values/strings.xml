@@ -1,3 +1,11 @@
 <resources>
     <string name="app_name">Aggregate</string>
+    <string name="on_board_first_title">First title</string>
+    <string name="on_board_second_title">Second title</string>
+    <string name="on_board_third_title">Third title</string>
+    <string name="on_board_first_description">First description first description first description first description first description first description</string>
+    <string name="on_board_second_description">Second description Second description Second description Second description Second description Second description</string>
+    <string name="on_board_third_description">Third description Third description Third description Third description Third description Third description</string>
+    <string name="next">Next</string>
+    <string name="get_started">Get Started</string>
 </resources>

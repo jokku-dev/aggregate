@@ -9,7 +9,7 @@ import androidx.compose.ui.unit.sp
 import com.jokku.aggregate.R
 
 val SfProText = FontFamily(
-    Font(R.font.sf_pro_text_regular),
+    Font(R.font.sf_pro_text_regular, FontWeight.Normal),
     Font(R.font.sf_pro_text_medium, FontWeight.Medium),
     Font(R.font.sf_pro_text_semibold, FontWeight.SemiBold),
     Font(R.font.sf_pro_text_bold, FontWeight.Bold)
@@ -27,7 +27,8 @@ val Typography = Typography(
         fontFamily = SfProText,
         fontWeight = FontWeight.Normal,
         fontSize = 16.sp,
-        lineHeight = 24.sp
+        lineHeight = 24.sp,
+        color = GreyPrimary
     ),
     //See All
     bodySmall = TextStyle(
@@ -36,12 +37,14 @@ val Typography = Typography(
         fontSize = 14.sp,
         lineHeight = 24.sp
     ),
+
     //Top bar headlines
     headlineLarge = TextStyle(
         fontFamily = SfProText,
         fontWeight = FontWeight.SemiBold,
         fontSize = 24.sp,
-        lineHeight = 32.sp
+        lineHeight = 32.sp,
+        color = BlackPrimary
     ),
     //Sub headlines, hints
     headlineMedium = TextStyle(
@@ -57,25 +60,7 @@ val Typography = Typography(
         fontSize = 12.sp,
         lineHeight = 16.sp
     ),
-    //Article titles, sub titles
-    titleLarge = TextStyle(
-        fontFamily = SfProText,
-        fontWeight = FontWeight.Bold,
-        fontSize = 20.sp,
-        lineHeight = 28.sp
-    ),
-    titleMedium = TextStyle(
-        fontFamily = SfProText,
-        fontWeight = FontWeight.SemiBold,
-        fontSize = 16.sp,
-        lineHeight = 24.sp
-    ),
-    titleSmall = TextStyle(
-        fontFamily = SfProText,
-        fontWeight = FontWeight.Normal,
-        fontSize = 14.sp,
-        lineHeight = 20.sp
-    ),
+
     //Issue text
     labelLarge = TextStyle(
         fontFamily = SfProText,
@@ -96,5 +81,25 @@ val Typography = Typography(
         fontWeight = FontWeight.SemiBold,
         fontSize = 12.sp,
         lineHeight = 16.sp
+    ),
+
+    //Article titles, sub titles
+    titleLarge = TextStyle(
+        fontFamily = SfProText,
+        fontWeight = FontWeight.Bold,
+        fontSize = 20.sp,
+        lineHeight = 28.sp
+    ),
+    titleMedium = TextStyle(
+        fontFamily = SfProText,
+        fontWeight = FontWeight.SemiBold,
+        fontSize = 16.sp,
+        lineHeight = 24.sp
+    ),
+    titleSmall = TextStyle(
+        fontFamily = SfProText,
+        fontWeight = FontWeight.Normal,
+        fontSize = 14.sp,
+        lineHeight = 20.sp
     )
 )
