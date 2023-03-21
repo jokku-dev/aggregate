@@ -1,8 +1,8 @@
 package com.jokku.aggregate.di
 
 import android.content.Context
+import com.jokku.aggregate.data.BasicDataStoreRepository
 import com.jokku.aggregate.data.DataStoreRepository
-import com.jokku.aggregate.data.WelcomeDataStoreRepository
 import dagger.Binds
 import dagger.Module
 import dagger.hilt.InstallIn
@@ -16,7 +16,7 @@ abstract class MainModule {
 
     @Binds
     @Singleton
-    abstract fun provideDataStoreRepository(impl: WelcomeDataStoreRepository): DataStoreRepository
+    abstract fun provideDataStoreRepository(impl: BasicDataStoreRepository): DataStoreRepository
 
     @Binds
     @Singleton

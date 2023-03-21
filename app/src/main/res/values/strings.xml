@@ -1,11 +1,43 @@
 <resources>
     <string name="app_name">Aggregate</string>
+    <!--On Boarding-->
     <string name="on_board_first_title">First title</string>
     <string name="on_board_second_title">Second title</string>
     <string name="on_board_third_title">Third title</string>
-    <string name="on_board_first_description">First description first description first description first description first description first description</string>
-    <string name="on_board_second_description">Second description Second description Second description Second description Second description Second description</string>
-    <string name="on_board_third_description">Third description Third description Third description Third description Third description Third description</string>
+    <string name="on_board_first_description">First description</string>
+    <string name="on_board_second_description">Second description</string>
+    <string name="on_board_third_description">Third description</string>
     <string name="next">Next</string>
     <string name="get_started">Get Started</string>
+    <!--Sign In-->
+    <string name="welcome_back">Welcome Back</string>
+    <string name="i_am_happy_to_see_you_again">I am happy to see you again. You can continue where you left off by logging in.</string>
+    <string name="email_hint">Email Address</string>
+    <string name="password_hint">Password</string>
+    <string name="forgot_password_question">Forgot Password?</string>
+    <string name="sign_in">Sign In</string>
+    <string name="or">or</string>
+    <string name="no_account">Don\'t have an account?</string>
+    <string name="sign_up">Sign Up</string>
+    <!--Forgot password-->
+    <string name="forgot_password">Forgot Password</string>
+    <string name="we_need_your_email">We need your email address so we can send you the password reset code.</string>
+    <string name="remember_the_password">Remember the password?</string>
+    <string name="try_again">Try again</string>
+    <!--Verification code-->
+    <string name="verification_code">Verification Code</string>
+    <string name="you_need_to_enter_code">You need to enter 4-digit code we send to your e-mail address.</string>
+    <string name="confirm">Confirm</string>
+    <string name="did_not_receive_an_email">Didn\'t receive an email?</string>
+    <string name="send_again">Send again</string>
+    <!--Create new password-->
+    <string name="create_new_password">Create New Password</string>
+    <string name="you_can_create_a_new_password">You can create a new password, please don\'t forget it too.</string>
+    <string name="new_password">New Password</string>
+    <string name="repeat_new_password">Repeat New Password</string>
+    <!--Sign Up-->
+    <string name="welcome_to_aggregate">Welcome to Aggregate</string>
+    <string name="i_guess_you_are_new_around">Hello, I guess you are new around here. You can start using the application after sign up.</string>
+    <string name="username_hint">Username</string>
+    <string name="already_have_an_account">Already have an account?</string>
 </resources>

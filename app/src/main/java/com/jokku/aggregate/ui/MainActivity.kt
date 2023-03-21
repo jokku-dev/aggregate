@@ -16,17 +16,20 @@ import javax.inject.Inject
 class MainActivity : ComponentActivity() {
 
     @Inject
-    lateinit var viewModel: SplashViewModel
+    lateinit var splashViewModel: SplashViewModel
 
     override fun onCreate(savedInstanceState: Bundle?) {
+        val splashScreen = installSplashScreen()
         super.onCreate(savedInstanceState)
-        installSplashScreen().setKeepOnScreenCondition {
-            !viewModel.isLoading.value
+        splashScreen.setKeepOnScreenCondition {
+            !splashViewModel.isLoading.value
         }
+
         actionBar?.hide()
+
         setContent {
             AggregateTheme {
-                val screen by viewModel.startDestination
+                val screen by splashViewModel.startDestination
                 val navController = rememberNavController()
                 Navigation(navController = navController, startDestination = screen)
             }

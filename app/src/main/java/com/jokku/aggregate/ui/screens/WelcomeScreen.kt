@@ -6,19 +6,15 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.systemBarsPadding
-import androidx.compose.material.Button
-import androidx.compose.material.ButtonDefaults
 import androidx.compose.material.Surface
 import androidx.compose.material.Text
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
@@ -37,6 +33,7 @@ import com.jokku.aggregate.ui.theme.GreyLighter
 import com.jokku.aggregate.ui.theme.PurplePrimary
 import com.jokku.aggregate.ui.theme.Typography
 import com.jokku.aggregate.ui.viewmodel.WelcomeViewModel
+import com.jokku.aggregate.ui.views.BigActionButton
 import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalPagerApi::class)
@@ -47,19 +44,22 @@ fun WelcomeScreen(
 ) {
     val pagerState = rememberPagerState()
     val scope = rememberCoroutineScope()
+    val pages = viewModel.pages.collectAsState(initial = emptyList())
 
     Surface(modifier = Modifier.fillMaxSize()) {
         Column(
-            modifier = Modifier.fillMaxSize().systemBarsPadding(),
+            modifier = Modifier
+                .fillMaxSize()
+                .systemBarsPadding(),
             verticalArrangement = Arrangement.SpaceBetween
         ) {
             HorizontalPager(
-                count = viewModel.pages.size,
+                count = pages.value.size,
                 state = pagerState,
                 itemSpacing = (-65).dp
             ) { position ->
                 PagerScreen(
-                    onBoardingPage = viewModel.pages[position]
+                    onBoardingPage = pages.value[position]
                 )
             }
             Column(
@@ -75,20 +75,21 @@ fun WelcomeScreen(
                 )
                 BigActionButton(
                     modifier = Modifier
-                        .padding(bottom = 16.dp),
-                    text = if (pagerState.currentPage < viewModel.pages.size - 1) {
+                        .padding(bottom = 16.dp)
+                        .padding(horizontal = 16.dp),
+                    text = if (pagerState.currentPage < pages.value.size - 1) {
                         stringResource(id = R.string.next)
                     } else {
                         stringResource(id = R.string.get_started)
                     }
                 ) {
-                    viewModel.saveOnBoardingState(completed = true)
+                    viewModel.setLaunchScreen(screen = Screen.SignIn.route)
                     scope.launch {
-                        if (pagerState.currentPage < viewModel.pages.size - 1) {
+                        if (pagerState.currentPage < pages.value.size - 1) {
                             pagerState.scrollToPage(pagerState.currentPage + 1)
                         } else {
                             navController.popBackStack()
-                            navController.navigate(Screen.Home.route)
+                            navController.navigate(Screen.SignIn.route)
                         }
                     }
                 }
@@ -117,8 +118,7 @@ fun PagerScreen(onBoardingPage: OnBoardingPage) {
                 .fillMaxWidth(0.75f),
             text = stringResource(id = onBoardingPage.title),
             style = Typography.headlineLarge,
-            textAlign = TextAlign.Center,
-            maxLines = 1
+            textAlign = TextAlign.Center
         )
         Text(
             modifier = Modifier
@@ -126,34 +126,10 @@ fun PagerScreen(onBoardingPage: OnBoardingPage) {
                 .padding(top = 16.dp),
             text = stringResource(id = onBoardingPage.description),
             style = Typography.bodyMedium,
-            textAlign = TextAlign.Center,
-            maxLines = 3
+            textAlign = TextAlign.Center
         )
     }
 }
-
-@Composable
-fun BigActionButton(
-    modifier: Modifier = Modifier,
-    text: String,
-    onClick: () -> Unit
-) {
-    Button(
-        modifier = modifier
-            .height(56.dp)
-            .fillMaxWidth()
-            .padding(horizontal = 16.dp),
-        onClick = onClick,
-        shape = MaterialTheme.shapes.medium,
-        colors = ButtonDefaults.buttonColors(PurplePrimary, Color.White)
-    ) {
-        Text(
-            text = text,
-            style = Typography.labelMedium
-        )
-    }
-}
-
 
 @Preview(showBackground = true)
 @Composable
