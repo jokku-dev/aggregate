@@ -10,6 +10,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.systemBarsPadding
 import androidx.compose.material.Surface
 import androidx.compose.material.Text
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.rememberCoroutineScope
@@ -29,9 +30,6 @@ import com.google.accompanist.pager.rememberPagerState
 import com.jokku.aggregate.R
 import com.jokku.aggregate.ui.data.OnBoardingPage
 import com.jokku.aggregate.ui.nav.Screen
-import com.jokku.aggregate.ui.theme.GreyLighter
-import com.jokku.aggregate.ui.theme.PurplePrimary
-import com.jokku.aggregate.ui.theme.Typography
 import com.jokku.aggregate.ui.viewmodel.WelcomeViewModel
 import com.jokku.aggregate.ui.views.BigActionButton
 import kotlinx.coroutines.launch
@@ -70,8 +68,8 @@ fun WelcomeScreen(
                 HorizontalPagerIndicator(
                     modifier = Modifier.padding(bottom = 32.dp),
                     pagerState = pagerState,
-                    activeColor = PurplePrimary,
-                    inactiveColor = GreyLighter
+                    activeColor = MaterialTheme.colorScheme.primary,
+                    inactiveColor = MaterialTheme.colorScheme.secondary
                 )
                 BigActionButton(
                     modifier = Modifier
@@ -117,7 +115,8 @@ fun PagerScreen(onBoardingPage: OnBoardingPage) {
             modifier = Modifier
                 .fillMaxWidth(0.75f),
             text = stringResource(id = onBoardingPage.title),
-            style = Typography.headlineLarge,
+            style = MaterialTheme.typography.headlineLarge,
+            color = MaterialTheme.colorScheme.onSurfaceVariant,
             textAlign = TextAlign.Center
         )
         Text(
@@ -125,10 +124,16 @@ fun PagerScreen(onBoardingPage: OnBoardingPage) {
                 .fillMaxWidth(0.6f)
                 .padding(top = 16.dp),
             text = stringResource(id = onBoardingPage.description),
-            style = Typography.bodyMedium,
+            style = MaterialTheme.typography.bodyMedium,
+            color = MaterialTheme.colorScheme.onSecondary,
             textAlign = TextAlign.Center
         )
     }
+}
+
+@Preview(showBackground = true)
+@Composable
+fun WelcomeScreenPreview() {
 }
 
 @Preview(showBackground = true)

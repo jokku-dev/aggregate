@@ -27,8 +27,7 @@ val Typography = Typography(
         fontFamily = SfProText,
         fontWeight = FontWeight.Normal,
         fontSize = 16.sp,
-        lineHeight = 24.sp,
-        color = GreyPrimary
+        lineHeight = 24.sp
     ),
     //See All
     bodySmall = TextStyle(
@@ -43,8 +42,7 @@ val Typography = Typography(
         fontFamily = SfProText,
         fontWeight = FontWeight.SemiBold,
         fontSize = 24.sp,
-        lineHeight = 32.sp,
-        color = BlackPrimary
+        lineHeight = 32.sp
     ),
     //Sub headlines, hints
     headlineMedium = TextStyle(

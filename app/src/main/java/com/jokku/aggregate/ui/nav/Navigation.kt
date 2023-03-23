@@ -6,6 +6,7 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import com.jokku.aggregate.ui.screens.HomeScreen
 import com.jokku.aggregate.ui.screens.SignInScreen
+import com.jokku.aggregate.ui.screens.VerificationCodeScreen
 import com.jokku.aggregate.ui.screens.WelcomeScreen
 
 @Composable
@@ -16,6 +17,9 @@ fun Navigation(navController: NavHostController, startDestination: String) {
         }
         composable(route = Screen.SignIn.route) {
             SignInScreen(navController = navController)
+        }
+        composable(route = Screen.Verification.route) {
+            VerificationCodeScreen(navController = navController)
         }
         composable(route = Screen.Home.route) {
             HomeScreen(navController = navController)

@@ -19,18 +19,17 @@ import com.google.accompanist.systemuicontroller.SystemUiController
 import com.google.accompanist.systemuicontroller.rememberSystemUiController
 
 private val DarkColorScheme = darkColorScheme(
-    primary = PurplePrimary,
+    primary = PurpleLight,
     onPrimary = Color.White,
 
-    secondary = GreyLighter,
-    onSecondary = GreyPrimary,
+    secondary = GreyPrimary,
+    onSecondary = GreyLight,
 
-    tertiary = GreyLighter,
-    onTertiary = GreyDark,
+    surface = BlackDark,
+    onSurface = GreyLight,
 
-    surface = BlackLight,
-    onSurface = BlackPrimary,
-    onSurfaceVariant = GreyPrimary
+    outline = PurpleLight,
+    outlineVariant = GreyPrimary
 )
 
 private val LightColorScheme = lightColorScheme(
@@ -39,13 +38,14 @@ private val LightColorScheme = lightColorScheme(
 
     secondary = GreyLighter,
     onSecondary = GreyPrimary,
+    onSecondaryContainer = GreyDark,
 
-    tertiary = GreyLighter,
-    onTertiary = GreyDark,
-    
     surface = Color.White,
-    onSurface = BlackPrimary,
-    onSurfaceVariant = GreyPrimary
+    onSurface = GreyDark,
+    onSurfaceVariant = BlackPrimary,
+
+    outline = PurplePrimary,
+    outlineVariant = GreyLighter
 )
 
 @Composable

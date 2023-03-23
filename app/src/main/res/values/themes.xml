@@ -1,10 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <style name="Theme.Aggregate" parent="android:Theme.Material.Light.NoActionBar">
-    </style>
-    <style name="Theme.Aggregate.Starting" parent="Theme.SplashScreen">
+    <style name="Theme.Aggregate" parent="Theme.SplashScreen">
         <item name="windowSplashScreenBackground">@color/purple_primary</item>
         <item name="windowSplashScreenAnimatedIcon">@drawable/ic_aggregate_image_logo</item>
-        <item name="postSplashScreenTheme">@style/Theme.Aggregate</item>
     </style>
 </resources>
