@@ -4,11 +4,10 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.material.Surface
+import androidx.compose.material.Text
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Surface
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -26,66 +25,79 @@ import androidx.navigation.compose.rememberNavController
 import com.jokku.aggregate.R
 import com.jokku.aggregate.ui.nav.Screen
 import com.jokku.aggregate.ui.views.BigActionButton
-import com.jokku.aggregate.ui.views.EmailTextField
 import com.jokku.aggregate.ui.views.HelpBottomText
+import com.jokku.aggregate.ui.views.PasswordTextField
 
 @Composable
-fun ForgotPasswordScreen(
+fun CreateNewPasswordScreen(
     navController: NavHostController
 ) {
-    var email by rememberSaveable { mutableStateOf("") }
+    var password by rememberSaveable { mutableStateOf("") }
+    var passwordRepeat by rememberSaveable { mutableStateOf("") }
 
-    Surface(modifier = Modifier.fillMaxSize()) {
+    Surface(
+        modifier = Modifier.fillMaxSize(),
+        color = MaterialTheme.colorScheme.surface
+    ) {
         Column(
             modifier = Modifier
                 .fillMaxSize()
                 .padding(horizontal = 16.dp),
-            verticalArrangement = Arrangement.Top,
-            horizontalAlignment = Alignment.CenterHorizontally
+            horizontalAlignment = Alignment.CenterHorizontally,
+            verticalArrangement = Arrangement.Top
         ) {
             Text(
                 modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(top = 32.dp),
-                text = stringResource(id = R.string.forgot_password),
+                    .padding(top = 32.dp)
+                    .align(Alignment.Start),
+                text = stringResource(id = R.string.create_new_password),
                 style = MaterialTheme.typography.headlineLarge,
                 color = MaterialTheme.colorScheme.onSurfaceVariant
             )
             Text(
                 modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(top = 8.dp),
-                text = stringResource(id = R.string.we_need_your_email),
+                    .padding(top = 8.dp)
+                    .align(Alignment.Start),
+                text = stringResource(id = R.string.you_can_create_a_new_password),
                 style = MaterialTheme.typography.bodyMedium,
                 color = MaterialTheme.colorScheme.onSecondary
             )
-            EmailTextField(
+            PasswordTextField(
                 modifier = Modifier.padding(top = 32.dp),
+                placeholder = stringResource(id = R.string.new_password),
+                imeAction = ImeAction.Next,
+                password = password,
+                onPasswordChange = { newPassword -> password = newPassword }
+            )
+            PasswordTextField(
+                modifier = Modifier.padding(top = 16.dp),
+                placeholder = stringResource(id = R.string.repeat_new_password),
                 imeAction = ImeAction.Done,
-                email = email,
-                onEmailChange = { newEmail -> email = newEmail }
+                keyboardAction = { navController.navigate(route = Screen.SignIn.route) },
+                password = passwordRepeat,
+                onPasswordChange = { newPassword -> passwordRepeat = newPassword }
             )
             BigActionButton(
                 modifier = Modifier.padding(top = 16.dp),
-                text = stringResource(id = R.string.next)
+                text = stringResource(id = R.string.confirm)
             ) {
                 navController.popBackStack()
-                navController.navigate(route = Screen.Verification.withArgs(email))
+                navController.navigate(route = Screen.SignIn.route)
             }
             Spacer(modifier = Modifier.weight(1f))
             HelpBottomText(
-                questionText = stringResource(id = R.string.remember_the_password),
+                questionText = stringResource(id = R.string.remember_an_old_password),
                 actionText = AnnotatedString(stringResource(id = R.string.try_again))
             ) {
-                navController.popBackStack(route = Screen.SignIn.route, inclusive = true)
+                navController.popBackStack()
                 navController.navigate(route = Screen.SignIn.route)
             }
         }
     }
 }
 
-@Preview(showBackground = true)
+@Preview
 @Composable
-fun ForgotPasswordScreenPreview() {
-    ForgotPasswordScreen(navController = rememberNavController())
+fun CreateNewPasswordScreenPreview() {
+    CreateNewPasswordScreen(navController = rememberNavController())
 }

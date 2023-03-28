@@ -28,7 +28,8 @@
     <string name="try_again">Try again</string>
     <!--Verification code-->
     <string name="verification_code">Verification Code</string>
-    <string name="you_need_to_enter_code">You need to enter 4-digit code we send to your e-mail address.</string>
+    <string name="you_need_to_enter_code">You need to enter 4-digit code we send to your</string>
+    <string name="email_address">e-mail address.</string>
     <string name="confirm">Confirm</string>
     <string name="did_not_receive_an_email">Didn\'t receive an email?</string>
     <string name="send_again">Send again</string>
@@ -37,6 +38,7 @@
     <string name="you_can_create_a_new_password">You can create a new password, please don\'t forget it too.</string>
     <string name="new_password">New Password</string>
     <string name="repeat_new_password">Repeat New Password</string>
+    <string name="remember_an_old_password">Remember an old password?</string>
     <!--Sign Up-->
     <string name="welcome_to_aggregate">Welcome to Aggregate</string>
     <string name="i_guess_you_are_new_around">Hello, I guess you are new around here. You can start using the application after sign up.</string>

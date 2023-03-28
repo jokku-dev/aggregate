@@ -7,6 +7,7 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.size
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.MaterialTheme
@@ -18,6 +19,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.jokku.aggregate.R
@@ -36,7 +38,7 @@ fun BigActionButton(
         shape = MaterialTheme.shapes.medium,
         colors = ButtonDefaults.buttonColors(
             containerColor = MaterialTheme.colorScheme.primary,
-            contentColor = MaterialTheme.colorScheme.onPrimary
+            contentColor = MaterialTheme.colorScheme.surface
         )
     ) {
         Text(
@@ -61,9 +63,9 @@ fun SignInWithButton(
         shape = MaterialTheme.shapes.medium,
         colors = ButtonDefaults.outlinedButtonColors(
             containerColor = MaterialTheme.colorScheme.surface,
-            contentColor = MaterialTheme.colorScheme.onSurface
+            contentColor = MaterialTheme.colorScheme.onBackground
         ),
-        border = BorderStroke(width = 1.dp, color = MaterialTheme.colorScheme.outlineVariant)
+        border = BorderStroke(width = 1.dp, color = MaterialTheme.colorScheme.secondary)
     ) {
         Row(
             modifier = Modifier.fillMaxWidth(),
@@ -71,16 +73,17 @@ fun SignInWithButton(
             verticalAlignment = Alignment.CenterVertically
         ) {
             Image(
-                modifier = Modifier.fillMaxWidth(0.08f),
+                modifier = Modifier.size(24.dp),
                 painter = painter,
                 contentDescription = text
             )
             Text(
                 text = text,
-                style = MaterialTheme.typography.labelMedium
+                style = MaterialTheme.typography.labelMedium,
+                textAlign = TextAlign.Center
             )
             Spacer(
-                modifier = Modifier.fillMaxWidth(0.08f)
+                modifier = Modifier.size(24.dp)
             )
         }
     }
@@ -93,7 +96,7 @@ fun BigActionButtonPreview() {
     BigActionButton(text = "Get Started") {}
 }
 
-@Preview(apiLevel = 30, showBackground = true, device = "spec:parent=pixel_5")
+@Preview(apiLevel = 30, showBackground = true)
 @Composable
 fun SignInButtonPreview() {
     SignInWithButton(

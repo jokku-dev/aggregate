@@ -6,25 +6,29 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.text.ClickableText
-import androidx.compose.material.Surface
-import androidx.compose.material.Text
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Surface
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.saveable.rememberSaveable
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.AnnotatedString
-import androidx.compose.ui.text.SpanStyle
-import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.input.ImeAction
-import androidx.compose.ui.text.withStyle
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
+import androidx.navigation.compose.rememberNavController
 import com.jokku.aggregate.R
 import com.jokku.aggregate.ui.nav.Screen
 import com.jokku.aggregate.ui.views.BigActionButton
 import com.jokku.aggregate.ui.views.EmailTextField
+import com.jokku.aggregate.ui.views.HelpBottomText
 import com.jokku.aggregate.ui.views.PasswordTextField
 import com.jokku.aggregate.ui.views.SignInWithButton
 
@@ -33,17 +37,8 @@ fun SignInScreen(
     modifier: Modifier = Modifier,
     navController: NavHostController
 ) {
-    val annotatedText = buildAnnotatedString {
-        withStyle(style = SpanStyle(color = MaterialTheme.colorScheme.onSecondary)) {
-            append(stringResource(id = R.string.do_not_have_an_account) + " ")
-        }
-
-        pushStringAnnotation(tag = "SignUp", annotation = "SignUp")
-        withStyle(style = SpanStyle(color = MaterialTheme.colorScheme.onSurfaceVariant)) {
-            append(stringResource(id = R.string.sign_up))
-        }
-        pop()
-    }
+    var email by rememberSaveable { mutableStateOf("") }
+    var password by rememberSaveable { mutableStateOf("") }
 
     Surface(modifier = modifier.fillMaxSize()) {
         Column(
@@ -71,12 +66,20 @@ fun SignInScreen(
             )
             EmailTextField(
                 modifier = Modifier.padding(top = 32.dp),
-                imeAction = ImeAction.Next
+                imeAction = ImeAction.Next,
+                email = email,
+                onEmailChange = { newEmail -> email = newEmail }
             )
             PasswordTextField(
                 modifier = Modifier.padding(top = 16.dp),
-                value = stringResource(id = R.string.password_hint),
-                imeAction = ImeAction.Done
+                placeholder = stringResource(id = R.string.password_hint),
+                imeAction = ImeAction.Done,
+                keyboardAction = {
+                    navController.popBackStack()
+                    navController.navigate(route = Screen.Verification.route)
+                },
+                password = password,
+                onPasswordChange = { newPassword -> password = newPassword }
             )
             ClickableText(
                 modifier = Modifier
@@ -87,14 +90,14 @@ fun SignInScreen(
                     color = MaterialTheme.colorScheme.onSurfaceVariant
                 )
             ) {
-                TODO()
+                navController.navigate(route = Screen.ForgotPassword.route)
             }
             BigActionButton(
                 modifier = Modifier.padding(top = 24.dp),
                 text = stringResource(id = R.string.sign_in)
             ) {
-                navController.navigate(route = Screen.Verification.route)
-
+                navController.popBackStack()
+                navController.navigate(route = Screen.Home.route)
             }
             Text(
                 modifier = Modifier.padding(top = 48.dp),
@@ -117,19 +120,18 @@ fun SignInScreen(
                 TODO()
             }
             Spacer(modifier = Modifier.weight(1f))
-            ClickableText(
-                modifier = Modifier.padding(bottom = 16.dp),
-                text = annotatedText,
-                style = MaterialTheme.typography.labelLarge,
-                onClick = { offset ->
-                    annotatedText.getStringAnnotations(
-                        start = offset,
-                        end = offset
-                    )[0].let { _ ->
-                        TODO()
-                    }
-                }
-            )
+            HelpBottomText(
+                questionText = stringResource(id = R.string.do_not_have_an_account),
+                actionText = AnnotatedString(text = stringResource(id = R.string.sign_up))
+            ) {
+                TODO()
+            }
         }
     }
+}
+
+@Preview(showBackground = true)
+@Composable
+fun SignInScreenPreview() {
+    SignInScreen(navController = rememberNavController())
 }

@@ -19,8 +19,7 @@ import androidx.navigation.NavController
 @Composable
 fun HomeScreen(navController: NavController) {
     Scaffold(
-        modifier = Modifier.fillMaxSize(),
-//        topBar = { TopBar() }
+        modifier = Modifier.fillMaxSize()
     ) {
         Greeting(modifier = Modifier.padding(it), name = "Android")
     }

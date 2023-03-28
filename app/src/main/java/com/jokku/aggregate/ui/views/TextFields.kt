@@ -1,6 +1,8 @@
 package com.jokku.aggregate.ui.views
 
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.text.KeyboardActionScope
+import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.Icon
 import androidx.compose.material.IconButton
@@ -26,38 +28,37 @@ import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.navigation.compose.rememberNavController
 import com.jokku.aggregate.R
-import com.jokku.aggregate.ui.screens.SignInScreen
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun EmailTextField(
     modifier: Modifier = Modifier,
-    value: String = stringResource(id = R.string.email_hint),
-    imeAction: ImeAction
+    placeholder: String = stringResource(id = R.string.email_hint),
+    imeAction: ImeAction,
+    email: String,
+    onEmailChange: (String) -> Unit
 ) {
-    var text by rememberSaveable { mutableStateOf("") }
     var focus by rememberSaveable { mutableStateOf(false) }
 
     OutlinedTextField(
         modifier = modifier
             .fillMaxWidth()
             .onFocusChanged { focusState -> focus = focusState.hasFocus },
-        value = text,
-        onValueChange = { newText -> text = newText },
+        value = email,
+        onValueChange = { newValue -> onEmailChange(newValue) },
         singleLine = true,
         leadingIcon = {
             Icon(
                 imageVector = Icons.Outlined.Email,
-                contentDescription = value,
+                contentDescription = placeholder,
                 tint = if (focus) MaterialTheme.colorScheme.primary
                 else MaterialTheme.colorScheme.onSecondary
             )
         },
         placeholder = {
             Text(
-                text = value,
+                text = placeholder,
                 style = MaterialTheme.typography.headlineMedium,
                 color = MaterialTheme.colorScheme.onSecondary
             )
@@ -68,8 +69,8 @@ fun EmailTextField(
             textColor = MaterialTheme.colorScheme.onSurfaceVariant,
             containerColor = if (focus) MaterialTheme.colorScheme.surface
             else MaterialTheme.colorScheme.secondary,
-            focusedBorderColor = MaterialTheme.colorScheme.outline,
-            unfocusedBorderColor = MaterialTheme.colorScheme.outlineVariant
+            focusedBorderColor = MaterialTheme.colorScheme.primary,
+            unfocusedBorderColor = MaterialTheme.colorScheme.secondary
         ),
         keyboardOptions = KeyboardOptions(
             keyboardType = KeyboardType.Email,
@@ -82,10 +83,12 @@ fun EmailTextField(
 @Composable
 fun PasswordTextField(
     modifier: Modifier = Modifier,
-    value: String,
-    imeAction: ImeAction
+    placeholder: String,
+    imeAction: ImeAction,
+    keyboardAction: KeyboardActionScope.() -> Unit = {},
+    password: String,
+    onPasswordChange: (String) -> Unit
 ) {
-    var text by rememberSaveable { mutableStateOf("") }
     var isPasswordVisible by rememberSaveable { mutableStateOf(false) }
     var focus by rememberSaveable { mutableStateOf(false) }
     val visibilityIcon = if (isPasswordVisible) {
@@ -98,20 +101,20 @@ fun PasswordTextField(
         modifier = modifier
             .fillMaxWidth()
             .onFocusChanged { focusState -> focus = focusState.hasFocus },
-        value = text,
-        onValueChange = { newText -> text = newText },
+        value = password,
+        onValueChange = { newValue -> onPasswordChange(newValue) },
         singleLine = true,
         leadingIcon = {
             Icon(
                 imageVector = Icons.Outlined.Lock,
-                contentDescription = value,
+                contentDescription = placeholder,
                 tint = if (focus) MaterialTheme.colorScheme.primary
                 else MaterialTheme.colorScheme.onSecondary
             )
         },
         placeholder = {
             Text(
-                text = value,
+                text = placeholder,
                 style = MaterialTheme.typography.headlineMedium,
                 color = MaterialTheme.colorScheme.onSecondary
             )
@@ -136,18 +139,25 @@ fun PasswordTextField(
             textColor = MaterialTheme.colorScheme.onSurfaceVariant,
             containerColor = if (focus) MaterialTheme.colorScheme.surface
             else MaterialTheme.colorScheme.secondary,
-            focusedBorderColor = MaterialTheme.colorScheme.outline,
-            unfocusedBorderColor = MaterialTheme.colorScheme.outlineVariant
+            focusedBorderColor = MaterialTheme.colorScheme.primary,
+            unfocusedBorderColor = MaterialTheme.colorScheme.secondary
         ),
         keyboardOptions = KeyboardOptions(
             keyboardType = KeyboardType.Password,
             imeAction = imeAction
-        )
+        ),
+        keyboardActions = KeyboardActions(onDone = keyboardAction)
     )
 }
 
 @Preview(showBackground = true)
 @Composable
-private fun InputTextFieldPreview() {
-    SignInScreen(navController = rememberNavController())
+private fun EmailTextFieldPreview() {
+
+}
+
+@Preview(showBackground = true)
+@Composable
+private fun PasswordTextFieldPreview() {
+
 }

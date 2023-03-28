@@ -21,4 +21,11 @@ sealed class Screen(val route: String) {
     object Profile: Screen("profile_screen")
     object Language: Screen("language_screen")
     object ChangePassword: Screen("changePassword_screen")
+
+    fun withArgs(vararg args: String): String {
+        return buildString {
+            append(route)
+            args.forEach { arg -> append("/$arg") }
+        }
+    }
 }
