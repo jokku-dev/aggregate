@@ -26,12 +26,12 @@ fun HelpBottomText(
     ) {
         Text(
             text = "$questionText ",
-            style = MaterialTheme.typography.labelLarge,
+            style = MaterialTheme.typography.bodyLarge,
             color = MaterialTheme.colorScheme.onSecondary
         )
         ClickableText(
             text = actionText,
-            style = MaterialTheme.typography.labelLarge.copy(
+            style = MaterialTheme.typography.bodyLarge.copy(
                 color = MaterialTheme.colorScheme.onSurfaceVariant
             ),
             onClick = onClick

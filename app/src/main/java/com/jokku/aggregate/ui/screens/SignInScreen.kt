@@ -86,7 +86,7 @@ fun SignInScreen(
                     .align(alignment = Alignment.End)
                     .padding(top = 16.dp),
                 text = AnnotatedString(text = stringResource(id = R.string.forgot_password_question)),
-                style = MaterialTheme.typography.bodyMedium.copy(
+                style = MaterialTheme.typography.bodyLarge.copy(
                     color = MaterialTheme.colorScheme.onSurfaceVariant
                 )
             ) {
@@ -97,12 +97,12 @@ fun SignInScreen(
                 text = stringResource(id = R.string.sign_in)
             ) {
                 navController.popBackStack()
-                navController.navigate(route = Screen.Home.route)
+                navController.navigate(route = Screen.SelectFavoriteTopics.route)
             }
             Text(
                 modifier = Modifier.padding(top = 48.dp),
                 text = stringResource(id = R.string.or),
-                style = MaterialTheme.typography.bodyLarge,
+                style = MaterialTheme.typography.titleLarge,
                 color = MaterialTheme.colorScheme.onSecondary
             )
             SignInWithButton(
@@ -124,7 +124,7 @@ fun SignInScreen(
                 questionText = stringResource(id = R.string.do_not_have_an_account),
                 actionText = AnnotatedString(text = stringResource(id = R.string.sign_up))
             ) {
-                TODO()
+                navController.navigate(route = Screen.SignUp.route)
             }
         }
     }

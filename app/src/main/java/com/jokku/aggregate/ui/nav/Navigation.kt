@@ -9,7 +9,9 @@ import androidx.navigation.navArgument
 import com.jokku.aggregate.ui.screens.CreateNewPasswordScreen
 import com.jokku.aggregate.ui.screens.ForgotPasswordScreen
 import com.jokku.aggregate.ui.screens.HomeScreen
+import com.jokku.aggregate.ui.screens.SelectFavoriteTopicsScreen
 import com.jokku.aggregate.ui.screens.SignInScreen
+import com.jokku.aggregate.ui.screens.SignUpScreen
 import com.jokku.aggregate.ui.screens.VerificationCodeScreen
 import com.jokku.aggregate.ui.screens.WelcomeScreen
 
@@ -39,6 +41,12 @@ fun Navigation(navController: NavHostController, startDestination: String) {
         }
         composable(route = Screen.CreateNewPassword.route) {
             CreateNewPasswordScreen(navController = navController)
+        }
+        composable(route = Screen.SignUp.route) {
+            SignUpScreen(navController = navController)
+        }
+        composable(route = Screen.SelectFavoriteTopics.route) {
+            SelectFavoriteTopicsScreen(navController = navController)
         }
 
         composable(route = Screen.Home.route) {

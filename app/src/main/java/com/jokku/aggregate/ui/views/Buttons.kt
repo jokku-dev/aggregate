@@ -43,7 +43,7 @@ fun BigActionButton(
     ) {
         Text(
             text = text,
-            style = MaterialTheme.typography.labelMedium
+            style = MaterialTheme.typography.titleLarge
         )
     }
 }
@@ -79,7 +79,7 @@ fun SignInWithButton(
             )
             Text(
                 text = text,
-                style = MaterialTheme.typography.labelMedium,
+                style = MaterialTheme.typography.titleLarge,
                 textAlign = TextAlign.Center
             )
             Spacer(

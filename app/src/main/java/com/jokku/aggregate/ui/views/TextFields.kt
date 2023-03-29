@@ -21,14 +21,65 @@ import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.onFocusChanged
+import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.tooling.preview.Preview
 import com.jokku.aggregate.R
+
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+fun UsernameTextField(
+    modifier: Modifier = Modifier,
+    placeholder: String = stringResource(id = R.string.username_hint),
+    imeAction: ImeAction,
+    username: String,
+    onUsernameChange: (String) -> Unit
+) {
+    var focus by rememberSaveable { mutableStateOf(false) }
+
+    OutlinedTextField(
+        modifier = modifier
+            .fillMaxWidth()
+            .onFocusChanged { focusState -> focus = focusState.hasFocus },
+        value = username,
+        onValueChange = { newValue -> onUsernameChange(newValue) },
+        singleLine = true,
+        leadingIcon = {
+            Icon(
+                imageVector = ImageVector.vectorResource(id = R.drawable.ic_outline_person),
+                contentDescription = placeholder,
+                tint = if (focus) MaterialTheme.colorScheme.primary
+                else MaterialTheme.colorScheme.onSecondary
+            )
+        },
+        placeholder = {
+            Text(
+                text = placeholder,
+                style = MaterialTheme.typography.bodyLarge,
+                color = MaterialTheme.colorScheme.onSecondary
+            )
+        },
+        shape = MaterialTheme.shapes.medium,
+        textStyle = MaterialTheme.typography.bodyLarge,
+        colors = TextFieldDefaults.outlinedTextFieldColors(
+            textColor = MaterialTheme.colorScheme.onSurfaceVariant,
+            containerColor = if (focus) MaterialTheme.colorScheme.surface
+            else MaterialTheme.colorScheme.secondary,
+            focusedBorderColor = MaterialTheme.colorScheme.primary,
+            unfocusedBorderColor = MaterialTheme.colorScheme.secondary
+        ),
+        keyboardOptions = KeyboardOptions(
+            keyboardType = KeyboardType.Text,
+            imeAction = imeAction
+        )
+    )
+}
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -59,12 +110,12 @@ fun EmailTextField(
         placeholder = {
             Text(
                 text = placeholder,
-                style = MaterialTheme.typography.headlineMedium,
+                style = MaterialTheme.typography.bodyLarge,
                 color = MaterialTheme.colorScheme.onSecondary
             )
         },
         shape = MaterialTheme.shapes.medium,
-        textStyle = MaterialTheme.typography.headlineMedium,
+        textStyle = MaterialTheme.typography.bodyLarge,
         colors = TextFieldDefaults.outlinedTextFieldColors(
             textColor = MaterialTheme.colorScheme.onSurfaceVariant,
             containerColor = if (focus) MaterialTheme.colorScheme.surface
@@ -115,7 +166,7 @@ fun PasswordTextField(
         placeholder = {
             Text(
                 text = placeholder,
-                style = MaterialTheme.typography.headlineMedium,
+                style = MaterialTheme.typography.bodyLarge,
                 color = MaterialTheme.colorScheme.onSecondary
             )
         },
@@ -134,7 +185,7 @@ fun PasswordTextField(
         visualTransformation = if (isPasswordVisible) VisualTransformation.None
         else PasswordVisualTransformation('\u002a'),
         shape = MaterialTheme.shapes.medium,
-        textStyle = MaterialTheme.typography.headlineMedium,
+        textStyle = MaterialTheme.typography.bodyLarge,
         colors = TextFieldDefaults.outlinedTextFieldColors(
             textColor = MaterialTheme.colorScheme.onSurfaceVariant,
             containerColor = if (focus) MaterialTheme.colorScheme.surface

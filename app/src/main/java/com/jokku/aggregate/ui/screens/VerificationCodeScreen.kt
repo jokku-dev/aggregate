@@ -139,7 +139,7 @@ fun VerificationCodeScreen(
                         ) {
                             Text(
                                 text = char,
-                                style = MaterialTheme.typography.bodyLarge,
+                                style = MaterialTheme.typography.titleLarge,
                                 color = if (isFocused) MaterialTheme.colorScheme.primary
                                    else MaterialTheme.colorScheme.onSurfaceVariant
                             )

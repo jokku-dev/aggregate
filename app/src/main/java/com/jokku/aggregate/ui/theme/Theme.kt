@@ -1,6 +1,5 @@
 package com.jokku.aggregate.ui.theme
 
-import android.app.Activity
 import android.os.Build
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.material3.MaterialTheme
@@ -11,10 +10,7 @@ import androidx.compose.material3.lightColorScheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.SideEffect
 import androidx.compose.ui.graphics.Color.Companion.White
-import androidx.compose.ui.graphics.toArgb
 import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.platform.LocalView
-import androidx.core.view.WindowCompat
 import com.google.accompanist.systemuicontroller.SystemUiController
 import com.google.accompanist.systemuicontroller.rememberSystemUiController
 
@@ -42,7 +38,6 @@ private val LightColorScheme = lightColorScheme(
 fun AggregateTheme(
     darkTheme: Boolean = isSystemInDarkTheme(),
     systemUiController: SystemUiController = rememberSystemUiController(),
-    // Dynamic color is available on Android 12+
     dynamicColor: Boolean = true,
     content: @Composable () -> Unit
 ) {
@@ -51,21 +46,11 @@ fun AggregateTheme(
             val context = LocalContext.current
             if (darkTheme) dynamicDarkColorScheme(context) else dynamicLightColorScheme(context)
         }
-
         darkTheme -> DarkColorScheme
         else -> LightColorScheme
     }
-    val view = LocalView.current
-    val window = (view.context as Activity).window
-    if (!view.isInEditMode) {
-        SideEffect {
-            window.statusBarColor = colorScheme.primary.toArgb()
-            WindowCompat.getInsetsController(window, view).isAppearanceLightStatusBars = darkTheme
-        }
-    }
-    SideEffect {
-        systemUiController.setSystemBarsColor(color = colorScheme.surface)
-    }
+
+    SideEffect { systemUiController.setSystemBarsColor(color = colorScheme.surface) }
 
     MaterialTheme(
         colorScheme = colorScheme,
