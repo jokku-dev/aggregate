@@ -1,26 +1,32 @@
 package com.jokku.aggregate.ui.nav
 
+import com.jokku.aggregate.R
+
 sealed class Screen(val route: String) {
-    object Welcome: Screen("welcome_screen")
+    object Welcome: Screen("welcome")
+    object SelectFavoriteTopics: Screen("selectFavoriteTopics")
 
-    object SignIn: Screen("signIn_screen")
-    object Verification: Screen("verification_screen")
+    object Home: BottomNavigationScreen(
+        route = "home", icon = R.drawable.ic_outline_home
+    )
+    object Categories: BottomNavigationScreen(
+        route = "categories", icon = R.drawable.ic_outline_category
+    )
+    object Bookmarks: BottomNavigationScreen(
+        route = "bookmarks", icon = R.drawable.ic_outline_bookmarks, badgeCount = 12
+    )
+    object Profile: BottomNavigationScreen(
+        route = "profile", icon = R.drawable.ic_outline_person)
 
-    object ForgotPassword: Screen("forgotPassword_screen")
-    object CreateNewPassword: Screen("createNewPassword_screen")
+    object SignIn: Screen("signIn")
+    object SignUp: Screen("signUp")
+    object ForgotPassword: Screen("forgotPassword")
+    object Verification: Screen("verification")
+    object CreateNewPassword: Screen("createNewPassword")
 
-    object SignUp: Screen("signUp_screen")
-    object SelectFavoriteTopics: Screen("selectFavoriteTopics_screen")
-
-    object Home: Screen("home_screen")
-    object Categories: Screen("categories_screen")
-    object Bookmarks: Screen("bookmarks_screen")
-
-    object Article: Screen("article_screen")
-
-    object Profile: Screen("profile_screen")
-    object Language: Screen("language_screen")
-    object ChangePassword: Screen("changePassword_screen")
+    object Language: Screen("language")
+    object ChangePassword: Screen("changePassword")
+    object Article: Screen("article")
 
     fun withArgs(vararg args: String): String {
         return buildString {
@@ -29,3 +35,9 @@ sealed class Screen(val route: String) {
         }
     }
 }
+
+sealed class BottomNavigationScreen(
+    route: String,
+    val icon: Int,
+    val badgeCount: Int = 0
+) : Screen(route)

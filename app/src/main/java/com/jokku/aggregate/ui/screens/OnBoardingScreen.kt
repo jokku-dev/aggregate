@@ -9,7 +9,6 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.systemBarsPadding
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
@@ -44,51 +43,49 @@ fun WelcomeScreen(
     val scope = rememberCoroutineScope()
     val pages = viewModel.pages.collectAsState(initial = emptyList())
 
-    Surface(modifier = Modifier.fillMaxSize()) {
+    Column(
+        modifier = Modifier
+            .fillMaxSize()
+            .systemBarsPadding(),
+        verticalArrangement = Arrangement.SpaceBetween
+    ) {
+        HorizontalPager(
+            count = pages.value.size,
+            state = pagerState,
+            itemSpacing = (-65).dp
+        ) { position ->
+            PagerScreen(
+                onBoardingPage = pages.value[position]
+            )
+        }
         Column(
-            modifier = Modifier
-                .fillMaxSize()
-                .systemBarsPadding(),
-            verticalArrangement = Arrangement.SpaceBetween
+            modifier = Modifier.fillMaxWidth(),
+            horizontalAlignment = Alignment.CenterHorizontally,
+            verticalArrangement = Arrangement.Bottom
         ) {
-            HorizontalPager(
-                count = pages.value.size,
-                state = pagerState,
-                itemSpacing = (-65).dp
-            ) { position ->
-                PagerScreen(
-                    onBoardingPage = pages.value[position]
-                )
-            }
-            Column(
-                modifier = Modifier.fillMaxWidth(),
-                horizontalAlignment = Alignment.CenterHorizontally,
-                verticalArrangement = Arrangement.Bottom
+            HorizontalPagerIndicator(
+                modifier = Modifier.padding(bottom = 32.dp),
+                pagerState = pagerState,
+                activeColor = MaterialTheme.colorScheme.primary,
+                inactiveColor = MaterialTheme.colorScheme.secondary
+            )
+            BigActionButton(
+                modifier = Modifier
+                    .padding(bottom = 16.dp)
+                    .padding(horizontal = 16.dp),
+                text = if (pagerState.currentPage < pages.value.size - 1) {
+                    stringResource(id = R.string.next)
+                } else {
+                    stringResource(id = R.string.get_started)
+                }
             ) {
-                HorizontalPagerIndicator(
-                    modifier = Modifier.padding(bottom = 32.dp),
-                    pagerState = pagerState,
-                    activeColor = MaterialTheme.colorScheme.primary,
-                    inactiveColor = MaterialTheme.colorScheme.secondary
-                )
-                BigActionButton(
-                    modifier = Modifier
-                        .padding(bottom = 16.dp)
-                        .padding(horizontal = 16.dp),
-                    text = if (pagerState.currentPage < pages.value.size - 1) {
-                        stringResource(id = R.string.next)
+                viewModel.setLaunchScreen(screen = Screen.SelectFavoriteTopics.route)
+                scope.launch {
+                    if (pagerState.currentPage < pages.value.size - 1) {
+                        pagerState.scrollToPage(pagerState.currentPage + 1)
                     } else {
-                        stringResource(id = R.string.get_started)
-                    }
-                ) {
-                    viewModel.setLaunchScreen(screen = Screen.SignIn.route)
-                    scope.launch {
-                        if (pagerState.currentPage < pages.value.size - 1) {
-                            pagerState.scrollToPage(pagerState.currentPage + 1)
-                        } else {
-                            navController.popBackStack()
-                            navController.navigate(Screen.SignIn.route)
-                        }
+                        navController.popBackStack()
+                        navController.navigate(Screen.SignIn.route)
                     }
                 }
             }

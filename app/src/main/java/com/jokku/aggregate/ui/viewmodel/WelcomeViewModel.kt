@@ -23,4 +23,5 @@ class WelcomeViewModel @Inject constructor(
         repository.setLaunchScreen(screen = screen)
     }
 
+
 }
