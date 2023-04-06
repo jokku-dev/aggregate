@@ -7,9 +7,6 @@ import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.Icon
 import androidx.compose.material.IconButton
 import androidx.compose.material.Text
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.outlined.Email
-import androidx.compose.material.icons.outlined.Lock
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
@@ -101,7 +98,7 @@ fun EmailTextField(
         singleLine = true,
         leadingIcon = {
             Icon(
-                imageVector = Icons.Outlined.Email,
+                imageVector = ImageVector.vectorResource(id = R.drawable.ic_outline_email),
                 contentDescription = placeholder,
                 tint = if (focus) MaterialTheme.colorScheme.primary
                 else MaterialTheme.colorScheme.onSecondary
@@ -157,7 +154,7 @@ fun PasswordTextField(
         singleLine = true,
         leadingIcon = {
             Icon(
-                imageVector = Icons.Outlined.Lock,
+                imageVector = ImageVector.vectorResource(id = R.drawable.ic_outline_lock),
                 contentDescription = placeholder,
                 tint = if (focus) MaterialTheme.colorScheme.primary
                 else MaterialTheme.colorScheme.onSecondary

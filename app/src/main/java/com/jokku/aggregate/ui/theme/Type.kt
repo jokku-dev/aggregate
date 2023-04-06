@@ -75,5 +75,12 @@ val Typography = Typography(
         fontWeight = FontWeight.Normal,
         fontSize = 12.sp,
         lineHeight = 16.sp
+    ),
+
+    //Badge counter
+    displaySmall = TextStyle(
+        fontFamily = SfProText,
+        fontWeight = FontWeight.Bold,
+        fontSize = 8.sp
     )
 )

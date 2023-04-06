@@ -23,7 +23,6 @@ import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import androidx.navigation.NavDestination.Companion.hierarchy
 import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.NavHostController
@@ -65,7 +64,7 @@ fun BottomBar(
                                         Badge {
                                             Text(
                                                 text = item.badgeCount.toString(),
-                                                style = MaterialTheme.typography.titleSmall.copy(fontSize = 8.sp),
+                                                style = MaterialTheme.typography.displaySmall,
                                                 color = MaterialTheme.colorScheme.surface
                                             )
                                         }
@@ -84,15 +83,20 @@ fun BottomBar(
                             }
                         }
                     },
+                    // Defines whether any of hierarchy destinations and item roots are the same
+                    // (in cases of nested navigation)
                     selected = currentDestination?.hierarchy?.any { it.route == item.route } == true,
                     selectedContentColor = MaterialTheme.colorScheme.primary,
                     unselectedContentColor = MaterialTheme.colorScheme.onSurface,
                     onClick = {
                         navController.navigate(item.route) {
+                            // pops all previous destinations up to start destination
                             popUpTo(navController.graph.findStartDestination().id) {
                                 saveState = true
                             }
+                            // Avoid multiple copies of the same destination when reselecting the same item
                             launchSingleTop = true
+                            // Restore state when reselecting a previously selected item
                             restoreState = true
                         }
                     }

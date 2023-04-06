@@ -27,10 +27,7 @@ fun AggregateApp(
         val navBackStackEntry by navController.currentBackStackEntryAsState()
 
         when (navBackStackEntry?.destination?.route) {
-            "home" -> bottomBarState.value = true
-            "categories" -> bottomBarState.value = true
-            "bookmarks" -> bottomBarState.value = true
-            "profile" -> bottomBarState.value = true
+            "home", "categories", "bookmarks", "profile" -> bottomBarState.value = true
             else -> bottomBarState.value = false
         }
 

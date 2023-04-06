@@ -11,7 +11,7 @@ import androidx.compose.foundation.layout.systemBarsPadding
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -21,13 +21,14 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavHostController
 import com.google.accompanist.pager.ExperimentalPagerApi
 import com.google.accompanist.pager.HorizontalPager
 import com.google.accompanist.pager.HorizontalPagerIndicator
 import com.google.accompanist.pager.rememberPagerState
 import com.jokku.aggregate.R
-import com.jokku.aggregate.ui.data.OnBoardingPage
+import com.jokku.aggregate.ui.entity.OnBoardingPage
 import com.jokku.aggregate.ui.nav.Screen
 import com.jokku.aggregate.ui.viewmodel.WelcomeViewModel
 import com.jokku.aggregate.ui.views.BigActionButton
@@ -35,13 +36,13 @@ import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalPagerApi::class)
 @Composable
-fun WelcomeScreen(
+fun OnBoardingScreen(
     viewModel: WelcomeViewModel = hiltViewModel(),
     navController: NavHostController
 ) {
     val pagerState = rememberPagerState()
     val scope = rememberCoroutineScope()
-    val pages = viewModel.pages.collectAsState(initial = emptyList())
+    val state = viewModel.onBoardingState.collectAsStateWithLifecycle().value
 
     Column(
         modifier = Modifier
@@ -50,12 +51,12 @@ fun WelcomeScreen(
         verticalArrangement = Arrangement.SpaceBetween
     ) {
         HorizontalPager(
-            count = pages.value.size,
+            count = state.pages.size,
             state = pagerState,
             itemSpacing = (-65).dp
         ) { position ->
             PagerScreen(
-                onBoardingPage = pages.value[position]
+                onBoardingPage = state.pages[position]
             )
         }
         Column(
@@ -73,23 +74,26 @@ fun WelcomeScreen(
                 modifier = Modifier
                     .padding(bottom = 16.dp)
                     .padding(horizontal = 16.dp),
-                text = if (pagerState.currentPage < pages.value.size - 1) {
-                    stringResource(id = R.string.next)
-                } else {
-                    stringResource(id = R.string.get_started)
-                }
+                text =
+                if (!state.isLastPage) stringResource(id = R.string.next)
+                else stringResource(id = R.string.get_started)
             ) {
-                viewModel.setLaunchScreen(screen = Screen.SelectFavoriteTopics.route)
+                // scrollToPage is suspend and therefore requires scope
                 scope.launch {
-                    if (pagerState.currentPage < pages.value.size - 1) {
+                    if (!state.isLastPage) {
+                        viewModel.checkNextPageIsLast(nextPage = state.pages[pagerState.currentPage + 1])
                         pagerState.scrollToPage(pagerState.currentPage + 1)
                     } else {
+                        viewModel.setLaunchScreen(screen = Screen.SelectFavoriteTopics.route)
                         navController.popBackStack()
-                        navController.navigate(Screen.SignIn.route)
+                        navController.navigate(Screen.SelectFavoriteTopics.route)
                     }
                 }
             }
         }
+    }
+    LaunchedEffect(key1 = pagerState.isScrollInProgress) {
+        viewModel.checkNextPageIsLast(nextPage = state.pages[pagerState.currentPage])
     }
 }
 
@@ -129,30 +133,19 @@ fun PagerScreen(onBoardingPage: OnBoardingPage) {
 
 @Preview(showBackground = true)
 @Composable
-fun WelcomeScreenPreview() {
-}
-
-@Preview(showBackground = true)
-@Composable
 fun FirstPage() {
-    Column(modifier = Modifier.fillMaxSize()) {
-        PagerScreen(onBoardingPage = OnBoardingPage.First)
-    }
+
 }
 
 @Preview(showBackground = true)
 @Composable
 fun SecondPage() {
-    Column(modifier = Modifier.fillMaxSize()) {
-        PagerScreen(onBoardingPage = OnBoardingPage.Second)
-    }
+
 }
 
 @Preview(showBackground = true)
 @Composable
 fun ThirdPage() {
-    Column(modifier = Modifier.fillMaxSize()) {
-        PagerScreen(onBoardingPage = OnBoardingPage.Third)
-    }
+
 }
 

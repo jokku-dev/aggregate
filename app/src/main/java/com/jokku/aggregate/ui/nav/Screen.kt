@@ -3,7 +3,7 @@ package com.jokku.aggregate.ui.nav
 import com.jokku.aggregate.R
 
 sealed class Screen(val route: String) {
-    object Welcome: Screen("welcome")
+    object OnBoarding: Screen("onBoarding")
     object SelectFavoriteTopics: Screen("selectFavoriteTopics")
 
     object Home: BottomNavigationScreen(
@@ -16,7 +16,8 @@ sealed class Screen(val route: String) {
         route = "bookmarks", icon = R.drawable.ic_outline_bookmarks, badgeCount = 12
     )
     object Profile: BottomNavigationScreen(
-        route = "profile", icon = R.drawable.ic_outline_person)
+        route = "profile", icon = R.drawable.ic_outline_person
+    )
 
     object SignIn: Screen("signIn")
     object SignUp: Screen("signUp")

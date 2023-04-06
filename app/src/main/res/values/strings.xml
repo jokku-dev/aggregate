@@ -48,16 +48,15 @@
     <!--Select Favorite Topics-->
     <string name="select_your_favorite_topics">Select your favorite topics</string>
     <string name="select_some_of_your_topics">Select some of your favorite topics to let us suggest better news for you.</string>
-    <string-array name="topics">
-        <item>Sports</item>
-        <item>Politics</item>
-        <item>Life</item>
-        <item>Gaming</item>
-        <item>Animals</item>
-        <item>Nature</item>
-        <item>Food</item>
-        <item>Art</item>
-        <item>History</item>
-        <item>Fashion</item>
-    </string-array>
+    <string name="sports">🏈 Sports</string>
+    <string name="politics">⚖️ Politics</string>
+    <string name="life">🌞 Life</string>
+    <string name="gaming">🎮 Gaming</string>
+    <string name="animals">🐻 Animals</string>
+    <string name="nature">🌴 Nature</string>
+    <string name="food">🍔 Food</string>
+    <string name="art">🎨 Art</string>
+    <string name="history">📜 History</string>
+    <string name="fashion">👗 Fashion</string>
+
 </resources>

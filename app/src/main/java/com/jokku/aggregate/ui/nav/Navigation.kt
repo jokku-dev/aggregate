@@ -12,18 +12,21 @@ import com.jokku.aggregate.ui.screens.CategoriesScreen
 import com.jokku.aggregate.ui.screens.CreateNewPasswordScreen
 import com.jokku.aggregate.ui.screens.ForgotPasswordScreen
 import com.jokku.aggregate.ui.screens.HomepageScreen
+import com.jokku.aggregate.ui.screens.OnBoardingScreen
 import com.jokku.aggregate.ui.screens.ProfileScreen
 import com.jokku.aggregate.ui.screens.SelectFavoriteTopicsScreen
 import com.jokku.aggregate.ui.screens.SignInScreen
 import com.jokku.aggregate.ui.screens.SignUpScreen
 import com.jokku.aggregate.ui.screens.VerificationCodeScreen
-import com.jokku.aggregate.ui.screens.WelcomeScreen
 
 @Composable
 fun Navigation(modifier: Modifier, navController: NavHostController, startDestination: String) {
     NavHost(navController = navController, startDestination = startDestination) {
-        composable(route = Screen.Welcome.route) {
-            WelcomeScreen(navController = navController)
+        composable(route = Screen.OnBoarding.route) {
+            OnBoardingScreen(navController = navController)
+        }
+        composable(route = Screen.SelectFavoriteTopics.route) {
+            SelectFavoriteTopicsScreen(navController = navController)
         }
         composable(route = Screen.SignIn.route) {
             SignInScreen(navController = navController)
@@ -49,9 +52,7 @@ fun Navigation(modifier: Modifier, navController: NavHostController, startDestin
         composable(route = Screen.SignUp.route) {
             SignUpScreen(navController = navController)
         }
-        composable(route = Screen.SelectFavoriteTopics.route) {
-            SelectFavoriteTopicsScreen(navController = navController)
-        }
+
 
         composable(route = Screen.Home.route) {
             HomepageScreen(navController = navController)
