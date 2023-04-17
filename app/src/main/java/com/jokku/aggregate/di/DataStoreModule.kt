@@ -9,10 +9,10 @@ import androidx.datastore.preferences.core.PreferenceDataStoreFactory
 import androidx.datastore.preferences.core.Preferences
 import androidx.datastore.preferences.core.emptyPreferences
 import androidx.datastore.preferences.preferencesDataStoreFile
-import com.jokku.aggregate.data.BasicDataStoreRepository
-import com.jokku.aggregate.data.DataStoreRepository
 import com.jokku.aggregate.data.TypedPreferences
 import com.jokku.aggregate.data.TypedPreferencesSerializer
+import com.jokku.aggregate.data.repo.DataStoreRepository
+import com.jokku.aggregate.data.repo.MainDataStoreRepository
 import dagger.Binds
 import dagger.Module
 import dagger.Provides
@@ -30,7 +30,7 @@ abstract class DataStoreModule {
 
     @Binds
     @Singleton
-    abstract fun bindDataStoreRepository(impl: BasicDataStoreRepository): DataStoreRepository
+    abstract fun bindDataStoreRepository(impl: MainDataStoreRepository): DataStoreRepository
 
     companion object {
 

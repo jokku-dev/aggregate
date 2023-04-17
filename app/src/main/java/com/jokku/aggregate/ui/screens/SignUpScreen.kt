@@ -2,14 +2,11 @@ package com.jokku.aggregate.ui.screens
 
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.padding
-import androidx.compose.material.Text
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.AnnotatedString
@@ -23,6 +20,7 @@ import com.jokku.aggregate.ui.nav.Screen
 import com.jokku.aggregate.ui.views.BigActionButton
 import com.jokku.aggregate.ui.views.CommonColumn
 import com.jokku.aggregate.ui.views.EmailTextField
+import com.jokku.aggregate.ui.views.HeadlineAndDescription
 import com.jokku.aggregate.ui.views.HelpBottomText
 import com.jokku.aggregate.ui.views.PasswordTextField
 import com.jokku.aggregate.ui.views.UsernameTextField
@@ -37,19 +35,9 @@ fun SignUpScreen(
     var passwordRepeat by rememberSaveable { mutableStateOf("") }
 
     CommonColumn {
-        Text(
-            modifier = Modifier.align(Alignment.Start),
-            text = stringResource(id = R.string.welcome_to_aggregate),
-            style = MaterialTheme.typography.headlineLarge,
-            color = MaterialTheme.colorScheme.onSurfaceVariant
-        )
-        Text(
-            modifier = Modifier
-                .padding(top = 8.dp)
-                .align(Alignment.Start),
-            text = stringResource(id = R.string.i_guess_you_are_new_around),
-            style = MaterialTheme.typography.bodyMedium,
-            color = MaterialTheme.colorScheme.onSecondary,
+        HeadlineAndDescription(
+            headline = R.string.welcome_to_aggregate,
+            description = R.string.i_guess_you_are_new_around
         )
         UsernameTextField(
             modifier = Modifier.padding(top = 32.dp),

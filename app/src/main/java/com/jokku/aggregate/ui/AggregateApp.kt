@@ -8,6 +8,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.saveable.rememberSaveable
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.currentBackStackEntryAsState
@@ -15,20 +16,25 @@ import com.jokku.aggregate.ui.nav.Navigation
 import com.jokku.aggregate.ui.theme.AggregateTheme
 import com.jokku.aggregate.ui.views.BottomBar
 
+private const val HOME = "home"
+private const val CATEGORIES = "categories"
+private const val BOOKMARKS = "bookmarks"
+private const val PROFILE = "profile"
+
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun AggregateApp(
     startDestination: String,
     navController: NavHostController
 ) {
-    val bottomBarState = rememberSaveable { mutableStateOf(true) }
+    var bottomBarState by rememberSaveable { mutableStateOf(true) }
 
     AggregateTheme {
         val navBackStackEntry by navController.currentBackStackEntryAsState()
 
-        when (navBackStackEntry?.destination?.route) {
-            "home", "categories", "bookmarks", "profile" -> bottomBarState.value = true
-            else -> bottomBarState.value = false
+        bottomBarState = when (navBackStackEntry?.destination?.route) {
+            HOME, CATEGORIES, BOOKMARKS, PROFILE -> true
+            else -> false
         }
 
         Scaffold(

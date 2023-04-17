@@ -25,6 +25,7 @@ import com.jokku.aggregate.ui.nav.Screen
 import com.jokku.aggregate.ui.views.BigActionButton
 import com.jokku.aggregate.ui.views.CommonColumn
 import com.jokku.aggregate.ui.views.EmailTextField
+import com.jokku.aggregate.ui.views.HeadlineAndDescription
 import com.jokku.aggregate.ui.views.HelpBottomText
 import com.jokku.aggregate.ui.views.PasswordTextField
 import com.jokku.aggregate.ui.views.SignInWithButton
@@ -37,19 +38,9 @@ fun SignInScreen(
     var password by rememberSaveable { mutableStateOf("") }
 
     CommonColumn {
-        Text(
-            text = stringResource(id = R.string.welcome_back),
-            style = MaterialTheme.typography.headlineLarge,
-            color = MaterialTheme.colorScheme.onSurfaceVariant,
-            modifier = Modifier.align(Alignment.Start)
-        )
-        Text(
-            text = stringResource(id = R.string.i_am_happy_to_see_you_again),
-            style = MaterialTheme.typography.bodyMedium,
-            color = MaterialTheme.colorScheme.onSecondary,
-            modifier = Modifier
-                .align(Alignment.Start)
-                .padding(top = 8.dp)
+        HeadlineAndDescription(
+            headline = R.string.welcome_back,
+            description = R.string.i_am_happy_to_see_you_again
         )
         EmailTextField(
             modifier = Modifier.padding(top = 32.dp),

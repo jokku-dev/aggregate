@@ -8,8 +8,8 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
-import androidx.compose.material.Text
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Alignment
@@ -29,28 +29,19 @@ import com.jokku.aggregate.ui.nav.Screen
 import com.jokku.aggregate.ui.viewmodel.WelcomeViewModel
 import com.jokku.aggregate.ui.views.BigActionButton
 import com.jokku.aggregate.ui.views.CommonColumn
+import com.jokku.aggregate.ui.views.HeadlineAndDescription
 
 @Composable
 fun SelectFavoriteTopicsScreen(
-    viewModel: WelcomeViewModel = hiltViewModel(),
-    navController: NavHostController
+    navController: NavHostController,
+    viewModel: WelcomeViewModel = hiltViewModel()
 ) {
     val topics = viewModel.favoriteTopicsState.collectAsStateWithLifecycle().value.topics
 
     CommonColumn {
-        Text(
-            modifier = Modifier.align(Alignment.Start),
-            text = stringResource(id = R.string.select_your_favorite_topics),
-            style = MaterialTheme.typography.headlineLarge,
-            color = MaterialTheme.colorScheme.onSurfaceVariant
-        )
-        Text(
-            modifier = Modifier
-                .padding(top = 8.dp)
-                .align(Alignment.Start),
-            text = stringResource(id = R.string.select_some_of_your_topics),
-            style = MaterialTheme.typography.bodyMedium,
-            color = MaterialTheme.colorScheme.onSecondary
+        HeadlineAndDescription(
+            headline = R.string.select_your_favorite_topics,
+            description = R.string.select_some_of_your_topics
         )
         LazyVerticalGrid(
             modifier = Modifier.padding(top = 32.dp),

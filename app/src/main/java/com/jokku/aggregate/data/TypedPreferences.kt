@@ -7,15 +7,15 @@ import kotlinx.serialization.Serializable
 @Serializable
 data class TypedPreferences(
     val topics: List<Topic> = listOf(
-        Topic(text = R.string.sports),
-        Topic(text = R.string.politics),
-        Topic(text = R.string.life),
-        Topic(text = R.string.gaming),
-        Topic(text = R.string.animals),
-        Topic(text = R.string.nature),
-        Topic(text = R.string.food),
-        Topic(text = R.string.art),
-        Topic(text = R.string.history),
-        Topic(text = R.string.fashion)
+        Topic(text = R.string.sports_img),
+        Topic(text = R.string.politics_img),
+        Topic(text = R.string.life_img),
+        Topic(text = R.string.gaming_img),
+        Topic(text = R.string.animals_img),
+        Topic(text = R.string.nature_img),
+        Topic(text = R.string.food_img),
+        Topic(text = R.string.art_img),
+        Topic(text = R.string.history_img),
+        Topic(text = R.string.fashion_img)
     )
 )

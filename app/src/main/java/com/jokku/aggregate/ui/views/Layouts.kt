@@ -12,10 +12,11 @@ import androidx.compose.ui.unit.dp
 
 @Composable
 fun CommonColumn(
+    modifier: Modifier = Modifier,
     content: @Composable ColumnScope.() -> Unit
 ) {
     Column(
-        modifier = Modifier
+        modifier = modifier
             .fillMaxSize()
             .padding(horizontal = 16.dp)
             .padding(top = 32.dp),

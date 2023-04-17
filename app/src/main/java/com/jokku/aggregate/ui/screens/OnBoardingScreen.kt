@@ -37,8 +37,8 @@ import kotlinx.coroutines.launch
 @OptIn(ExperimentalPagerApi::class)
 @Composable
 fun OnBoardingScreen(
-    viewModel: WelcomeViewModel = hiltViewModel(),
-    navController: NavHostController
+    navController: NavHostController,
+    viewModel: WelcomeViewModel = hiltViewModel()
 ) {
     val pagerState = rememberPagerState()
     val scope = rememberCoroutineScope()

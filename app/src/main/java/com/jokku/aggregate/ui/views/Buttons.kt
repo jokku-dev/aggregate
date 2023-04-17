@@ -26,8 +26,8 @@ import com.jokku.aggregate.R
 
 @Composable
 fun BigActionButton(
-    modifier: Modifier = Modifier,
     text: String,
+    modifier: Modifier = Modifier,
     onClick: () -> Unit
 ) {
     Button(
@@ -50,9 +50,9 @@ fun BigActionButton(
 
 @Composable
 fun SignInWithButton(
-    modifier: Modifier = Modifier,
     painter: Painter,
     text: String,
+    modifier: Modifier = Modifier,
     onClick: () -> Unit
 ) {
     OutlinedButton(
@@ -93,7 +93,7 @@ fun SignInWithButton(
 @Preview(apiLevel = 30, showBackground = true)
 @Composable
 fun BigActionButtonPreview() {
-    BigActionButton(text = "Get Started") {}
+    BigActionButton(text = "Get Started", onClick = {})
 }
 
 @Preview(apiLevel = 30, showBackground = true)
@@ -101,6 +101,7 @@ fun BigActionButtonPreview() {
 fun SignInButtonPreview() {
     SignInWithButton(
         painter = painterResource(id = R.drawable.ic_logo_google),
-        text = stringResource(id = R.string.sign_in_with_google)
-    ) {}
+        text = stringResource(id = R.string.sign_in_with_google),
+        onClick = {}
+    )
 }

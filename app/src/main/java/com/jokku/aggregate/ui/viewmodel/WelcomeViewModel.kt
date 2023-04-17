@@ -3,10 +3,12 @@ package com.jokku.aggregate.ui.viewmodel
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.jokku.aggregate.R
-import com.jokku.aggregate.data.DataStoreRepository
+import com.jokku.aggregate.data.repo.DataStoreRepository
 import com.jokku.aggregate.ui.entity.OnBoardingPage
 import com.jokku.aggregate.ui.entity.Topic
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.CoroutineDispatcher
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
@@ -15,7 +17,8 @@ import javax.inject.Inject
 
 @HiltViewModel
 class WelcomeViewModel @Inject constructor(
-    private val repository: DataStoreRepository
+    private val dataStoreRepository: DataStoreRepository,
+    private val dispatcher: CoroutineDispatcher = Dispatchers.Main
 ) : ViewModel() {
 
     private val _onBoardingState = MutableStateFlow(OnBoardingState())
@@ -25,8 +28,8 @@ class WelcomeViewModel @Inject constructor(
     val favoriteTopicsState = _favoriteTopicsState.asStateFlow()
 
 
-    fun setLaunchScreen(screen: String) = viewModelScope.launch {
-        repository.setLaunchScreen(screen = screen)
+    fun setLaunchScreen(screen: String) = viewModelScope.launch(dispatcher) {
+        dataStoreRepository.setLaunchScreen(screen = screen)
     }
 
 
@@ -44,12 +47,12 @@ class WelcomeViewModel @Inject constructor(
         _favoriteTopicsState.update { state -> state.copy(topics = changedTopics) }
     }
 
-    fun setFavoriteTopics(topics: List<Topic>) = viewModelScope.launch {
-        repository.setFavoriteTopics(topics)
+    fun setFavoriteTopics(topics: List<Topic>) = viewModelScope.launch(dispatcher) {
+        dataStoreRepository.setFavoriteTopics(topics)
     }
 
-    fun getFavoriteTopics() = viewModelScope.launch {
-        repository.readFavoriteTopics().collect { topics ->
+    fun getFavoriteTopics() = viewModelScope.launch(dispatcher) {
+        dataStoreRepository.readFavoriteTopics().collect { topics ->
             _favoriteTopicsState.update { it.copy(topics = topics) }
         }
     }

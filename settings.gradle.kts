@@ -13,4 +13,4 @@ dependencyResolutionManagement {
     }
 }
 rootProject.name = "Aggregate"
-include ':app'
+include(":app")

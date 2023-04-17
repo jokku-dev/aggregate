@@ -1,6 +1,8 @@
 package com.jokku.aggregate.data
 
 import androidx.datastore.core.Serializer
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.withContext
 import kotlinx.serialization.SerializationException
 import kotlinx.serialization.json.Json
 import java.io.InputStream
@@ -23,11 +25,13 @@ object TypedPreferencesSerializer : Serializer<TypedPreferences> {
     }
 
     override suspend fun writeTo(t: TypedPreferences, output: OutputStream) {
-        output.write(
-            Json.encodeToString(
-                serializer = TypedPreferences.serializer(),
-                value = t
-            ).encodeToByteArray()
-        )
+        withContext(Dispatchers.IO) {
+            output.write(
+                Json.encodeToString(
+                    serializer = TypedPreferences.serializer(),
+                    value = t
+                ).encodeToByteArray()
+            )
+        }
     }
 }

@@ -1,10 +1,7 @@
 package com.jokku.aggregate.ui.screens
 
 import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -23,6 +20,7 @@ import com.jokku.aggregate.ui.nav.Screen
 import com.jokku.aggregate.ui.views.BigActionButton
 import com.jokku.aggregate.ui.views.CommonColumn
 import com.jokku.aggregate.ui.views.EmailTextField
+import com.jokku.aggregate.ui.views.HeadlineAndDescription
 import com.jokku.aggregate.ui.views.HelpBottomText
 
 @Composable
@@ -32,19 +30,9 @@ fun ForgotPasswordScreen(
     var email by rememberSaveable { mutableStateOf("") }
 
     CommonColumn {
-        Text(
-            modifier = Modifier.fillMaxWidth(),
-            text = stringResource(id = R.string.forgot_password),
-            style = MaterialTheme.typography.headlineLarge,
-            color = MaterialTheme.colorScheme.onSurfaceVariant
-        )
-        Text(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(top = 8.dp),
-            text = stringResource(id = R.string.we_need_your_email),
-            style = MaterialTheme.typography.bodyMedium,
-            color = MaterialTheme.colorScheme.onSecondary
+        HeadlineAndDescription(
+            headline = R.string.forgot_password,
+            description = R.string.we_need_your_email
         )
         EmailTextField(
             modifier = Modifier.padding(top = 32.dp),

@@ -16,10 +16,11 @@ import androidx.compose.ui.unit.dp
 fun HelpBottomText(
     questionText: String,
     actionText: AnnotatedString,
+    modifier: Modifier = Modifier,
     onClick: (Int) -> Unit
 ) {
     Row(
-        modifier = Modifier
+        modifier = modifier
             .fillMaxWidth()
             .padding(bottom = 16.dp),
         horizontalArrangement = Arrangement.Center
