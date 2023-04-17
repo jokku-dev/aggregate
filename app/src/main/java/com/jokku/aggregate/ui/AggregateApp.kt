@@ -17,7 +17,7 @@ import com.jokku.aggregate.ui.theme.AggregateTheme
 import com.jokku.aggregate.ui.views.BottomBar
 
 private const val HOME = "home"
-private const val CATEGORIES = "categories"
+private const val SOURCES = "sources"
 private const val BOOKMARKS = "bookmarks"
 private const val PROFILE = "profile"
 
@@ -33,7 +33,7 @@ fun AggregateApp(
         val navBackStackEntry by navController.currentBackStackEntryAsState()
 
         bottomBarState = when (navBackStackEntry?.destination?.route) {
-            HOME, CATEGORIES, BOOKMARKS, PROFILE -> true
+            HOME, SOURCES, BOOKMARKS, PROFILE -> true
             else -> false
         }
 

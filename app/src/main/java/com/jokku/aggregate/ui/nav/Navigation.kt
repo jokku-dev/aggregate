@@ -8,7 +8,6 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.navArgument
 import com.jokku.aggregate.ui.screens.BookmarksScreen
-import com.jokku.aggregate.ui.screens.CategoriesScreen
 import com.jokku.aggregate.ui.screens.CreateNewPasswordScreen
 import com.jokku.aggregate.ui.screens.ForgotPasswordScreen
 import com.jokku.aggregate.ui.screens.HomepageScreen
@@ -17,6 +16,7 @@ import com.jokku.aggregate.ui.screens.ProfileScreen
 import com.jokku.aggregate.ui.screens.SelectFavoriteTopicsScreen
 import com.jokku.aggregate.ui.screens.SignInScreen
 import com.jokku.aggregate.ui.screens.SignUpScreen
+import com.jokku.aggregate.ui.screens.SourcesScreen
 import com.jokku.aggregate.ui.screens.VerificationCodeScreen
 
 @Composable
@@ -57,8 +57,8 @@ fun Navigation(modifier: Modifier, navController: NavHostController, startDestin
         composable(route = Screen.Home.route) {
             HomepageScreen(navController = navController)
         }
-        composable(route = Screen.Categories.route) {
-            CategoriesScreen(navController = navController)
+        composable(route = Screen.Sources.route) {
+            SourcesScreen(navController = navController)
         }
         composable(route = Screen.Bookmarks.route) {
             BookmarksScreen(navController = navController)

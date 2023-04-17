@@ -36,7 +36,7 @@ fun BottomBar(
     navController: NavHostController,
     bottomBarState: Boolean
 ) {
-    val items = listOf(Screen.Home, Screen.Categories, Screen.Bookmarks, Screen.Profile)
+    val items = listOf(Screen.Home, Screen.Sources, Screen.Bookmarks, Screen.Profile)
 
     AnimatedVisibility(
         visible = bottomBarState,

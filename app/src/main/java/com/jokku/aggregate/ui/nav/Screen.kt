@@ -9,8 +9,8 @@ sealed class Screen(val route: String) {
     object Home: BottomNavigationScreen(
         route = "home", icon = R.drawable.ic_outline_home
     )
-    object Categories: BottomNavigationScreen(
-        route = "categories", icon = R.drawable.ic_outline_category
+    object Sources: BottomNavigationScreen(
+        route = "sources", icon = R.drawable.ic_outline_sources
     )
     object Bookmarks: BottomNavigationScreen(
         route = "bookmarks", icon = R.drawable.ic_outline_bookmarks, badgeCount = 12

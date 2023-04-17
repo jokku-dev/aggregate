@@ -11,12 +11,9 @@ import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.platform.LocalLifecycleOwner
-import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
@@ -24,24 +21,22 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
 import com.jokku.aggregate.R
-import com.jokku.aggregate.ui.entity.Topic
-import com.jokku.aggregate.ui.nav.Screen
-import com.jokku.aggregate.ui.viewmodel.WelcomeViewModel
-import com.jokku.aggregate.ui.views.BigActionButton
+import com.jokku.aggregate.ui.viewmodel.Source
+import com.jokku.aggregate.ui.viewmodel.SourceViewModel
 import com.jokku.aggregate.ui.views.CommonColumn
 import com.jokku.aggregate.ui.views.HeadlineAndDescription
 
 @Composable
-fun SelectFavoriteTopicsScreen(
+fun SourcesScreen(
     navController: NavHostController,
-    viewModel: WelcomeViewModel = hiltViewModel()
+    viewModel: SourceViewModel = hiltViewModel()
 ) {
-    val topics = viewModel.favoriteTopicsState.collectAsStateWithLifecycle().value.topics
+    val state = viewModel.sourceState.collectAsStateWithLifecycle().value
 
     CommonColumn {
         HeadlineAndDescription(
-            headline = R.string.select_your_favorite_topics,
-            description = R.string.select_some_of_your_topics
+            headline = R.string.categories,
+            description = R.string.thousands_articles
         )
         LazyVerticalGrid(
             modifier = Modifier.padding(top = 32.dp),
@@ -49,55 +44,39 @@ fun SelectFavoriteTopicsScreen(
             verticalArrangement = Arrangement.spacedBy(16.dp),
             horizontalArrangement = Arrangement.spacedBy(16.dp),
             content = {
-                items(count = topics.size) { index ->
-                    TopicItem(topic = topics[index]) {
-                        viewModel.changeIsTopicFavorite(changedTopic = topics[index])
+                items(count = state.sources.size) { index ->
+                    SourceItem(source = state.sources[index]) {
+                        
                     }
                 }
             }
         )
-        BigActionButton(
-            modifier = Modifier.padding(top = 16.dp),
-            text = stringResource(id = R.string.next)
-        ) {
-            viewModel.setFavoriteTopics(topics = topics)
-            viewModel.setLaunchScreen(Screen.Home.route)
-            navController.popBackStack()
-            navController.navigate(Screen.Home.route)
-        }
-    }
-    LaunchedEffect(key1 = LocalLifecycleOwner.current) {
-        viewModel.getFavoriteTopics()
     }
 }
 
 @Composable
-fun TopicItem(
-    topic: Topic,
+fun SourceItem(
+    source: Source,
     onItemClick: () -> Unit
 ) {
     Box(
         modifier = Modifier
             .size(width = 160.dp, height = 72.dp)
             .clip(MaterialTheme.shapes.medium)
-            .background(
-                color = if (topic.selected) MaterialTheme.colorScheme.primary
-                else MaterialTheme.colorScheme.secondary
-            )
+            .background(color = MaterialTheme.colorScheme.surface)
             .clickable(onClick = onItemClick),
         contentAlignment = Alignment.Center
     ) {
         Text(
-            text = stringResource(id = topic.text),
+            text = "${source.country} ${source.name}",
             style = MaterialTheme.typography.titleLarge,
-            color = if (topic.selected) MaterialTheme.colorScheme.surface
-            else MaterialTheme.colorScheme.onBackground
+            color = MaterialTheme.colorScheme.onBackground
         )
     }
 }
 
 @Preview
 @Composable
-fun SelectFavoriteTopicsScreenPreview() {
-    SelectFavoriteTopicsScreen(navController = rememberNavController())
+fun SourcesScreenPreview() {
+    SourcesScreen(navController = rememberNavController())
 }
