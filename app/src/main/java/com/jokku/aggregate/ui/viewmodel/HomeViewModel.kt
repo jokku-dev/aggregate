@@ -25,10 +25,13 @@ class HomeViewModel @Inject constructor(
     private val _homeState = MutableStateFlow(HomeState())
     val homeState = _homeState.asStateFlow()
 
+    private val _bookmarksState = MutableStateFlow(BookmarksState())
+    val bookmarksState = _bookmarksState.asStateFlow()
+
 
     fun isLoggedIn() = viewModelScope.launch(dispatcher) {
         dataStoreRepository.readUserLoggedIn().collect { logged ->
-            _homeState.update { it.copy(logged = logged) }
+            _homeState.update { it.copy(loggedIn = logged) }
         }
     }
 
@@ -42,7 +45,7 @@ class HomeViewModel @Inject constructor(
 }
 
 data class HomeState(
-    val logged: Boolean = false,
+    val loggedIn: Boolean = false,
     val categories: List<Category> = listOf(
         Category(text = R.string.random, selected = true),
         Category(text = R.string.business),
@@ -53,7 +56,7 @@ data class HomeState(
         Category(text = R.string.sports),
         Category(text = R.string.technology)
     ),
-    val news: List<ArticlePreview> = emptyList()
+    val articles: List<Article> = emptyList()
 )
 
 data class Category(
@@ -61,9 +64,17 @@ data class Category(
     var selected: Boolean = false
 )
 
-data class ArticlePreview(
-    @DrawableRes val image: Int,
-    val title: String,
-    val publishedAt: String,
+data class Article(
+    val sourceName: String = "",
+    val author: String = "",
+    val title: String = "",
+    val url: String = "",
+    @DrawableRes val image: Int = 0,
+    val publishedAt: String = "",
     val bookmarked: Boolean = false
+)
+
+
+data class BookmarksState(
+    val bookmarkedArticles: List<Article> = emptyList()
 )

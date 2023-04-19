@@ -1,5 +1,6 @@
 package com.jokku.aggregate.ui.screens
 
+import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -8,6 +9,8 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.systemBarsPadding
+import androidx.compose.foundation.pager.HorizontalPager
+import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -23,10 +26,7 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavHostController
-import com.google.accompanist.pager.ExperimentalPagerApi
-import com.google.accompanist.pager.HorizontalPager
 import com.google.accompanist.pager.HorizontalPagerIndicator
-import com.google.accompanist.pager.rememberPagerState
 import com.jokku.aggregate.R
 import com.jokku.aggregate.ui.entity.OnBoardingPage
 import com.jokku.aggregate.ui.nav.Screen
@@ -34,7 +34,7 @@ import com.jokku.aggregate.ui.viewmodel.WelcomeViewModel
 import com.jokku.aggregate.ui.views.BigActionButton
 import kotlinx.coroutines.launch
 
-@OptIn(ExperimentalPagerApi::class)
+@OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun OnBoardingScreen(
     navController: NavHostController,
@@ -51,12 +51,12 @@ fun OnBoardingScreen(
         verticalArrangement = Arrangement.SpaceBetween
     ) {
         HorizontalPager(
-            count = state.pages.size,
+            pageCount = state.pages.size,
             state = pagerState,
-            itemSpacing = (-65).dp
-        ) { position ->
+            pageSpacing = (-65).dp
+        ) { page ->
             PagerScreen(
-                onBoardingPage = state.pages[position]
+                onBoardingPage = state.pages[page]
             )
         }
         Column(
@@ -67,6 +67,7 @@ fun OnBoardingScreen(
             HorizontalPagerIndicator(
                 modifier = Modifier.padding(bottom = 32.dp),
                 pagerState = pagerState,
+                pageCount = state.pages.size,
                 activeColor = MaterialTheme.colorScheme.primary,
                 inactiveColor = MaterialTheme.colorScheme.secondary
             )

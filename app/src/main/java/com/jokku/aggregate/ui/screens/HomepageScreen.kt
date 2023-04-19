@@ -38,7 +38,6 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.tooling.preview.Wallpapers
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
@@ -48,7 +47,7 @@ import coil.compose.AsyncImage
 import coil.request.ImageRequest
 import coil.size.Size
 import com.jokku.aggregate.R
-import com.jokku.aggregate.ui.viewmodel.ArticlePreview
+import com.jokku.aggregate.ui.viewmodel.Article
 import com.jokku.aggregate.ui.viewmodel.Category
 import com.jokku.aggregate.ui.viewmodel.HomeViewModel
 import com.jokku.aggregate.ui.views.HeadlineAndDescription
@@ -102,10 +101,10 @@ fun HomepageScreen(
             verticalArrangement = Arrangement.spacedBy(16.dp),
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
-            items(count = state.news.size) {
-                NewsArticleItem(
-                    preview = state.news[it],
-                    bookmark = if (state.news[it].bookmarked) {
+            items(count = state.articles.size) {
+                ArticleItem(
+                    article = state.articles[it],
+                    bookmark = if (state.articles[it].bookmarked) {
                         ImageVector.vectorResource(id = R.drawable.ic_outline_bookmark_selected)
                     } else {
                         ImageVector.vectorResource(id = R.drawable.ic_outline_bookmark)
@@ -149,8 +148,8 @@ fun RowCategoryItem(
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun NewsArticleItem(
-    preview: ArticlePreview,
+fun ArticleItem(
+    article: Article,
     bookmark: ImageVector,
     modifier: Modifier = Modifier,
     onItemClick: () -> Unit
@@ -168,10 +167,10 @@ fun NewsArticleItem(
     ) {
         AsyncImage(
             model = ImageRequest.Builder(LocalContext.current)
-                .data(preview.image)
+                .data(article.image)
                 .size(Size.ORIGINAL)
                 .build(),
-            contentDescription = preview.title,
+            contentDescription = article.title,
             modifier = Modifier
                 .fillMaxWidth()
                 .fillMaxHeight(0.6f),
@@ -184,11 +183,11 @@ fun NewsArticleItem(
             verticalArrangement = Arrangement.SpaceBetween
         ) {
             Text(
-                text = preview.title,
+                text = article.title,
                 style = MaterialTheme.typography.titleSmall,
                 color = MaterialTheme.colorScheme.onSurfaceVariant,
                 maxLines = 3,
-                overflow = TextOverflow.Clip
+                overflow = TextOverflow.Ellipsis
             )
             Row(
                 modifier = Modifier.fillMaxWidth(),
@@ -196,13 +195,13 @@ fun NewsArticleItem(
                 verticalAlignment = Alignment.CenterVertically
             ) {
                 Text(
-                    text = preview.publishedAt,
+                    text = article.publishedAt,
                     style = MaterialTheme.typography.titleSmall,
                     color = MaterialTheme.colorScheme.onSecondary
                 )
                 Icon(
                     imageVector = bookmark,
-                    contentDescription = if (preview.bookmarked) stringResource(id = R.string.bookmarked)
+                    contentDescription = if (article.bookmarked) stringResource(id = R.string.bookmarked)
                     else stringResource(id = R.string.not_bookmarked)
                 )
             }
@@ -216,13 +215,13 @@ fun GreetingPreview() {
     HomepageScreen(navController = rememberNavController())
 }
 
-@Preview(showBackground = true, wallpaper = Wallpapers.NONE)
+@Preview(showBackground = true)
 @Composable
 fun NewsArticleItemPreview() {
-    NewsArticleItem(
-        preview = ArticlePreview(
-            image = R.drawable.img_news_mock_6,
+    ArticleItem(
+        article = Article(
             title = "Following Weekend of ‘Reckless, Disruptive' Gatherings Downtown, Some Call For Teen Curfew to Return - NBC Chicago",
+            image = R.drawable.img_news_mock_6,
             publishedAt = "01.01.2023",
             bookmarked = false
         ),
