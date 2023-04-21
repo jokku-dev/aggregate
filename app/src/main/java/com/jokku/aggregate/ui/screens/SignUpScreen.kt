@@ -20,7 +20,7 @@ import com.jokku.aggregate.ui.nav.Screen
 import com.jokku.aggregate.ui.views.BigActionButton
 import com.jokku.aggregate.ui.views.CommonColumn
 import com.jokku.aggregate.ui.views.EmailTextField
-import com.jokku.aggregate.ui.views.HeadlineAndDescription
+import com.jokku.aggregate.ui.views.HeadlineAndDescriptionText
 import com.jokku.aggregate.ui.views.HelpBottomText
 import com.jokku.aggregate.ui.views.PasswordTextField
 import com.jokku.aggregate.ui.views.UsernameTextField
@@ -35,7 +35,7 @@ fun SignUpScreen(
     var passwordRepeat by rememberSaveable { mutableStateOf("") }
 
     CommonColumn {
-        HeadlineAndDescription(
+        HeadlineAndDescriptionText(
             headline = R.string.welcome_to_aggregate,
             description = R.string.i_guess_you_are_new_around
         )

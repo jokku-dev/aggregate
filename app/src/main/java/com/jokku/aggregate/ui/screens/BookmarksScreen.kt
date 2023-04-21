@@ -36,7 +36,7 @@ import com.jokku.aggregate.R
 import com.jokku.aggregate.ui.viewmodel.Article
 import com.jokku.aggregate.ui.viewmodel.HomeViewModel
 import com.jokku.aggregate.ui.views.CommonColumn
-import com.jokku.aggregate.ui.views.HeadlineAndDescription
+import com.jokku.aggregate.ui.views.HeadlineAndDescriptionText
 
 @Composable
 fun BookmarksScreen(
@@ -46,7 +46,7 @@ fun BookmarksScreen(
     val state = viewModel.bookmarksState.collectAsStateWithLifecycle().value
 
     CommonColumn {
-        HeadlineAndDescription(
+        HeadlineAndDescriptionText(
             headline = R.string.bookmarks,
             description = R.string.saved_articles
         )

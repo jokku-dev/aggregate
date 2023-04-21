@@ -24,7 +24,7 @@ import com.jokku.aggregate.R
 import com.jokku.aggregate.ui.viewmodel.Source
 import com.jokku.aggregate.ui.viewmodel.SourceViewModel
 import com.jokku.aggregate.ui.views.CommonColumn
-import com.jokku.aggregate.ui.views.HeadlineAndDescription
+import com.jokku.aggregate.ui.views.HeadlineAndDescriptionText
 
 @Composable
 fun SourcesScreen(
@@ -34,7 +34,7 @@ fun SourcesScreen(
     val state = viewModel.sourceState.collectAsStateWithLifecycle().value
 
     CommonColumn {
-        HeadlineAndDescription(
+        HeadlineAndDescriptionText(
             headline = R.string.categories,
             description = R.string.thousands_articles
         )

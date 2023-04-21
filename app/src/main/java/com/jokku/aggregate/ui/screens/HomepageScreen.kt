@@ -50,7 +50,7 @@ import com.jokku.aggregate.R
 import com.jokku.aggregate.ui.viewmodel.Article
 import com.jokku.aggregate.ui.viewmodel.Category
 import com.jokku.aggregate.ui.viewmodel.HomeViewModel
-import com.jokku.aggregate.ui.views.HeadlineAndDescription
+import com.jokku.aggregate.ui.views.HeadlineAndDescriptionText
 import com.jokku.aggregate.ui.views.SearchTextField
 
 @Composable
@@ -67,7 +67,7 @@ fun HomepageScreen(
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.Top
     ) {
-        HeadlineAndDescription(
+        HeadlineAndDescriptionText(
             headline = R.string.browse,
             description = R.string.discover_things,
             modifier = Modifier.padding(horizontal = 16.dp)

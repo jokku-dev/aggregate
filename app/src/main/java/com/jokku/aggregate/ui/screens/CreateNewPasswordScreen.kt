@@ -19,7 +19,7 @@ import com.jokku.aggregate.R
 import com.jokku.aggregate.ui.nav.Screen
 import com.jokku.aggregate.ui.views.BigActionButton
 import com.jokku.aggregate.ui.views.CommonColumn
-import com.jokku.aggregate.ui.views.HeadlineAndDescription
+import com.jokku.aggregate.ui.views.HeadlineAndDescriptionText
 import com.jokku.aggregate.ui.views.HelpBottomText
 import com.jokku.aggregate.ui.views.PasswordTextField
 
@@ -31,7 +31,7 @@ fun CreateNewPasswordScreen(
     var passwordRepeat by rememberSaveable { mutableStateOf("") }
 
     CommonColumn {
-        HeadlineAndDescription(
+        HeadlineAndDescriptionText(
             headline = R.string.create_new_password,
             description = R.string.you_can_create_a_new_password
         )

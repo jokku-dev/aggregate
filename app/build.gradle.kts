@@ -55,9 +55,9 @@ dependencies {
     implementation("androidx.lifecycle:lifecycle-runtime-compose:2.6.1")
     implementation("androidx.lifecycle:lifecycle-runtime-ktx:2.6.1")
     implementation("androidx.lifecycle:lifecycle-viewmodel-compose:2.6.1")
-    implementation("androidx.activity:activity-compose:1.7.0")
+    implementation("androidx.activity:activity-compose:1.7.1")
 
-    implementation(platform("androidx.compose:compose-bom:2023.04.00"))
+    implementation(platform("androidx.compose:compose-bom:2023.04.01"))
     implementation("androidx.compose.material3:material3")
     implementation("androidx.compose.material3:material3-window-size-class")
     implementation("androidx.compose.ui:ui-tooling-data")
@@ -67,7 +67,7 @@ dependencies {
     // Navigation for Compose
     implementation("androidx.navigation:navigation-compose:2.5.3")
     // Splash API
-    implementation("androidx.core:core-splashscreen:1.0.0")
+    implementation("androidx.core:core-splashscreen:1.0.1")
     // Pager, indicators, system ui controller
     implementation("com.google.accompanist:accompanist-pager-indicators:0.30.1")
     implementation("com.google.accompanist:accompanist-systemuicontroller:0.30.1")
@@ -93,7 +93,7 @@ dependencies {
     testImplementation("junit:junit:4.13.2")
     androidTestImplementation("androidx.test.ext:junit:1.1.5")
     androidTestImplementation("androidx.test.espresso:espresso-core:3.5.1")
-    androidTestImplementation(platform("androidx.compose:compose-bom:2023.04.00"))
+    androidTestImplementation(platform("androidx.compose:compose-bom:2023.04.01"))
     androidTestImplementation("androidx.compose.ui:ui-test-junit4")
     debugImplementation("androidx.compose.ui:ui-test-manifest")
 }

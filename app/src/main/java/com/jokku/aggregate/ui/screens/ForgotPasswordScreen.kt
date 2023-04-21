@@ -20,7 +20,7 @@ import com.jokku.aggregate.ui.nav.Screen
 import com.jokku.aggregate.ui.views.BigActionButton
 import com.jokku.aggregate.ui.views.CommonColumn
 import com.jokku.aggregate.ui.views.EmailTextField
-import com.jokku.aggregate.ui.views.HeadlineAndDescription
+import com.jokku.aggregate.ui.views.HeadlineAndDescriptionText
 import com.jokku.aggregate.ui.views.HelpBottomText
 
 @Composable
@@ -30,7 +30,7 @@ fun ForgotPasswordScreen(
     var email by rememberSaveable { mutableStateOf("") }
 
     CommonColumn {
-        HeadlineAndDescription(
+        HeadlineAndDescriptionText(
             headline = R.string.forgot_password,
             description = R.string.we_need_your_email
         )

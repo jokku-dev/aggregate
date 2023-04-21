@@ -27,6 +27,8 @@ sealed class Screen(val route: String) {
 
     object Language: Screen("language")
     object ChangePassword: Screen("changePassword")
+    object Privacy: Screen("privacy")
+    object TermsAndConditions: Screen("termsAndConditions")
     object Article: Screen("article")
 
     fun withArgs(vararg args: String): String {

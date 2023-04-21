@@ -29,7 +29,7 @@ import com.jokku.aggregate.ui.nav.Screen
 import com.jokku.aggregate.ui.viewmodel.WelcomeViewModel
 import com.jokku.aggregate.ui.views.BigActionButton
 import com.jokku.aggregate.ui.views.CommonColumn
-import com.jokku.aggregate.ui.views.HeadlineAndDescription
+import com.jokku.aggregate.ui.views.HeadlineAndDescriptionText
 
 @Composable
 fun SelectFavoriteTopicsScreen(
@@ -39,7 +39,7 @@ fun SelectFavoriteTopicsScreen(
     val topics = viewModel.favoriteTopicsState.collectAsStateWithLifecycle().value.topics
 
     CommonColumn {
-        HeadlineAndDescription(
+        HeadlineAndDescriptionText(
             headline = R.string.select_your_favorite_topics,
             description = R.string.select_some_of_your_topics
         )

@@ -28,11 +28,18 @@ class HomeViewModel @Inject constructor(
     private val _bookmarksState = MutableStateFlow(BookmarksState())
     val bookmarksState = _bookmarksState.asStateFlow()
 
+    private val _preferencesState = MutableStateFlow(PreferencesState())
+    val profileState = _preferencesState.asStateFlow()
 
-    fun isLoggedIn() = viewModelScope.launch(dispatcher) {
+
+    fun isSignedIn() = viewModelScope.launch(dispatcher) {
         dataStoreRepository.readUserLoggedIn().collect { logged ->
             _homeState.update { it.copy(loggedIn = logged) }
         }
+    }
+
+    fun changeSignedIn() = viewModelScope.launch(dispatcher) {
+
     }
 
     fun selectCategory(selected: Category) = viewModelScope.launch(dispatcher) {
@@ -77,4 +84,9 @@ data class Article(
 
 data class BookmarksState(
     val bookmarkedArticles: List<Article> = emptyList()
+)
+
+data class PreferencesState(
+    val signedIn: Boolean = false,
+    val notifications: Boolean = false
 )
