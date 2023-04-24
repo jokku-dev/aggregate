@@ -7,16 +7,16 @@ sealed class Screen(val route: String) {
     object SelectFavoriteTopics: Screen("selectFavoriteTopics")
 
     object Home: BottomNavigationScreen(
-        route = "home", icon = R.drawable.ic_outline_home
+        route = "home", icon = R.drawable.ic_home
     )
     object Sources: BottomNavigationScreen(
-        route = "sources", icon = R.drawable.ic_outline_sources
+        route = "sources", icon = R.drawable.ic_sources
     )
     object Bookmarks: BottomNavigationScreen(
-        route = "bookmarks", icon = R.drawable.ic_outline_bookmarks, badgeCount = 12
+        route = "bookmarks", icon = R.drawable.ic_bookmark, badgeCount = 12
     )
     object Profile: BottomNavigationScreen(
-        route = "profile", icon = R.drawable.ic_outline_person
+        route = "profile", icon = R.drawable.ic_profile
     )
 
     object SignIn: Screen("signIn")

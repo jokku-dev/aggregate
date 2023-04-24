@@ -19,7 +19,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment.Companion.CenterHorizontally
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.vectorResource
@@ -49,9 +48,10 @@ fun BottomBar(
                 .graphicsLayer {
                     shape = RoundedCornerShape(topStart = 12.dp, topEnd = 12.dp)
                     clip = true
-                    shadowElevation = 2f
+                    shadowElevation = 10f
                 },
-            containerColor = Color.Transparent
+            containerColor = MaterialTheme.colorScheme.surface,
+            tonalElevation = 0.dp
         ) {
             val navBackStackEntry by navController.currentBackStackEntryAsState()
             val currentDestination = navBackStackEntry?.destination
@@ -89,7 +89,8 @@ fun BottomBar(
                     selected = currentDestination?.hierarchy?.any { it.route == item.route } == true,
                     colors = NavigationBarItemDefaults.colors(
                         selectedIconColor = MaterialTheme.colorScheme.primary,
-                        unselectedIconColor = MaterialTheme.colorScheme.onSurface
+                        unselectedIconColor = MaterialTheme.colorScheme.onSurface,
+                        indicatorColor = MaterialTheme.colorScheme.surface
                     ),
                     onClick = {
                         navController.navigate(item.route) {

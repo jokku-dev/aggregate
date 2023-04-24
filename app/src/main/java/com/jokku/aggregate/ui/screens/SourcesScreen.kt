@@ -21,15 +21,15 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
 import com.jokku.aggregate.R
+import com.jokku.aggregate.ui.viewmodel.MainNewsViewModel
 import com.jokku.aggregate.ui.viewmodel.Source
-import com.jokku.aggregate.ui.viewmodel.SourceViewModel
 import com.jokku.aggregate.ui.views.CommonColumn
 import com.jokku.aggregate.ui.views.HeadlineAndDescriptionText
 
 @Composable
 fun SourcesScreen(
     navController: NavHostController,
-    viewModel: SourceViewModel = hiltViewModel()
+    viewModel: MainNewsViewModel = hiltViewModel()
 ) {
     val state = viewModel.sourceState.collectAsStateWithLifecycle().value
 

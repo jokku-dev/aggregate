@@ -49,14 +49,14 @@ import coil.size.Size
 import com.jokku.aggregate.R
 import com.jokku.aggregate.ui.viewmodel.Article
 import com.jokku.aggregate.ui.viewmodel.Category
-import com.jokku.aggregate.ui.viewmodel.HomeViewModel
+import com.jokku.aggregate.ui.viewmodel.MainNewsViewModel
 import com.jokku.aggregate.ui.views.HeadlineAndDescriptionText
 import com.jokku.aggregate.ui.views.SearchTextField
 
 @Composable
 fun HomepageScreen(
     navController: NavController,
-    viewModel: HomeViewModel = hiltViewModel()
+    viewModel: MainNewsViewModel = hiltViewModel()
 ) {
     var search by rememberSaveable { mutableStateOf("") }
     val state = viewModel.homeState.collectAsStateWithLifecycle().value
@@ -105,9 +105,9 @@ fun HomepageScreen(
                 ArticleItem(
                     article = state.articles[it],
                     bookmark = if (state.articles[it].bookmarked) {
-                        ImageVector.vectorResource(id = R.drawable.ic_outline_bookmark_selected)
+                        ImageVector.vectorResource(id = R.drawable.ic_bookmark_selected)
                     } else {
-                        ImageVector.vectorResource(id = R.drawable.ic_outline_bookmark)
+                        ImageVector.vectorResource(id = R.drawable.ic_bookmark)
                     }
                 ) {
 
@@ -225,7 +225,7 @@ fun NewsArticleItemPreview() {
             publishedAt = "01.01.2023",
             bookmarked = false
         ),
-        bookmark = ImageVector.vectorResource(id = R.drawable.ic_outline_bookmark_selected)
+        bookmark = ImageVector.vectorResource(id = R.drawable.ic_bookmark_selected)
     ) {
 
     }

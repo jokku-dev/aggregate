@@ -1,4 +1,4 @@
-package com.jokku.aggregate.ui.screens
+package com.jokku.aggregate.ui.screens.account
 
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.padding
@@ -19,47 +19,57 @@ import com.jokku.aggregate.R
 import com.jokku.aggregate.ui.nav.Screen
 import com.jokku.aggregate.ui.views.BigActionButton
 import com.jokku.aggregate.ui.views.CommonColumn
-import com.jokku.aggregate.ui.views.EmailTextField
 import com.jokku.aggregate.ui.views.HeadlineAndDescriptionText
 import com.jokku.aggregate.ui.views.HelpBottomText
+import com.jokku.aggregate.ui.views.PasswordTextField
 
 @Composable
-fun ForgotPasswordScreen(
+fun CreateNewPasswordScreen(
     navController: NavHostController
 ) {
-    var email by rememberSaveable { mutableStateOf("") }
+    var password by rememberSaveable { mutableStateOf("") }
+    var passwordRepeat by rememberSaveable { mutableStateOf("") }
 
     CommonColumn {
         HeadlineAndDescriptionText(
-            headline = R.string.forgot_password,
-            description = R.string.we_need_your_email
+            headline = R.string.create_new_password,
+            description = R.string.you_can_create_a_new_password
         )
-        EmailTextField(
+        PasswordTextField(
             modifier = Modifier.padding(top = 32.dp),
+            placeholder = stringResource(id = R.string.new_password),
+            imeAction = ImeAction.Next,
+            password = password,
+            onPasswordChange = { newPassword -> password = newPassword }
+        )
+        PasswordTextField(
+            modifier = Modifier.padding(top = 16.dp),
+            placeholder = stringResource(id = R.string.repeat_new_password),
             imeAction = ImeAction.Done,
-            email = email,
-            onEmailChange = { newEmail -> email = newEmail }
+            keyboardAction = { navController.navigate(route = Screen.SignIn.route) },
+            password = passwordRepeat,
+            onPasswordChange = { newPassword -> passwordRepeat = newPassword }
         )
         BigActionButton(
             modifier = Modifier.padding(top = 16.dp),
-            text = stringResource(id = R.string.next)
+            text = stringResource(id = R.string.confirm)
         ) {
             navController.popBackStack()
-            navController.navigate(route = Screen.Verification.withArgs(email))
+            navController.navigate(route = Screen.SignIn.route)
         }
         Spacer(modifier = Modifier.weight(1f))
         HelpBottomText(
-            questionText = stringResource(id = R.string.remember_the_password),
+            questionText = stringResource(id = R.string.remember_an_old_password),
             actionText = AnnotatedString(stringResource(id = R.string.try_again))
         ) {
-            navController.popBackStack(route = Screen.SignIn.route, inclusive = true)
+            navController.popBackStack()
             navController.navigate(route = Screen.SignIn.route)
         }
     }
 }
 
-@Preview(showBackground = true)
+@Preview
 @Composable
-fun ForgotPasswordScreenPreview() {
-    ForgotPasswordScreen(navController = rememberNavController())
+fun CreateNewPasswordScreenPreview() {
+    CreateNewPasswordScreen(navController = rememberNavController())
 }

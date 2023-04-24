@@ -48,7 +48,7 @@ fun UsernameTextField(
         singleLine = true,
         leadingIcon = {
             Icon(
-                imageVector = ImageVector.vectorResource(id = R.drawable.ic_outline_person),
+                imageVector = ImageVector.vectorResource(id = R.drawable.ic_profile),
                 contentDescription = placeholder,
                 tint = if (focus) MaterialTheme.colorScheme.primary
                 else MaterialTheme.colorScheme.onSecondary
@@ -97,7 +97,7 @@ fun EmailTextField(
         singleLine = true,
         leadingIcon = {
             Icon(
-                imageVector = ImageVector.vectorResource(id = R.drawable.ic_outline_email),
+                imageVector = ImageVector.vectorResource(id = R.drawable.ic_email),
                 contentDescription = placeholder,
                 tint = if (focus) MaterialTheme.colorScheme.primary
                 else MaterialTheme.colorScheme.onSecondary
@@ -138,8 +138,8 @@ fun PasswordTextField(
 ) {
     var isPasswordVisible by rememberSaveable { mutableStateOf(false) }
     var focus by rememberSaveable { mutableStateOf(false) }
-    val visibilityIcon = if (isPasswordVisible) R.drawable.ic_outline_visibility_off
-    else R.drawable.ic_outline_visibility
+    val visibilityIcon = if (isPasswordVisible) R.drawable.ic_visibility_off
+    else R.drawable.ic_visibility
 
     OutlinedTextField(
         modifier = modifier
@@ -150,7 +150,7 @@ fun PasswordTextField(
         singleLine = true,
         leadingIcon = {
             Icon(
-                imageVector = ImageVector.vectorResource(id = R.drawable.ic_outline_lock),
+                imageVector = ImageVector.vectorResource(id = R.drawable.ic_lock),
                 contentDescription = placeholder,
                 tint = if (focus) MaterialTheme.colorScheme.primary
                 else MaterialTheme.colorScheme.onSecondary
@@ -220,7 +220,7 @@ fun SearchTextField(
         },
         leadingIcon = {
             Icon(
-                imageVector = ImageVector.vectorResource(id = R.drawable.ic_outline_search),
+                imageVector = ImageVector.vectorResource(id = R.drawable.ic_search),
                 contentDescription = stringResource(id = R.string.search),
                 tint = if (focus) MaterialTheme.colorScheme.primary
                 else MaterialTheme.colorScheme.onSecondary
@@ -231,7 +231,7 @@ fun SearchTextField(
                 onClick = { TODO() },
             ) {
                 Icon(
-                    imageVector = ImageVector.vectorResource(id = R.drawable.ic_outline_mic),
+                    imageVector = ImageVector.vectorResource(id = R.drawable.ic_mic),
                     contentDescription = null,
                     tint = if (focus) MaterialTheme.colorScheme.primary
                     else MaterialTheme.colorScheme.onSecondary

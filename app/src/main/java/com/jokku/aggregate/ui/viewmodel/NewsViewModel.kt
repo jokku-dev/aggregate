@@ -9,18 +9,24 @@ import com.jokku.aggregate.data.repo.NewsRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
+interface NewsViewModel {
+    fun getSignInStatus(): Job
+    fun selectCategory(selected: Category): Job
+}
+
 @HiltViewModel
-class HomeViewModel @Inject constructor(
+class MainNewsViewModel @Inject constructor(
     private val newsRepository: NewsRepository,
     private val dataStoreRepository: DataStoreRepository,
     private val dispatcher: CoroutineDispatcher = Dispatchers.Main
-) : ViewModel() {
+) : ViewModel(), NewsViewModel {
 
     private val _homeState = MutableStateFlow(HomeState())
     val homeState = _homeState.asStateFlow()
@@ -28,21 +34,16 @@ class HomeViewModel @Inject constructor(
     private val _bookmarksState = MutableStateFlow(BookmarksState())
     val bookmarksState = _bookmarksState.asStateFlow()
 
-    private val _preferencesState = MutableStateFlow(PreferencesState())
-    val profileState = _preferencesState.asStateFlow()
+    private val _sourceState = MutableStateFlow(SourceState())
+    val sourceState = _sourceState.asStateFlow()
 
-
-    fun isSignedIn() = viewModelScope.launch(dispatcher) {
+    override fun getSignInStatus() = viewModelScope.launch(dispatcher) {
         dataStoreRepository.readUserLoggedIn().collect { logged ->
             _homeState.update { it.copy(loggedIn = logged) }
         }
     }
 
-    fun changeSignedIn() = viewModelScope.launch(dispatcher) {
-
-    }
-
-    fun selectCategory(selected: Category) = viewModelScope.launch(dispatcher) {
+    override fun selectCategory(selected: Category) = viewModelScope.launch(dispatcher) {
         val categories = _homeState.value.categories.map { category ->
             category.copy(selected = category == selected)
         }
@@ -86,7 +87,13 @@ data class BookmarksState(
     val bookmarkedArticles: List<Article> = emptyList()
 )
 
-data class PreferencesState(
-    val signedIn: Boolean = false,
-    val notifications: Boolean = false
+data class SourceState(
+    val sources: List<Source> = emptyList()
+)
+
+data class Source(
+    val name: String,
+    val description: String,
+    val url: String,
+    val country: String
 )

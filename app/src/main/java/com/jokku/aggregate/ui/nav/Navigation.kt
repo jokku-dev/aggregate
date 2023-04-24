@@ -8,16 +8,20 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.navArgument
 import com.jokku.aggregate.ui.screens.BookmarksScreen
-import com.jokku.aggregate.ui.screens.CreateNewPasswordScreen
-import com.jokku.aggregate.ui.screens.ForgotPasswordScreen
 import com.jokku.aggregate.ui.screens.HomepageScreen
-import com.jokku.aggregate.ui.screens.OnBoardingScreen
-import com.jokku.aggregate.ui.screens.ProfileScreen
-import com.jokku.aggregate.ui.screens.SelectFavoriteTopicsScreen
-import com.jokku.aggregate.ui.screens.SignInScreen
-import com.jokku.aggregate.ui.screens.SignUpScreen
 import com.jokku.aggregate.ui.screens.SourcesScreen
-import com.jokku.aggregate.ui.screens.VerificationCodeScreen
+import com.jokku.aggregate.ui.screens.account.CreateNewPasswordScreen
+import com.jokku.aggregate.ui.screens.account.ForgotPasswordScreen
+import com.jokku.aggregate.ui.screens.account.SignInScreen
+import com.jokku.aggregate.ui.screens.account.SignUpScreen
+import com.jokku.aggregate.ui.screens.account.VerificationCodeScreen
+import com.jokku.aggregate.ui.screens.preferences.AppLanguageScreen
+import com.jokku.aggregate.ui.screens.preferences.ChangePasswordScreen
+import com.jokku.aggregate.ui.screens.preferences.PrivacyScreen
+import com.jokku.aggregate.ui.screens.preferences.ProfileScreen
+import com.jokku.aggregate.ui.screens.preferences.TermsAndConditionsScreen
+import com.jokku.aggregate.ui.screens.welcome.OnBoardingScreen
+import com.jokku.aggregate.ui.screens.welcome.SelectFavoriteTopicsScreen
 
 @Composable
 fun Navigation(modifier: Modifier, navController: NavHostController, startDestination: String) {
@@ -67,5 +71,17 @@ fun Navigation(modifier: Modifier, navController: NavHostController, startDestin
             ProfileScreen(navController = navController)
         }
 
+        composable(route = Screen.Language.route) {
+            AppLanguageScreen(navController = navController)
+        }
+        composable(route = Screen.ChangePassword.route) {
+            ChangePasswordScreen(navController = navController)
+        }
+        composable(route = Screen.Privacy.route) {
+            PrivacyScreen(navController = navController)
+        }
+        composable(route = Screen.TermsAndConditions.route) {
+            TermsAndConditionsScreen(navController = navController)
+        }
     }
 }

@@ -13,7 +13,7 @@ import androidx.compose.ui.platform.LocalContext
 import com.google.accompanist.systemuicontroller.SystemUiController
 import com.google.accompanist.systemuicontroller.rememberSystemUiController
 
-private val DarkColorScheme = darkColorScheme(
+private val darkColorScheme = darkColorScheme(
     primary = PurpleLight,
     secondary = GreyDark,
     onSecondary = GreyLight,
@@ -24,7 +24,7 @@ private val DarkColorScheme = darkColorScheme(
     onBackground = GreyLighter
 )
 
-private val LightColorScheme = lightColorScheme(
+private val lightColorScheme = lightColorScheme(
     primary = PurplePrimary,
     secondary = GreyLighter,
     onSecondary = GreyPrimary,
@@ -46,8 +46,8 @@ fun AggregateTheme(
     val colorScheme = when {
         useDynamicColor && darkTheme -> dynamicDarkColorScheme(LocalContext.current)
         useDynamicColor && !darkTheme -> dynamicDarkColorScheme(LocalContext.current)
-        darkTheme -> DarkColorScheme
-        else -> LightColorScheme
+        darkTheme -> darkColorScheme
+        else -> lightColorScheme
     }
 
     SideEffect { systemUiController.setSystemBarsColor(color = colorScheme.surface) }

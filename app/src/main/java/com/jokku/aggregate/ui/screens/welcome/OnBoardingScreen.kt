@@ -1,4 +1,4 @@
-package com.jokku.aggregate.ui.screens
+package com.jokku.aggregate.ui.screens.welcome
 
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.Image

@@ -1,4 +1,4 @@
-package com.jokku.aggregate.ui.screens
+package com.jokku.aggregate.ui.screens.account
 
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.padding

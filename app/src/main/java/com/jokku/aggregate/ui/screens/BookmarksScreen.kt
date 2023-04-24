@@ -34,14 +34,14 @@ import coil.compose.AsyncImage
 import coil.request.ImageRequest
 import com.jokku.aggregate.R
 import com.jokku.aggregate.ui.viewmodel.Article
-import com.jokku.aggregate.ui.viewmodel.HomeViewModel
+import com.jokku.aggregate.ui.viewmodel.MainNewsViewModel
 import com.jokku.aggregate.ui.views.CommonColumn
 import com.jokku.aggregate.ui.views.HeadlineAndDescriptionText
 
 @Composable
 fun BookmarksScreen(
     navController: NavHostController,
-    viewModel: HomeViewModel = hiltViewModel()
+    viewModel: MainNewsViewModel = hiltViewModel()
 ) {
     val state = viewModel.bookmarksState.collectAsStateWithLifecycle().value
 

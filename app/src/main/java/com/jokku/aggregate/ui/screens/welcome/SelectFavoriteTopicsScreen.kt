@@ -1,4 +1,4 @@
-package com.jokku.aggregate.ui.screens
+package com.jokku.aggregate.ui.screens.welcome
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable

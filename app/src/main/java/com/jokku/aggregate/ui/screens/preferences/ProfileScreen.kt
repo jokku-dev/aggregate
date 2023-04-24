@@ -1,12 +1,12 @@
-package com.jokku.aggregate.ui.screens
+package com.jokku.aggregate.ui.screens.preferences
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.gestures.ScrollableDefaults
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -34,18 +34,43 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavHostController
+import androidx.navigation.compose.rememberNavController
 import com.jokku.aggregate.R
 import com.jokku.aggregate.ui.nav.Screen
-import com.jokku.aggregate.ui.viewmodel.HomeViewModel
+import com.jokku.aggregate.ui.theme.AggregateTheme
+import com.jokku.aggregate.ui.viewmodel.MainProfileViewModel
+import com.jokku.aggregate.ui.viewmodel.ProfileState
+import com.jokku.aggregate.ui.viewmodel.ProfileViewModel
 import com.jokku.aggregate.ui.views.CommonColumn
 
 @Composable
 fun ProfileScreen(
     navController: NavHostController,
-    viewModel: HomeViewModel = hiltViewModel()
+    viewModel: ProfileViewModel = hiltViewModel<MainProfileViewModel>()
+) {
+    val state = viewModel.profileState.collectAsStateWithLifecycle().value
+
+    ProfileScreenContent(
+        state = state,
+        navController = navController,
+        notificationsOnCheckedChanged = { status ->
+            viewModel.changeNotificationsStatus(status = status)
+        },
+        signInOutOnClick = {
+            if (state.userSignedIn) viewModel.changeSignInStatus(status = false)
+            else navController.navigate(route = Screen.SignIn.route)
+        }
+    )
+}
+
+@Composable
+fun ProfileScreenContent(
+    state: ProfileState,
+    navController: NavHostController,
+    notificationsOnCheckedChanged: (Boolean) -> Unit = {},
+    signInOutOnClick: () -> Unit = {}
 ) {
     val scrollState = rememberScrollState()
-    val state = viewModel.profileState.collectAsStateWithLifecycle().value
 
     CommonColumn {
         Text(
@@ -55,31 +80,28 @@ fun ProfileScreen(
             modifier = Modifier.align(Alignment.Start)
         )
         ProfileInfo(
-            signedIn = state.signedIn,
+            signedIn = state.userSignedIn,
             modifier = Modifier.padding(top = 32.dp)
         )
         Column(
             modifier = Modifier
                 .fillMaxSize()
                 .padding(top = 32.dp)
-                .verticalScroll(
-                    state = scrollState,
-                    flingBehavior = ScrollableDefaults.flingBehavior()
-                ),
+                .verticalScroll(state = scrollState),
             verticalArrangement = Arrangement.spacedBy(16.dp)
         ) {
             PreferencesButton(
                 title = R.string.notifications,
                 buttonType = ButtonType.SWITCH,
-                checked = state.notifications,
-                onCheckedChanged = { checked -> }
+                checked = state.notificationsSwitchedOn,
+                onCheckedChanged = notificationsOnCheckedChanged
             )
             PreferencesButton(
                 title = R.string.language,
                 buttonType = ButtonType.DIRECTION,
                 onClick = { navController.navigate(route = Screen.Language.route) }
             )
-            if (state.signedIn)
+            if (state.userSignedIn)
                 PreferencesButton(
                     title = R.string.change_password,
                     buttonType = ButtonType.DIRECTION,
@@ -97,13 +119,10 @@ fun ProfileScreen(
                 onClick = { navController.navigate(route = Screen.TermsAndConditions.route) }
             )
             PreferencesButton(
-                title = if (state.signedIn) R.string.sign_out else R.string.sign_in,
+                title = if (state.userSignedIn) R.string.sign_out else R.string.sign_in,
                 buttonType = ButtonType.SIGN_IN_OUT,
                 modifier = Modifier.padding(top = 16.dp),
-                onClick = {
-                    if (state.signedIn) viewModel.changeSignedIn()
-                    else navController.navigate(route = Screen.SignIn.route)
-                }
+                onClick = signInOutOnClick
             )
         }
     }
@@ -157,6 +176,7 @@ fun PreferencesButton(
     onClick: () -> Unit = {},
     checked: Boolean = false,
     onCheckedChanged: (Boolean) -> Unit = {},
+    selected: Boolean = false,
     signedIn: Boolean = false
 ) {
     Row(
@@ -164,7 +184,10 @@ fun PreferencesButton(
             .fillMaxWidth()
             .height(56.dp)
             .clip(MaterialTheme.shapes.medium)
-            .background(color = MaterialTheme.colorScheme.secondary)
+            .background(
+                color = if (selected) MaterialTheme.colorScheme.primary
+                else MaterialTheme.colorScheme.secondary
+            )
             .padding(horizontal = 24.dp)
             .clickable(onClick = onClick),
         horizontalArrangement = Arrangement.SpaceBetween,
@@ -173,12 +196,13 @@ fun PreferencesButton(
         Text(
             text = stringResource(id = title),
             style = MaterialTheme.typography.titleLarge,
-            color = MaterialTheme.colorScheme.onBackground,
+            color = if (selected) MaterialTheme.colorScheme.surface
+                else MaterialTheme.colorScheme.onBackground,
         )
         when (buttonType) {
             ButtonType.DIRECTION -> {
                 Icon(
-                    imageVector = ImageVector.vectorResource(R.drawable.ic_outline_arrow_right),
+                    imageVector = ImageVector.vectorResource(R.drawable.ic_arrow_right),
                     contentDescription = stringResource(id = title),
                     tint = MaterialTheme.colorScheme.onBackground
                 )
@@ -186,8 +210,8 @@ fun PreferencesButton(
 
             ButtonType.SIGN_IN_OUT -> {
                 Icon(
-                    imageVector = if (signedIn) ImageVector.vectorResource(R.drawable.ic_outline_logout)
-                    else ImageVector.vectorResource(R.drawable.ic_outline_login),
+                    imageVector = if (signedIn) ImageVector.vectorResource(R.drawable.ic_logout)
+                    else ImageVector.vectorResource(R.drawable.ic_login),
                     contentDescription = stringResource(id = title),
                     tint = MaterialTheme.colorScheme.onBackground
                 )
@@ -205,27 +229,52 @@ fun PreferencesButton(
                     )
                 )
             }
+
+            ButtonType.SELECT -> {
+                if (selected)
+                    Icon(
+                        imageVector = ImageVector.vectorResource(id = R.drawable.ic_round_check),
+                        contentDescription = stringResource(id = R.string.selected),
+                        tint = MaterialTheme.colorScheme.surface
+                    )
+                else
+                    Spacer(modifier = Modifier.size(24.dp))
+            }
         }
     }
 }
 
 enum class ButtonType {
-    DIRECTION, SIGN_IN_OUT, SWITCH
+    DIRECTION, SIGN_IN_OUT, SWITCH, SELECT
 }
 
-@Preview(showBackground = true)
+@Preview(showBackground = true, backgroundColor = 0xFFFFFFFF)
 @Composable
-fun PreferencesButtonPreview() {
-    PreferencesButton(
-        title = R.string.notifications,
-        onClick = {},
-        buttonType = ButtonType.SWITCH,
-        checked = true
-    )
+fun SignedInProfileScreenPreview() {
+    AggregateTheme(dynamicColor = false) {
+        ProfileScreenContent(
+            state = ProfileState(userSignedIn = true),
+            navController = rememberNavController()
+        )
+    }
+
 }
 
-@Preview(showBackground = true)
+@Preview(showBackground = true, backgroundColor = 0xFFFFFFFF)
 @Composable
-fun ProfileInfoPreview() {
-    ProfileInfo(signedIn = true)
+fun CheckedPreferencesButtonPreview() {
+    AggregateTheme(dynamicColor = false) {
+        PreferencesButton(
+            title = R.string.notifications,
+            onClick = {},
+            buttonType = ButtonType.SWITCH,
+            checked = true
+        )
+    }
+}
+
+@Preview(showBackground = true, backgroundColor = 0xFFFFFFFF)
+@Composable
+fun SignedInProfileInfoPreview() {
+    AggregateTheme { ProfileInfo(signedIn = true) }
 }
