@@ -2,6 +2,7 @@ plugins {
     id("com.android.application")
     id("com.google.dagger.hilt.android")
     id("com.google.devtools.ksp")
+    id("kotlin-parcelize")
     kotlin("android")
     kotlin("plugin.serialization")
     kotlin("kapt")
@@ -56,7 +57,7 @@ dependencies {
     implementation("androidx.lifecycle:lifecycle-runtime-ktx:2.6.1")
     implementation("androidx.lifecycle:lifecycle-viewmodel-compose:2.6.1")
     implementation("androidx.activity:activity-compose:1.7.1")
-
+    // Compose BOM
     implementation(platform("androidx.compose:compose-bom:2023.04.01"))
     implementation("androidx.compose.material3:material3")
     implementation("androidx.compose.material3:material3-window-size-class")
@@ -71,6 +72,7 @@ dependencies {
     // Pager, indicators, system ui controller
     implementation("com.google.accompanist:accompanist-pager-indicators:0.30.1")
     implementation("com.google.accompanist:accompanist-systemuicontroller:0.30.1")
+    implementation("com.google.accompanist:accompanist-webview:0.30.1")
     // DataStore preferences
     implementation("androidx.datastore:datastore-preferences:1.0.0")
     implementation("androidx.datastore:datastore:1.0.0")

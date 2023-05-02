@@ -1,12 +1,12 @@
 package com.jokku.aggregate.ui.nav
 
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.Modifier
 import androidx.navigation.NavHostController
 import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.navArgument
+import com.jokku.aggregate.ui.screens.ArticleScreen
 import com.jokku.aggregate.ui.screens.BookmarksScreen
 import com.jokku.aggregate.ui.screens.HomepageScreen
 import com.jokku.aggregate.ui.screens.SourcesScreen
@@ -24,7 +24,7 @@ import com.jokku.aggregate.ui.screens.welcome.OnBoardingScreen
 import com.jokku.aggregate.ui.screens.welcome.SelectFavoriteTopicsScreen
 
 @Composable
-fun Navigation(modifier: Modifier, navController: NavHostController, startDestination: String) {
+fun Navigation(navController: NavHostController, startDestination: String) {
     NavHost(navController = navController, startDestination = startDestination) {
         composable(route = Screen.OnBoarding.route) {
             OnBoardingScreen(navController = navController)
@@ -69,6 +69,10 @@ fun Navigation(modifier: Modifier, navController: NavHostController, startDestin
         }
         composable(route = Screen.Profile.route) {
             ProfileScreen(navController = navController)
+        }
+
+        composable(route = Screen.Article.route) {
+            ArticleScreen(navController = navController)
         }
 
         composable(route = Screen.Language.route) {

@@ -1,5 +1,6 @@
 package com.jokku.aggregate.ui.screens
 
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -18,9 +19,8 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.vector.ImageVector
-import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.text.style.TextAlign
@@ -30,9 +30,9 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavHostController
-import coil.compose.AsyncImage
-import coil.request.ImageRequest
 import com.jokku.aggregate.R
+import com.jokku.aggregate.ui.nav.Screen
+import com.jokku.aggregate.ui.theme.AggregateTheme
 import com.jokku.aggregate.ui.viewmodel.Article
 import com.jokku.aggregate.ui.viewmodel.MainNewsViewModel
 import com.jokku.aggregate.ui.views.CommonColumn
@@ -45,12 +45,26 @@ fun BookmarksScreen(
 ) {
     val state = viewModel.bookmarksState.collectAsStateWithLifecycle().value
 
+    BookmarksScreenContent(
+        articles = state.bookmarkedArticles,
+        openArticle = { article ->
+            viewModel.setChosenArticle(article)
+            navController.navigate(route = Screen.Article.route)
+        }
+    )
+}
+
+@Composable
+fun BookmarksScreenContent(
+    articles: List<Article>,
+    openArticle: (Article) -> Unit
+) {
     CommonColumn {
         HeadlineAndDescriptionText(
             headline = R.string.bookmarks,
             description = R.string.saved_articles
         )
-        if (state.bookmarkedArticles.isEmpty()) {
+        if (articles.isEmpty()) {
             Column(
                 modifier = Modifier
                     .fillMaxSize()
@@ -84,17 +98,15 @@ fun BookmarksScreen(
             LazyColumn(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .padding(horizontal = 16.dp)
                     .padding(top = 32.dp),
                 verticalArrangement = Arrangement.spacedBy(16.dp),
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
-                items(count = state.bookmarkedArticles.size) {
+                items(count = articles.size) {
                     BookmarkedArticleItem(
-                        article = state.bookmarkedArticles[it]
-                    ) {
-
-                    }
+                        article = articles[it],
+                        onItemClick = openArticle
+                    )
                 }
             }
         }
@@ -104,25 +116,26 @@ fun BookmarksScreen(
 @Composable
 fun BookmarkedArticleItem(
     article: Article,
-    onItemClick: () -> Unit
+    onItemClick: (Article) -> Unit
 ) {
     Row(
         modifier = Modifier
             .fillMaxWidth()
             .height(96.dp)
-            .clickable(onClick = onItemClick),
-        horizontalArrangement = Arrangement.SpaceBetween,
+            .clickable(onClick = { onItemClick(article) }),
+        horizontalArrangement = Arrangement.Start,
         verticalAlignment = Alignment.CenterVertically
     ) {
-        AsyncImage(
-            model = ImageRequest.Builder(LocalContext.current)
-                .data(article.image)
-                .size(96)
-                .build(),
-            contentDescription = article.title,
-            modifier = Modifier.clip(MaterialTheme.shapes.medium),
-            alignment = Alignment.CenterStart
-        )
+//        AsyncImage(
+//            model = ImageRequest.Builder(LocalContext.current)
+//                .data(article.image)
+//                .size(96)
+//                .build(),
+//            contentDescription = article.title,
+//            modifier = Modifier.clip(MaterialTheme.shapes.medium),
+//            alignment = Alignment.CenterStart
+//        )
+        Image(painter = painterResource(id = article.image), contentDescription = article.title)
         Column(
             modifier = Modifier
                 .fillMaxHeight()
@@ -148,14 +161,59 @@ fun BookmarkedArticleItem(
 
 @Preview(showBackground = true)
 @Composable
-fun BookmarkedArticleItemPreview() {
-    BookmarkedArticleItem(
-        article = Article(
-            sourceName = "CNN",
-            title = "Hundreds of Southwest Airlines flights are delayed after FAA lifts nationwide ground stop - CNN",
-            image = R.drawable.img_news_mock_3
+fun BookmarksScreenPreview() {
+    AggregateTheme {
+        BookmarksScreenContent(
+            articles = listOf(
+                Article(
+                    sourceName = "CNN",
+                    author = "Oliver Darcy",
+                    title = "Fox News' sudden firing of Tucker Carlson may have come down to one simple calculation - CNN",
+                    url = "",
+                    image = R.drawable.img_news_mock_1,
+                    publishedAt = "2023-04-25T08:36",
+                    bookmarked = false
+                ),
+                Article(
+                    sourceName = "CNN",
+                    author = "Oliver Darcy",
+                    title = "Fox News' sudden firing of Tucker Carlson may have come down to one simple calculation - CNN",
+                    url = "",
+                    image = R.drawable.img_news_mock_1,
+                    publishedAt = "2023-04-25T08:36",
+                    bookmarked = false
+                ),
+                Article(
+                    sourceName = "CNN",
+                    author = "Oliver Darcy",
+                    title = "Fox News' sudden firing of Tucker Carlson may have come down to one simple calculation - CNN",
+                    url = "",
+                    image = R.drawable.img_news_mock_1,
+                    publishedAt = "2023-04-25T08:36",
+                    bookmarked = false
+                )
+            ),
+            openArticle = {}
         )
-    ) {
 
     }
+}
+
+@Preview(showBackground = true)
+@Composable
+fun BookmarkedArticleItemPreview() {
+    AggregateTheme {
+        BookmarkedArticleItem(
+            article = Article(
+                sourceName = "CNN",
+                author = "Oliver Darcy",
+                title = "Fox News' sudden firing of Tucker Carlson may have come down to one simple calculation - CNN",
+                url = "",
+                image = R.drawable.img_news_mock_1,
+                publishedAt = "2023-04-25T08:36",
+                bookmarked = false
+            )
+        ) {}
+    }
+
 }

@@ -81,7 +81,7 @@ fun ProfileScreenContent(
         )
         ProfileInfo(
             signedIn = state.userSignedIn,
-            modifier = Modifier.padding(top = 32.dp)
+            modifier = Modifier.padding(top = 24.dp)
         )
         Column(
             modifier = Modifier

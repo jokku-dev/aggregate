@@ -6,7 +6,6 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.IntrinsicSize
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxHeight
@@ -14,7 +13,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.layout.systemBarsPadding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.material3.CardDefaults
@@ -31,6 +30,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
@@ -48,7 +48,6 @@ import coil.request.ImageRequest
 import coil.size.Size
 import com.jokku.aggregate.R
 import com.jokku.aggregate.ui.viewmodel.Article
-import com.jokku.aggregate.ui.viewmodel.Category
 import com.jokku.aggregate.ui.viewmodel.MainNewsViewModel
 import com.jokku.aggregate.ui.views.HeadlineAndDescriptionText
 import com.jokku.aggregate.ui.views.SearchTextField
@@ -63,7 +62,8 @@ fun HomepageScreen(
     Column(
         modifier = Modifier
             .fillMaxWidth()
-            .padding(top = 32.dp),
+            .systemBarsPadding()
+            .padding(top = 24.dp),
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.Top
     ) {
@@ -87,8 +87,9 @@ fun HomepageScreen(
             verticalAlignment = Alignment.CenterVertically
         ) {
             items(count = state.categories.size) { index ->
-                RowCategoryItem(
-                    category = state.categories[index]
+                CategoryItem(
+                    text = stringResource(id = state.categories[index].text),
+                    selected = state.categories[index].selected
                 ) {
                     viewModel.selectCategory(state.categories[index])
                 }
@@ -119,18 +120,19 @@ fun HomepageScreen(
 }
 
 @Composable
-fun RowCategoryItem(
-    category: Category,
+fun CategoryItem(
+    text: String,
     modifier: Modifier = Modifier,
-    onItemClick: () -> Unit
+    unchangeableTextColor: Boolean = false,
+    selected: Boolean = true,
+    onItemClick: () -> Unit = {}
 ) {
     Box(
         modifier = modifier
-            .width(IntrinsicSize.Min)
             .height(32.dp)
             .clip(MaterialTheme.shapes.large)
             .background(
-                color = if (category.selected) MaterialTheme.colorScheme.primary
+                color = if (selected) MaterialTheme.colorScheme.primary
                 else MaterialTheme.colorScheme.secondary
             )
             .clickable(onClick = onItemClick),
@@ -138,9 +140,10 @@ fun RowCategoryItem(
     ) {
         Text(
             modifier = Modifier.padding(horizontal = 16.dp),
-            text = stringResource(id = category.text),
+            text = text,
             style = MaterialTheme.typography.titleSmall,
-            color = if (category.selected) MaterialTheme.colorScheme.surface
+            color = if (unchangeableTextColor) Color.White
+            else if (selected) MaterialTheme.colorScheme.surface
             else MaterialTheme.colorScheme.onBackground
         )
     }
@@ -214,6 +217,13 @@ fun ArticleItem(
 fun GreetingPreview() {
     HomepageScreen(navController = rememberNavController())
 }
+
+@Preview(showBackground = true)
+@Composable
+fun RowCategoryItemPreview() {
+    CategoryItem(text = "The Washington Post", selected = true) { }
+}
+
 
 @Preview(showBackground = true)
 @Composable

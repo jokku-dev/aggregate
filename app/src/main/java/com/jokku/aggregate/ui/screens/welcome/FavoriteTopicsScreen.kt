@@ -44,7 +44,9 @@ fun SelectFavoriteTopicsScreen(
             description = R.string.select_some_of_your_topics
         )
         LazyVerticalGrid(
-            modifier = Modifier.padding(top = 32.dp),
+            modifier = Modifier
+                .padding(top = 32.dp)
+                .weight(1f), // need for a lazy column not to take up all the screen place
             columns = GridCells.Fixed(2),
             verticalArrangement = Arrangement.spacedBy(16.dp),
             horizontalArrangement = Arrangement.spacedBy(16.dp),
@@ -57,7 +59,7 @@ fun SelectFavoriteTopicsScreen(
             }
         )
         BigActionButton(
-            modifier = Modifier.padding(top = 16.dp),
+            modifier = Modifier.padding(vertical = 16.dp),
             text = stringResource(id = R.string.next)
         ) {
             viewModel.setFavoriteTopics(topics = topics)

@@ -11,14 +11,21 @@ import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 interface NewsViewModel {
+    val homeState: StateFlow<HomeState>
+    val sourceState: StateFlow<SourceState>
+    val bookmarksState: StateFlow<BookmarksState>
+    val articleState: StateFlow<ArticleState>
+
     fun getSignInStatus(): Job
     fun selectCategory(selected: Category): Job
+    fun setChosenArticle(article: Article)
 }
 
 @HiltViewModel
@@ -29,13 +36,16 @@ class MainNewsViewModel @Inject constructor(
 ) : ViewModel(), NewsViewModel {
 
     private val _homeState = MutableStateFlow(HomeState())
-    val homeState = _homeState.asStateFlow()
-
-    private val _bookmarksState = MutableStateFlow(BookmarksState())
-    val bookmarksState = _bookmarksState.asStateFlow()
+    override val homeState = _homeState.asStateFlow()
 
     private val _sourceState = MutableStateFlow(SourceState())
-    val sourceState = _sourceState.asStateFlow()
+    override val sourceState = _sourceState.asStateFlow()
+
+    private val _bookmarksState = MutableStateFlow(BookmarksState())
+    override val bookmarksState = _bookmarksState.asStateFlow()
+
+    private val _articleState = MutableStateFlow(ArticleState())
+    override val articleState = _articleState.asStateFlow()
 
     override fun getSignInStatus() = viewModelScope.launch(dispatcher) {
         dataStoreRepository.readUserLoggedIn().collect { logged ->
@@ -50,6 +60,9 @@ class MainNewsViewModel @Inject constructor(
         _homeState.update { state -> state.copy(categories = categories) }
     }
 
+    override fun setChosenArticle(article: Article) {
+        _articleState.update { state -> state.copy(article = article) }
+    }
 }
 
 data class HomeState(
@@ -73,27 +86,58 @@ data class Category(
 )
 
 data class Article(
-    val sourceName: String = "",
-    val author: String = "",
-    val title: String = "",
+    val sourceName: String = "The Washington Post",
+    val author: String = "Oliver Darcy",
+    val title: String = "Fox News' sudden firing of Tucker Carlson may have come down to one simple calculation - CNN",
+    val description: String = "",
     val url: String = "",
-    @DrawableRes val image: Int = 0,
+    @DrawableRes val image: Int = R.drawable.img_news_mock_1,
     val publishedAt: String = "",
-    val bookmarked: Boolean = false
+    val bookmarked: Boolean = true
 )
 
-
 data class BookmarksState(
-    val bookmarkedArticles: List<Article> = emptyList()
+    val bookmarkedArticles: List<Article> = listOf(
+        Article(
+            sourceName = "CNN",
+            author = "Oliver Darcy",
+            title = "Fox News' sudden firing of Tucker Carlson may have come down to one simple calculation - CNN",
+            url = "",
+            image = R.drawable.img_news_mock_1,
+            publishedAt = "2023-04-25T08:36",
+            bookmarked = false
+        ),
+        Article(
+            sourceName = "CNN",
+            author = "Oliver Darcy",
+            title = "Fox News' sudden firing of Tucker Carlson may have come down to one simple calculation - CNN",
+            url = "",
+            image = R.drawable.img_news_mock_1,
+            publishedAt = "2023-04-25T08:36",
+            bookmarked = false
+        ),
+        Article(
+            sourceName = "CNN",
+            author = "Oliver Darcy",
+            title = "Fox News' sudden firing of Tucker Carlson may have come down to one simple calculation - CNN",
+            url = "",
+            image = R.drawable.img_news_mock_1,
+            publishedAt = "2023-04-25T08:36",
+            bookmarked = false
+        )
+    )
 )
 
 data class SourceState(
     val sources: List<Source> = emptyList()
 )
-
 data class Source(
     val name: String,
     val description: String,
     val url: String,
     val country: String
+)
+
+data class ArticleState(
+    val article: Article = Article()
 )

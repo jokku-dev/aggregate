@@ -1,5 +1,6 @@
 package com.jokku.aggregate.ui
 
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -45,12 +46,13 @@ fun AggregateApp(
                     bottomBarState = bottomBarState
                 )
             }
-        ) { padding ->
-            Navigation(
-                modifier = Modifier.padding(padding),
-                navController = navController,
-                startDestination = startDestination
-            )
+        ) { padding -> // padding from elements (bars) of this Scaffold
+            Box(modifier = Modifier.padding(bottom = padding.calculateBottomPadding())) {
+                Navigation(
+                    navController = navController,
+                    startDestination = startDestination
+                )
+            }
         }
     }
 }
