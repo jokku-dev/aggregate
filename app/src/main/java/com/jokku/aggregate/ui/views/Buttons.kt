@@ -23,12 +23,13 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.jokku.aggregate.R
+import com.jokku.aggregate.ui.theme.AggregateTheme
 
 @Composable
 fun BigActionButton(
     text: String,
-    modifier: Modifier = Modifier,
-    onClick: () -> Unit
+    onClick: () -> Unit,
+    modifier: Modifier = Modifier
 ) {
     Button(
         modifier = modifier
@@ -52,8 +53,8 @@ fun BigActionButton(
 fun SignInWithButton(
     painter: Painter,
     text: String,
-    modifier: Modifier = Modifier,
-    onClick: () -> Unit
+    onClick: () -> Unit,
+    modifier: Modifier = Modifier
 ) {
     OutlinedButton(
         modifier = modifier
@@ -90,18 +91,25 @@ fun SignInWithButton(
 }
 
 
-@Preview(apiLevel = 30, showBackground = true)
+@Preview
 @Composable
 fun BigActionButtonPreview() {
-    BigActionButton(text = "Get Started", onClick = {})
+    AggregateTheme {
+        BigActionButton(
+            text = "Get Started",
+            onClick = {}
+        )
+    }
 }
 
-@Preview(apiLevel = 30, showBackground = true)
+@Preview
 @Composable
 fun SignInButtonPreview() {
-    SignInWithButton(
-        painter = painterResource(id = R.drawable.ic_logo_google),
-        text = stringResource(id = R.string.sign_in_with_google),
-        onClick = {}
-    )
+    AggregateTheme {
+        SignInWithButton(
+            painter = painterResource(id = R.drawable.ic_logo_google),
+            text = stringResource(id = R.string.sign_in_with_google),
+            onClick = {}
+        )
+    }
 }

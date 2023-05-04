@@ -1,5 +1,7 @@
 package com.jokku.aggregate.ui.screens
 
+import androidx.activity.OnBackPressedCallback
+import androidx.activity.compose.LocalOnBackPressedDispatcherOwner
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.ScrollState
 import androidx.compose.foundation.background
@@ -15,13 +17,20 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
+import androidx.compose.material3.ColorScheme
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.MaterialTheme.colorScheme
 import androidx.compose.material3.MaterialTheme.typography
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.SideEffect
+import androidx.compose.runtime.DisposableEffect
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -33,6 +42,7 @@ import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalDensity
+import androidx.compose.ui.platform.LocalLifecycleOwner
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.res.vectorResource
@@ -42,7 +52,6 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavHostController
-import androidx.navigation.NavOptions
 import androidx.navigation.compose.rememberNavController
 import com.google.accompanist.systemuicontroller.SystemUiController
 import com.google.accompanist.systemuicontroller.rememberSystemUiController
@@ -60,56 +69,99 @@ fun ArticleScreen(
     navController: NavHostController,
     viewModel: NewsViewModel = hiltViewModel<MainNewsViewModel>(),
     systemUiController: SystemUiController = rememberSystemUiController(),
+    colorScheme: ColorScheme = MaterialTheme.colorScheme
 ) {
     val state = viewModel.articleState.collectAsStateWithLifecycle().value
 
+    var currentScreen by remember { mutableStateOf(Screen.Article.route) }
+    val onBackPressedDispatcher = LocalOnBackPressedDispatcherOwner.current?.onBackPressedDispatcher
+    val lifecycleOwner = LocalLifecycleOwner.current
+
     ArticleScreenContent(
         article = state.article,
-        navController = navController
+        navController = navController,
+        currentScreen = { newCurrentScreen -> currentScreen = newCurrentScreen }
     )
-    SideEffect { systemUiController.setStatusBarColor(color = Color.Transparent) }
+
+    LaunchedEffect(key1 = currentScreen) {
+        if (currentScreen == Screen.Article.route) {
+            systemUiController.setStatusBarColor(color = Color.Transparent)
+        } else {
+            systemUiController.setStatusBarColor(color = colorScheme.surface)
+        }
+    }
+    // On back pressed handling to bring back the color of the status bar
+    DisposableEffect(key1 = Unit) {
+        val backCallback: OnBackPressedCallback = object : OnBackPressedCallback(true) {
+            override fun handleOnBackPressed() {
+                currentScreen = "other"
+                isEnabled = false
+                navController.popBackStack()
+            }
+        }
+        onBackPressedDispatcher?.addCallback(
+            owner = lifecycleOwner,
+            onBackPressedCallback = backCallback
+        )
+        onDispose { backCallback.remove() }
+    }
 }
 
 @Composable
 fun ArticleScreenContent(
     article: Article,
     navController: NavHostController,
+    currentScreen: (String) -> Unit,
     modifier: Modifier = Modifier,
     headerHeight: Dp = 400.dp,
-    topAndSystemBarHeight: Dp = 88.dp
+    heightToShowTopBar: Dp = 108.dp,
+    topBarsHeight: Dp = 84.dp,
+    overlayPadding: Dp = 32.dp
 ) {
     val scrollState = rememberScrollState()
     // Density scope provides conversion to pixels
     val headerHeightPx = with(LocalDensity.current) { headerHeight.toPx() }
-    val topBarHeightPx = with(LocalDensity.current) { topAndSystemBarHeight.toPx() }
+    val topBarHeightPx = with(LocalDensity.current) { heightToShowTopBar.toPx() }
 
-    Box(modifier = modifier) {
+    Box(
+        modifier = modifier,
+        contentAlignment = Alignment.TopCenter
+    ) {
         ArticleHeader(
             image = painterResource(id = article.image),
             title = article.title,
             sourceName = article.sourceName,
             author = article.author,
             bookmarked = article.bookmarked,
-            state = scrollState,
-            navController = navController,
+            scrollState = scrollState,
             headerHeightPx = headerHeightPx,
-            modifier = Modifier
-                .fillMaxWidth()
-                .height(headerHeight)
+            onBackClick = {
+                currentScreen("other")
+                navController.popBackStack()
+            },
+            onShareClick = {},
+            onBookmarkClick = {},
+            modifier = Modifier.height(headerHeight)
         )
         ArticleBody(
-            state = scrollState,
+            scrollState = scrollState,
             headerHeight = headerHeight,
-            modifier = Modifier.fillMaxSize()
+            topBarsHeight = topBarsHeight,
+            overlayPadding = overlayPadding
         )
         ArticleTopBar(
             bookmarked = article.bookmarked,
             sourceName = article.sourceName,
             url = article.url,
-            navController = navController,
-            state = scrollState,
+            topBarHeightPx = topBarHeightPx,
             headerHeightPx = headerHeightPx,
-            topBarHeightPx = topBarHeightPx
+            scrollState = scrollState,
+            onBackClick = {
+                currentScreen("other")
+                navController.popBackStack()
+            },
+            onShareClick = {},
+            onBookmarkClick = {},
         )
     }
 }
@@ -121,20 +173,23 @@ fun ArticleHeader(
     sourceName: String,
     author: String,
     bookmarked: Boolean,
-    navController: NavHostController,
-    state: ScrollState,
+    scrollState: ScrollState,
     headerHeightPx: Float,
+    onBackClick: () -> Unit,
+    onShareClick: () -> Unit,
+    onBookmarkClick: () -> Unit,
     modifier: Modifier = Modifier
 ) {
     Box(
         modifier = modifier
+            .fillMaxWidth()
             // lambda version of graphicsLayer to avoid unnecessary recompositions
             // which induce bad performance
             .graphicsLayer {
                 // parallax effect
-                translationY = -state.value.toFloat() / 2f
+                translationY = -scrollState.value.toFloat() / 2f
                 // fade animation using affine function
-                alpha = (-1f / headerHeightPx) * state.value + 1
+                alpha = -1f / headerHeightPx * scrollState.value + 1
             },
     ) {
         Image(
@@ -153,51 +208,36 @@ fun ArticleHeader(
         )
         Column(
             horizontalAlignment = Alignment.Start,
-            modifier = Modifier.padding(top = 48.dp, bottom = 32.dp)
+            modifier = Modifier.padding(top = 36.dp, bottom = 32.dp)
         ) {
             Row(
-                modifier = Modifier.fillMaxWidth(),
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(horizontal = 4.dp),
                 horizontalArrangement = Arrangement.SpaceBetween,
                 verticalAlignment = Alignment.Top
             ) {
-                IconButton(
-                    onClick = {
-                        navController.navigate(
-                            route = Screen.Bookmarks.route,
-                            navOptions = NavOptions.Builder()
-                                .setPopUpTo(route = Screen.Bookmarks.route, inclusive = true)
-                                .build()
-                        )
-                    }
-                ) {
+                IconButton(onClick = onBackClick) {
                     Icon(
                         imageVector = ImageVector.vectorResource(id = R.drawable.ic_arrow_back),
                         contentDescription = stringResource(id = R.string.navigate_back),
                         tint = Color.White
                     )
                 }
-                Column {
-                    IconButton(
-                        onClick = {
-
-                        },
-                    ) {
+                Row {
+                    IconButton(onClick = onShareClick) {
+                        Icon(
+                            imageVector = ImageVector.vectorResource(id = R.drawable.ic_share),
+                            contentDescription = stringResource(id = R.string.share),
+                            tint = Color.White
+                        )
+                    }
+                    IconButton(onClick = onBookmarkClick) {
                         Icon(
                             imageVector = if (bookmarked) ImageVector.vectorResource(id = R.drawable.ic_bookmark_selected)
                             else ImageVector.vectorResource(id = R.drawable.ic_bookmark),
                             contentDescription = if (bookmarked) stringResource(id = R.string.bookmarked)
                             else stringResource(id = R.string.not_bookmarked),
-                            tint = Color.White
-                        )
-                    }
-                    IconButton(
-                        onClick = {
-
-                        },
-                    ) {
-                        Icon(
-                            imageVector = ImageVector.vectorResource(id = R.drawable.ic_share),
-                            contentDescription = stringResource(id = R.string.share),
                             tint = Color.White
                         )
                     }
@@ -209,6 +249,7 @@ fun ArticleHeader(
                 modifier = Modifier
                     .fillMaxSize()
                     .padding(horizontal = 16.dp)
+                    .padding(top = 32.dp)
             ) {
                 CategoryItem(
                     text = sourceName,
@@ -238,34 +279,36 @@ fun ArticleHeader(
 
 @Composable
 fun ArticleBody(
-    state: ScrollState,
+    scrollState: ScrollState,
     headerHeight: Dp,
-    modifier: Modifier = Modifier,
-    overlayPadding: Dp = 32.dp
+    topBarsHeight: Dp,
+    overlayPadding: Dp,
+    modifier: Modifier = Modifier
 ) {
     Column(
-        horizontalAlignment = Alignment.CenterHorizontally,
-        modifier = modifier.verticalScroll(state)
+        modifier = modifier
+            .fillMaxWidth()
+            .padding(top = topBarsHeight)
+            .verticalScroll(scrollState)
     ) {
         Spacer(
-            modifier = Modifier.height(headerHeight - overlayPadding)
+            modifier = Modifier.height(headerHeight - (overlayPadding + topBarsHeight))
         )
-        repeat(2) {
-            Text(
-                text = stringResource(id = R.string.terms_and_conditions_text),
-                style = typography.bodyLarge,
-                color = colorScheme.onBackground,
-                modifier = Modifier
-                    .clip(RoundedCornerShape(topStart = 24.dp, topEnd = 24.dp))
-                    .background(color = colorScheme.surface)
-                    .padding(horizontal = 16.dp)
-                    .padding(top = overlayPadding)
-            )
-        }
+        Text(
+            text = stringResource(id = R.string.terms_and_conditions_text) +
+                    stringResource(id = R.string.terms_and_conditions_text),
+            style = typography.bodyLarge,
+            color = colorScheme.onBackground,
+            modifier = Modifier
+                .clip(RoundedCornerShape(topStart = 24.dp, topEnd = 24.dp))
+                .background(color = colorScheme.surface)
+                .padding(horizontal = 16.dp)
+                .padding(top = overlayPadding)
+        )
     }
 }
 
-@Preview()
+@Preview
 @Composable
 fun ArticleScreenPreview() {
     AggregateTheme {
@@ -279,6 +322,7 @@ fun ArticleScreenPreview() {
                 publishedAt = "2023-04-25T08:36",
                 bookmarked = false
             ),
+            currentScreen = {},
             navController = rememberNavController()
         )
     }

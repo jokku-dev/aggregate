@@ -52,11 +52,12 @@ fun CreateNewPasswordScreen(
         )
         BigActionButton(
             modifier = Modifier.padding(top = 16.dp),
-            text = stringResource(id = R.string.confirm)
-        ) {
-            navController.popBackStack()
-            navController.navigate(route = Screen.SignIn.route)
-        }
+            text = stringResource(id = R.string.confirm),
+            onClick = {
+                navController.popBackStack()
+                navController.navigate(route = Screen.SignIn.route)
+            }
+        )
         Spacer(modifier = Modifier.weight(1f))
         HelpBottomText(
             questionText = stringResource(id = R.string.remember_an_old_password),

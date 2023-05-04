@@ -43,7 +43,7 @@ fun AggregateApp(
             bottomBar = {
                 BottomBar(
                     navController = navController,
-                    bottomBarState = bottomBarState
+                    visible = bottomBarState
                 )
             }
         ) { padding -> // padding from elements (bars) of this Scaffold

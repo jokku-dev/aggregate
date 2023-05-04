@@ -60,13 +60,14 @@ fun SelectFavoriteTopicsScreen(
         )
         BigActionButton(
             modifier = Modifier.padding(vertical = 16.dp),
-            text = stringResource(id = R.string.next)
-        ) {
-            viewModel.setFavoriteTopics(topics = topics)
-            viewModel.setLaunchScreen(Screen.Home.route)
-            navController.popBackStack()
-            navController.navigate(Screen.Home.route)
-        }
+            text = stringResource(id = R.string.next),
+            onClick = {
+                viewModel.setFavoriteTopics(topics = topics)
+                viewModel.setLaunchScreen(Screen.Home.route)
+                navController.popBackStack()
+                navController.navigate(Screen.Home.route)
+            }
+        )
     }
     LaunchedEffect(key1 = LocalLifecycleOwner.current) {
         viewModel.getFavoriteTopics()

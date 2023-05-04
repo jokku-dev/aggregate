@@ -42,11 +42,12 @@ fun ForgotPasswordScreen(
         )
         BigActionButton(
             modifier = Modifier.padding(top = 16.dp),
-            text = stringResource(id = R.string.next)
-        ) {
-            navController.popBackStack()
-            navController.navigate(route = Screen.Verification.withArgs(email))
-        }
+            text = stringResource(id = R.string.next),
+            onClick = {
+                navController.popBackStack()
+                navController.navigate(route = Screen.Verification.withArgs(email))
+            }
+        )
         Spacer(modifier = Modifier.weight(1f))
         HelpBottomText(
             questionText = stringResource(id = R.string.remember_the_password),

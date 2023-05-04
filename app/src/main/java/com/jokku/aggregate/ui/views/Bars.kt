@@ -13,9 +13,11 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Badge
 import androidx.compose.material3.BadgedBox
 import androidx.compose.material3.CenterAlignedTopAppBar
+import androidx.compose.material3.ColorScheme
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.MaterialTheme.colorScheme
 import androidx.compose.material3.MaterialTheme.typography
 import androidx.compose.material3.NavigationBar
@@ -24,26 +26,31 @@ import androidx.compose.material3.NavigationBarItemDefaults
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment.Companion.CenterHorizontally
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.res.vectorResource
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavDestination.Companion.hierarchy
 import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.NavHostController
-import androidx.navigation.NavOptions
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
+import com.google.accompanist.systemuicontroller.SystemUiController
+import com.google.accompanist.systemuicontroller.rememberSystemUiController
 import com.jokku.aggregate.R
 import com.jokku.aggregate.ui.nav.Screen
+import com.jokku.aggregate.ui.theme.AggregateTheme
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -51,16 +58,24 @@ fun ArticleTopBar(
     sourceName: String,
     url: String,
     bookmarked: Boolean,
-    navController: NavHostController,
-    state: ScrollState,
     headerHeightPx: Float,
     topBarHeightPx: Float,
-    modifier: Modifier = Modifier
+    scrollState: ScrollState,
+    onBackClick: () -> Unit,
+    onShareClick: () -> Unit,
+    onBookmarkClick: () -> Unit,
+    modifier: Modifier = Modifier,
+    colorScheme: ColorScheme = MaterialTheme.colorScheme,
+    systemUiController: SystemUiController = rememberSystemUiController()
 ) {
     val topBarBottom by remember { mutableStateOf(headerHeightPx - topBarHeightPx) }
     // derived state triggers recomposition only if result changes and not if changes any inner state
     // so we use it to reduce unnecessary recompositions when some inner state changes
-    val showTopBar by remember { derivedStateOf { state.value >= topBarBottom } }
+    val showTopBar by remember { derivedStateOf { scrollState.value >= topBarBottom } }
+    LaunchedEffect(key1 = showTopBar) {
+        if (showTopBar) systemUiController.setStatusBarColor(color = colorScheme.surface)
+        else systemUiController.setStatusBarColor(color = Color.Transparent)
+    }
 
     AnimatedVisibility(
         modifier = modifier,
@@ -70,16 +85,7 @@ fun ArticleTopBar(
     ) {
         CenterAlignedTopAppBar(
             navigationIcon = {
-                IconButton(
-                    onClick = {
-                        navController.navigate(
-                            route = Screen.Bookmarks.route,
-                            navOptions = NavOptions.Builder()
-                                .setPopUpTo(route = Screen.Bookmarks.route, inclusive = true)
-                                .build()
-                        )
-                    }
-                ) {
+                IconButton(onClick = onBackClick) {
                     Icon(
                         imageVector = ImageVector.vectorResource(id = R.drawable.ic_arrow_back),
                         contentDescription = stringResource(id = R.string.navigate_back)
@@ -87,17 +93,13 @@ fun ArticleTopBar(
                 }
             },
             actions = {
-                IconButton(
-                    onClick = { }
-                ) {
+                IconButton(onClick = onShareClick) {
                     Icon(
                         imageVector = ImageVector.vectorResource(id = R.drawable.ic_share),
                         contentDescription = stringResource(id = R.string.share)
                     )
                 }
-                IconButton(
-                    onClick = { }
-                ) {
+                IconButton(onClick = onBookmarkClick) {
                     Icon(
                         imageVector = if (bookmarked) ImageVector.vectorResource(id = R.drawable.ic_bookmark_selected)
                         else ImageVector.vectorResource(id = R.drawable.ic_bookmark),
@@ -105,13 +107,14 @@ fun ArticleTopBar(
                         else stringResource(id = R.string.not_bookmarked)
                     )
                 }
-
             },
             title = {
                 Text(
                     text = sourceName,
                     style = typography.headlineMedium,
-                    maxLines = 1
+                    maxLines = 1,
+                    overflow = TextOverflow.Clip,
+                    softWrap = false
                 )
             },
             colors = TopAppBarDefaults.centerAlignedTopAppBarColors(
@@ -124,17 +127,16 @@ fun ArticleTopBar(
     }
 }
 
-
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun BottomBar(
     navController: NavHostController,
-    bottomBarState: Boolean
+    visible: Boolean
 ) {
     val items = listOf(Screen.Home, Screen.Sources, Screen.Bookmarks, Screen.Profile)
 
     AnimatedVisibility(
-        visible = bottomBarState,
+        visible = visible,
         enter = slideInVertically(initialOffsetY = { it }),
         exit = slideOutVertically(targetOffsetY = { it }),
     ) {
@@ -208,22 +210,28 @@ fun BottomBar(
 @Preview
 @Composable
 fun ArticleTopBarPreview() {
-    ArticleTopBar(
-        sourceName = "SourceName",
-        url = "",
-        bookmarked = true,
-        navController = rememberNavController(),
-        state = rememberScrollState(),
-        headerHeightPx = 0f,
-        topBarHeightPx = 0f
-    )
+    AggregateTheme {
+        ArticleTopBar(
+            sourceName = "SourceName",
+            url = "",
+            bookmarked = true,
+            scrollState = rememberScrollState(),
+            headerHeightPx = 0f,
+            topBarHeightPx = 0f,
+            onBackClick = {},
+            onShareClick = {},
+            onBookmarkClick = {}
+        )
+    }
 }
 
 @Preview
 @Composable
 fun BottomBarPreview() {
-    BottomBar(
-        navController = rememberNavController(),
-        bottomBarState = true
-    )
+    AggregateTheme {
+        BottomBar(
+            navController = rememberNavController(),
+            visible = true
+        )
+    }
 }

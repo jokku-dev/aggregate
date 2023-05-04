@@ -71,11 +71,12 @@ fun SignUpScreen(
         )
         BigActionButton(
             modifier = Modifier.padding(top = 16.dp),
-            text = stringResource(id = R.string.sign_up)
-        ) {
-            navController.popBackStack(route = Screen.SignIn.route, inclusive = true)
-            navController.navigate(route = Screen.SignIn.route)
-        }
+            text = stringResource(id = R.string.sign_up),
+            onClick = {
+                navController.popBackStack(route = Screen.SignIn.route, inclusive = true)
+                navController.navigate(route = Screen.SignIn.route)
+            }
+        )
         Spacer(modifier = Modifier.weight(1f))
         HelpBottomText(
             questionText = stringResource(id = R.string.already_have_an_account),

@@ -75,22 +75,22 @@ fun OnBoardingScreen(
                 modifier = Modifier
                     .padding(bottom = 16.dp)
                     .padding(horizontal = 16.dp),
-                text =
-                if (!state.isLastPage) stringResource(id = R.string.next)
-                else stringResource(id = R.string.get_started)
-            ) {
-                // scrollToPage is suspend and therefore requires scope
-                scope.launch {
-                    if (!state.isLastPage) {
-                        viewModel.checkNextPageIsLast(nextPage = state.pages[pagerState.currentPage + 1])
-                        pagerState.scrollToPage(pagerState.currentPage + 1)
-                    } else {
-                        viewModel.setLaunchScreen(screen = Screen.SelectFavoriteTopics.route)
-                        navController.popBackStack()
-                        navController.navigate(Screen.SelectFavoriteTopics.route)
+                text = if (!state.isLastPage) stringResource(id = R.string.next)
+                else stringResource(id = R.string.get_started),
+                onClick = {
+                    // scrollToPage is suspend and therefore requires scope
+                    scope.launch {
+                        if (!state.isLastPage) {
+                            viewModel.checkNextPageIsLast(nextPage = state.pages[pagerState.currentPage + 1])
+                            pagerState.scrollToPage(pagerState.currentPage + 1)
+                        } else {
+                            viewModel.setLaunchScreen(screen = Screen.SelectFavoriteTopics.route)
+                            navController.popBackStack()
+                            navController.navigate(Screen.SelectFavoriteTopics.route)
+                        }
                     }
                 }
-            }
+            )
         }
     }
     LaunchedEffect(key1 = pagerState.isScrollInProgress) {

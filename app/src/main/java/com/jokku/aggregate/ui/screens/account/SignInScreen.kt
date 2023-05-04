@@ -72,11 +72,12 @@ fun SignInScreen(
         }
         BigActionButton(
             modifier = Modifier.padding(top = 24.dp),
-            text = stringResource(id = R.string.sign_in)
-        ) {
-            navController.popBackStack()
-            navController.navigate(route = Screen.SelectFavoriteTopics.route)
-        }
+            text = stringResource(id = R.string.sign_in),
+            onClick = {
+                navController.popBackStack()
+                navController.navigate(route = Screen.SelectFavoriteTopics.route)
+            }
+        )
         Text(
             modifier = Modifier.padding(top = 48.dp),
             text = stringResource(id = R.string.or),
@@ -86,17 +87,19 @@ fun SignInScreen(
         SignInWithButton(
             modifier = Modifier.padding(top = 48.dp),
             painter = painterResource(id = R.drawable.ic_logo_google),
-            text = stringResource(id = R.string.sign_in_with_google)
-        ) {
-            TODO()
-        }
+            text = stringResource(id = R.string.sign_in_with_google),
+            onClick = {
+                TODO()
+            }
+        )
         SignInWithButton(
             modifier = Modifier.padding(top = 16.dp),
             painter = painterResource(id = R.drawable.ic_logo_facebook),
-            text = stringResource(id = R.string.sign_in_with_facebook)
-        ) {
-            TODO()
-        }
+            text = stringResource(id = R.string.sign_in_with_facebook),
+            onClick = {
+                TODO()
+            }
+        )
         Spacer(modifier = Modifier.weight(1f))
         HelpBottomText(
             questionText = stringResource(id = R.string.do_not_have_an_account),

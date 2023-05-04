@@ -137,11 +137,12 @@ fun VerificationCodeScreen(
         }
         BigActionButton(
             modifier = Modifier.padding(top = 16.dp),
-            text = stringResource(id = R.string.confirm)
-        ) {
-            navController.popBackStack(route = Screen.ForgotPassword.route, inclusive = true)
-            navController.navigate(route = Screen.CreateNewPassword.route)
-        }
+            text = stringResource(id = R.string.confirm),
+            onClick = {
+                navController.popBackStack(route = Screen.ForgotPassword.route, inclusive = true)
+                navController.navigate(route = Screen.CreateNewPassword.route)
+            }
+        )
         Spacer(modifier = Modifier.weight(1f))
         HelpBottomText(
             questionText = stringResource(id = R.string.did_not_receive_an_email),

@@ -88,19 +88,19 @@ fun ChangePasswordScreenContent(
                     )
                 }
             )
-            BigActionButton(text = stringResource(id = R.string.change_password)) {
-                navController.navigate(
-                    route = Screen.SignIn.route,
-                    navOptions = NavOptions.Builder()
-                        .setPopUpTo(route = Screen.Profile.route, inclusive = true)
-                        .build()
-                )
-            }
-
+            BigActionButton(
+                text = stringResource(id = R.string.change_password),
+                onClick = {
+                    navController.navigate(
+                        route = Screen.SignIn.route,
+                        navOptions = NavOptions.Builder()
+                            .setPopUpTo(route = Screen.Profile.route, inclusive = true)
+                            .build()
+                    )
+                }
+            )
         }
-
     }
-
 }
 
 @Preview(showBackground = true)
@@ -111,5 +111,4 @@ fun ChangePasswordScreenPreview() {
             navController = rememberNavController()
         )
     }
-
 }
