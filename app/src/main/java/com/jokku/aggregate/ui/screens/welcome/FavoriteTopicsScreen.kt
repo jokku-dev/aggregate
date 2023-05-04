@@ -40,8 +40,8 @@ fun SelectFavoriteTopicsScreen(
 
     CommonColumn {
         HeadlineAndDescriptionText(
-            headline = R.string.select_your_favorite_topics,
-            description = R.string.select_some_of_your_topics
+            headline = stringResource(id = R.string.select_your_favorite_topics),
+            description = stringResource(id = R.string.select_some_of_your_topics)
         )
         LazyVerticalGrid(
             modifier = Modifier

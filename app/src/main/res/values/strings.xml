@@ -113,4 +113,7 @@
     <string name="selected">selected</string>
     <string name="navigate_back">navigate back</string>
     <string name="share">share</string>
+    <string name="show_password">show password</string>
+    <string name="hide_password">hide password</string>
+    <string name="voice_input">voice input</string>
 </resources>

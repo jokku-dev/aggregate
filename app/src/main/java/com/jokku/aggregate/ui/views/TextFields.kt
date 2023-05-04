@@ -1,5 +1,6 @@
 package com.jokku.aggregate.ui.views
 
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.text.KeyboardActionScope
 import androidx.compose.foundation.text.KeyboardActions
@@ -7,7 +8,9 @@ import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
-import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.MaterialTheme.colorScheme
+import androidx.compose.material3.MaterialTheme.shapes
+import androidx.compose.material3.MaterialTheme.typography
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextFieldDefaults
@@ -27,48 +30,49 @@ import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.tooling.preview.Preview
 import com.jokku.aggregate.R
+import com.jokku.aggregate.ui.theme.AggregateTheme
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun UsernameTextField(
-    imeAction: ImeAction,
     username: String,
+    imeAction: ImeAction,
     onUsernameChange: (String) -> Unit,
     modifier: Modifier = Modifier,
-    placeholder: String = stringResource(id = R.string.username_hint)
+    placeholder: String = stringResource(id = R.string.username_hint),
+    focused: Boolean = false
 ) {
-    var focus by rememberSaveable { mutableStateOf(false) }
+    var fieldFocused by rememberSaveable { mutableStateOf(focused) }
 
     OutlinedTextField(
         modifier = modifier
             .fillMaxWidth()
-            .onFocusChanged { focusState -> focus = focusState.hasFocus },
+            .onFocusChanged { focusState -> fieldFocused = focusState.hasFocus },
         value = username,
         onValueChange = { newValue -> onUsernameChange(newValue) },
         singleLine = true,
         leadingIcon = {
             Icon(
                 imageVector = ImageVector.vectorResource(id = R.drawable.ic_profile),
-                contentDescription = placeholder,
-                tint = if (focus) MaterialTheme.colorScheme.primary
-                else MaterialTheme.colorScheme.onSecondary
+                contentDescription = placeholder
             )
         },
         placeholder = {
             Text(
                 text = placeholder,
-                style = MaterialTheme.typography.bodyLarge,
-                color = MaterialTheme.colorScheme.onSecondary
+                style = typography.bodyLarge
             )
         },
-        shape = MaterialTheme.shapes.medium,
-        textStyle = MaterialTheme.typography.bodyLarge,
+        shape = shapes.medium,
+        textStyle = typography.bodyLarge,
         colors = TextFieldDefaults.outlinedTextFieldColors(
-            textColor = MaterialTheme.colorScheme.onSurfaceVariant,
-            containerColor = if (focus) MaterialTheme.colorScheme.surface
-            else MaterialTheme.colorScheme.secondary,
-            focusedBorderColor = MaterialTheme.colorScheme.primary,
-            unfocusedBorderColor = MaterialTheme.colorScheme.secondary
+            textColor = colorScheme.onSurfaceVariant,
+            containerColor = if (fieldFocused) colorScheme.surface else colorScheme.secondary,
+            focusedBorderColor = colorScheme.primary,
+            unfocusedBorderColor = colorScheme.secondary,
+            focusedLeadingIconColor = colorScheme.primary,
+            unfocusedLeadingIconColor = colorScheme.onSecondary,
+            placeholderColor = colorScheme.onSecondary
         ),
         keyboardOptions = KeyboardOptions(
             keyboardType = KeyboardType.Text,
@@ -80,44 +84,44 @@ fun UsernameTextField(
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun EmailTextField(
-    imeAction: ImeAction,
     email: String,
+    imeAction: ImeAction,
     onEmailChange: (String) -> Unit,
     modifier: Modifier = Modifier,
-    placeholder: String = stringResource(id = R.string.email_hint)
+    placeholder: String = stringResource(id = R.string.email_hint),
+    focused: Boolean = false
 ) {
-    var focus by rememberSaveable { mutableStateOf(false) }
+    var fieldFocused by rememberSaveable { mutableStateOf(focused) }
 
     OutlinedTextField(
         modifier = modifier
             .fillMaxWidth()
-            .onFocusChanged { focusState -> focus = focusState.hasFocus },
+            .onFocusChanged { focusState -> fieldFocused = focusState.hasFocus },
         value = email,
         onValueChange = { newValue -> onEmailChange(newValue) },
         singleLine = true,
         leadingIcon = {
             Icon(
                 imageVector = ImageVector.vectorResource(id = R.drawable.ic_email),
-                contentDescription = placeholder,
-                tint = if (focus) MaterialTheme.colorScheme.primary
-                else MaterialTheme.colorScheme.onSecondary
+                contentDescription = placeholder
             )
         },
         placeholder = {
             Text(
                 text = placeholder,
-                style = MaterialTheme.typography.bodyLarge,
-                color = MaterialTheme.colorScheme.onSecondary
+                style = typography.bodyLarge
             )
         },
-        shape = MaterialTheme.shapes.medium,
-        textStyle = MaterialTheme.typography.bodyLarge,
+        shape = shapes.medium,
+        textStyle = typography.bodyLarge,
         colors = TextFieldDefaults.outlinedTextFieldColors(
-            textColor = MaterialTheme.colorScheme.onSurfaceVariant,
-            containerColor = if (focus) MaterialTheme.colorScheme.surface
-            else MaterialTheme.colorScheme.secondary,
-            focusedBorderColor = MaterialTheme.colorScheme.primary,
-            unfocusedBorderColor = MaterialTheme.colorScheme.secondary
+            textColor = colorScheme.onSurfaceVariant,
+            containerColor = if (fieldFocused) colorScheme.surface else colorScheme.secondary,
+            focusedBorderColor = colorScheme.primary,
+            unfocusedBorderColor = colorScheme.secondary,
+            focusedLeadingIconColor = colorScheme.primary,
+            unfocusedLeadingIconColor = colorScheme.onSecondary,
+            placeholderColor = colorScheme.onSecondary
         ),
         keyboardOptions = KeyboardOptions(
             keyboardType = KeyboardType.Email,
@@ -130,61 +134,60 @@ fun EmailTextField(
 @Composable
 fun PasswordTextField(
     placeholder: String,
-    imeAction: ImeAction,
     password: String,
+    imeAction: ImeAction,
     onPasswordChange: (String) -> Unit,
     modifier: Modifier = Modifier,
-    keyboardAction: KeyboardActionScope.() -> Unit = {}
+    keyboardAction: KeyboardActionScope.() -> Unit = {},
+    visible: Boolean = false,
+    focused: Boolean = false
 ) {
-    var isPasswordVisible by rememberSaveable { mutableStateOf(false) }
-    var focus by rememberSaveable { mutableStateOf(false) }
-    val visibilityIcon = if (isPasswordVisible) R.drawable.ic_visibility_off
-    else R.drawable.ic_visibility
+    var passwordVisible by rememberSaveable { mutableStateOf(visible) }
+    var fieldFocused by rememberSaveable { mutableStateOf(focused) }
 
     OutlinedTextField(
         modifier = modifier
             .fillMaxWidth()
-            .onFocusChanged { focusState -> focus = focusState.hasFocus },
+            .onFocusChanged { focusState -> fieldFocused = focusState.hasFocus },
         value = password,
         onValueChange = { newValue -> onPasswordChange(newValue) },
         singleLine = true,
         leadingIcon = {
             Icon(
                 imageVector = ImageVector.vectorResource(id = R.drawable.ic_lock),
-                contentDescription = placeholder,
-                tint = if (focus) MaterialTheme.colorScheme.primary
-                else MaterialTheme.colorScheme.onSecondary
+                contentDescription = placeholder
             )
         },
         placeholder = {
             Text(
                 text = placeholder,
-                style = MaterialTheme.typography.bodyLarge,
-                color = MaterialTheme.colorScheme.onSecondary
+                style = typography.bodyLarge
             )
         },
         trailingIcon = {
-            IconButton(
-                onClick = { isPasswordVisible = !isPasswordVisible },
-            ) {
+            IconButton(onClick = { passwordVisible = !passwordVisible }) {
                 Icon(
-                    imageVector = ImageVector.vectorResource(id = visibilityIcon),
-                    contentDescription = null,
-                    tint = if (focus) MaterialTheme.colorScheme.primary
-                    else MaterialTheme.colorScheme.onSecondary
+                    imageVector = if (passwordVisible) ImageVector.vectorResource(id = R.drawable.ic_visibility_off)
+                    else ImageVector.vectorResource(id = R.drawable.ic_visibility),
+                    contentDescription = if (passwordVisible) stringResource(id = R.string.hide_password)
+                    else stringResource(id = R.string.show_password)
                 )
             }
         },
-        visualTransformation = if (isPasswordVisible) VisualTransformation.None
+        visualTransformation = if (passwordVisible) VisualTransformation.None
         else PasswordVisualTransformation('\u002a'),
-        shape = MaterialTheme.shapes.medium,
-        textStyle = MaterialTheme.typography.bodyLarge,
+        shape = shapes.medium,
+        textStyle = typography.bodyLarge,
         colors = TextFieldDefaults.outlinedTextFieldColors(
-            textColor = MaterialTheme.colorScheme.onSurfaceVariant,
-            containerColor = if (focus) MaterialTheme.colorScheme.surface
-            else MaterialTheme.colorScheme.secondary,
-            focusedBorderColor = MaterialTheme.colorScheme.primary,
-            unfocusedBorderColor = MaterialTheme.colorScheme.secondary
+            textColor = colorScheme.onSurfaceVariant,
+            containerColor = if (fieldFocused) colorScheme.surface else colorScheme.secondary,
+            focusedBorderColor = colorScheme.primary,
+            unfocusedBorderColor = colorScheme.secondary,
+            focusedLeadingIconColor = colorScheme.primary,
+            unfocusedLeadingIconColor = colorScheme.onSecondary,
+            placeholderColor = colorScheme.onSecondary,
+            focusedTrailingIconColor = colorScheme.primary,
+            unfocusedTrailingIconColor = colorScheme.onSecondary
         ),
         keyboardOptions = KeyboardOptions(
             keyboardType = KeyboardType.Password,
@@ -200,69 +203,142 @@ fun SearchTextField(
     search: String,
     onSearchChange: (String) -> Unit,
     keyboardAction: KeyboardActionScope.() -> Unit,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    focused: Boolean = false
 ) {
-    var focus by rememberSaveable { mutableStateOf(false) }
+    var fieldFocused by rememberSaveable { mutableStateOf(focused) }
 
     OutlinedTextField(
         value = search,
         onValueChange = { newValue -> onSearchChange(newValue) },
         modifier = modifier
             .fillMaxWidth()
-            .onFocusChanged { focusState -> focus = focusState.hasFocus },
-        textStyle = MaterialTheme.typography.bodyLarge,
-        placeholder = {
-            Text(
-                text = stringResource(id = R.string.search),
-                style = MaterialTheme.typography.bodyLarge,
-                color = MaterialTheme.colorScheme.onSecondary
-            )
-        },
+            .onFocusChanged { focusState -> fieldFocused = focusState.hasFocus },
+        textStyle = typography.bodyLarge,
         leadingIcon = {
             Icon(
                 imageVector = ImageVector.vectorResource(id = R.drawable.ic_search),
-                contentDescription = stringResource(id = R.string.search),
-                tint = if (focus) MaterialTheme.colorScheme.primary
-                else MaterialTheme.colorScheme.onSecondary
+                contentDescription = stringResource(id = R.string.search)
+            )
+        },
+        placeholder = {
+            Text(
+                text = stringResource(id = R.string.search),
+                style = typography.bodyLarge
             )
         },
         trailingIcon = {
-            IconButton(
-                onClick = { TODO() },
-            ) {
+            IconButton(onClick = { }) {
                 Icon(
                     imageVector = ImageVector.vectorResource(id = R.drawable.ic_mic),
-                    contentDescription = null,
-                    tint = if (focus) MaterialTheme.colorScheme.primary
-                    else MaterialTheme.colorScheme.onSecondary
+                    contentDescription = stringResource(id = R.string.voice_input)
                 )
             }
         },
+        singleLine = true,
+        shape = shapes.medium,
+        colors = TextFieldDefaults.outlinedTextFieldColors(
+            textColor = colorScheme.onSurfaceVariant,
+            containerColor = if (fieldFocused) colorScheme.surface else colorScheme.secondary,
+            focusedBorderColor = colorScheme.primary,
+            unfocusedBorderColor = colorScheme.secondary,
+            focusedLeadingIconColor = colorScheme.primary,
+            unfocusedLeadingIconColor = colorScheme.onSecondary,
+            placeholderColor = colorScheme.onSecondary,
+            focusedTrailingIconColor = colorScheme.primary,
+            unfocusedTrailingIconColor = colorScheme.onSecondary
+        ),
         keyboardOptions = KeyboardOptions(
             keyboardType = KeyboardType.Text,
             imeAction = ImeAction.Search
         ),
-        keyboardActions = KeyboardActions(onDone = keyboardAction),
-        singleLine = true,
-        shape = MaterialTheme.shapes.medium,
-        colors = TextFieldDefaults.outlinedTextFieldColors(
-            textColor = MaterialTheme.colorScheme.onSurfaceVariant,
-            containerColor = if (focus) MaterialTheme.colorScheme.surface
-            else MaterialTheme.colorScheme.secondary,
-            focusedBorderColor = MaterialTheme.colorScheme.primary,
-            unfocusedBorderColor = MaterialTheme.colorScheme.secondary
-        )
+        keyboardActions = KeyboardActions(onDone = keyboardAction)
     )
 }
 
-@Preview(showBackground = true)
+@Preview(showBackground = true, name = "Unfocused and Focused")
+@Composable
+fun UsernameTextFieldPreview() {
+    AggregateTheme {
+        Column {
+            UsernameTextField(
+                username = "Username",
+                imeAction = ImeAction.Next,
+                onUsernameChange = {},
+                focused = false
+            )
+            UsernameTextField(
+                username = "Username",
+                imeAction = ImeAction.Next,
+                onUsernameChange = {},
+                focused = true
+            )
+        }
+
+    }
+}
+
+@Preview(showBackground = true, name = "Unfocused and Focused")
 @Composable
 private fun EmailTextFieldPreview() {
-
+    AggregateTheme {
+        Column {
+            EmailTextField(
+                email = "Email",
+                imeAction = ImeAction.Next,
+                onEmailChange = {},
+                focused = false
+            )
+            EmailTextField(
+                email = "Email",
+                imeAction = ImeAction.Next,
+                onEmailChange = {},
+                focused = true
+            )
+        }
+    }
 }
 
 @Preview(showBackground = true)
 @Composable
 private fun PasswordTextFieldPreview() {
+    AggregateTheme {
+        Column {
+            PasswordTextField(
+                placeholder = "Password",
+                password = "password",
+                imeAction = ImeAction.Next,
+                onPasswordChange = {}
+            )
+            PasswordTextField(
+                placeholder = "Password",
+                password = "password",
+                imeAction = ImeAction.Next,
+                onPasswordChange = {},
+                visible = true,
+                focused = true
+            )
+        }
+    }
+}
 
+@Preview
+@Composable
+fun SearchTextFieldPreview() {
+    AggregateTheme {
+        Column {
+            SearchTextField(
+                search = "Search",
+                onSearchChange = {},
+                keyboardAction = {},
+                focused = false
+            )
+            SearchTextField(
+                search = "Search",
+                onSearchChange = {},
+                keyboardAction = {},
+                focused = true
+            )
+        }
+    }
 }

@@ -52,7 +52,6 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavHostController
-import androidx.navigation.compose.rememberNavController
 import com.google.accompanist.systemuicontroller.SystemUiController
 import com.google.accompanist.systemuicontroller.rememberSystemUiController
 import com.jokku.aggregate.R
@@ -63,6 +62,9 @@ import com.jokku.aggregate.ui.viewmodel.Article
 import com.jokku.aggregate.ui.viewmodel.MainNewsViewModel
 import com.jokku.aggregate.ui.viewmodel.NewsViewModel
 import com.jokku.aggregate.ui.views.ArticleTopBar
+import com.jokku.aggregate.ui.views.CategoryItem
+
+private const val OTHER = "other"
 
 @Composable
 fun ArticleScreen(
@@ -79,8 +81,10 @@ fun ArticleScreen(
 
     ArticleScreenContent(
         article = state.article,
-        navController = navController,
-        currentScreen = { newCurrentScreen -> currentScreen = newCurrentScreen }
+        onBackClick = {
+            currentScreen = OTHER
+            navController.popBackStack()
+        }
     )
 
     LaunchedEffect(key1 = currentScreen) {
@@ -94,7 +98,7 @@ fun ArticleScreen(
     DisposableEffect(key1 = Unit) {
         val backCallback: OnBackPressedCallback = object : OnBackPressedCallback(true) {
             override fun handleOnBackPressed() {
-                currentScreen = "other"
+                currentScreen = OTHER
                 isEnabled = false
                 navController.popBackStack()
             }
@@ -110,8 +114,7 @@ fun ArticleScreen(
 @Composable
 fun ArticleScreenContent(
     article: Article,
-    navController: NavHostController,
-    currentScreen: (String) -> Unit,
+    onBackClick: () -> Unit,
     modifier: Modifier = Modifier,
     headerHeight: Dp = 400.dp,
     heightToShowTopBar: Dp = 108.dp,
@@ -135,10 +138,7 @@ fun ArticleScreenContent(
             bookmarked = article.bookmarked,
             scrollState = scrollState,
             headerHeightPx = headerHeightPx,
-            onBackClick = {
-                currentScreen("other")
-                navController.popBackStack()
-            },
+            onBackClick = onBackClick,
             onShareClick = {},
             onBookmarkClick = {},
             modifier = Modifier.height(headerHeight)
@@ -156,10 +156,7 @@ fun ArticleScreenContent(
             topBarHeightPx = topBarHeightPx,
             headerHeightPx = headerHeightPx,
             scrollState = scrollState,
-            onBackClick = {
-                currentScreen("other")
-                navController.popBackStack()
-            },
+            onBackClick = onBackClick,
             onShareClick = {},
             onBookmarkClick = {},
         )
@@ -322,8 +319,7 @@ fun ArticleScreenPreview() {
                 publishedAt = "2023-04-25T08:36",
                 bookmarked = false
             ),
-            currentScreen = {},
-            navController = rememberNavController()
+            onBackClick = {}
         )
     }
 }

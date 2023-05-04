@@ -36,8 +36,8 @@ fun SignUpScreen(
 
     CommonColumn {
         HeadlineAndDescriptionText(
-            headline = R.string.welcome_to_aggregate,
-            description = R.string.i_guess_you_are_new_around
+            headline = stringResource(id = R.string.welcome_to_aggregate),
+            description = stringResource(id = R.string.i_guess_you_are_new_around)
         )
         UsernameTextField(
             modifier = Modifier.padding(top = 32.dp),
@@ -81,10 +81,11 @@ fun SignUpScreen(
         HelpBottomText(
             questionText = stringResource(id = R.string.already_have_an_account),
             actionText = AnnotatedString(text = stringResource(id = R.string.sign_in)),
-        ) {
-            navController.popBackStack(route = Screen.SignIn.route, inclusive = true)
-            navController.navigate(route = Screen.SignIn.route)
-        }
+            onClick = {
+                navController.popBackStack(route = Screen.SignIn.route, inclusive = true)
+                navController.navigate(route = Screen.SignIn.route)
+            }
+        )
     }
 }
 

@@ -39,8 +39,8 @@ fun SignInScreen(
 
     CommonColumn {
         HeadlineAndDescriptionText(
-            headline = R.string.welcome_back,
-            description = R.string.i_am_happy_to_see_you_again
+            headline = stringResource(id = R.string.welcome_back),
+            description = stringResource(id = R.string.i_am_happy_to_see_you_again)
         )
         EmailTextField(
             modifier = Modifier.padding(top = 32.dp),
@@ -103,10 +103,9 @@ fun SignInScreen(
         Spacer(modifier = Modifier.weight(1f))
         HelpBottomText(
             questionText = stringResource(id = R.string.do_not_have_an_account),
-            actionText = AnnotatedString(text = stringResource(id = R.string.sign_up))
-        ) {
-            navController.navigate(route = Screen.SignUp.route)
-        }
+            actionText = AnnotatedString(text = stringResource(id = R.string.sign_up)),
+            onClick = { navController.navigate(route = Screen.SignUp.route) }
+        )
     }
 }
 

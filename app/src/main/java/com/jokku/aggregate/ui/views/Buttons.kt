@@ -10,7 +10,9 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.size
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
-import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.MaterialTheme.colorScheme
+import androidx.compose.material3.MaterialTheme.shapes
+import androidx.compose.material3.MaterialTheme.typography
 import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -36,15 +38,15 @@ fun BigActionButton(
             .fillMaxWidth()
             .height(56.dp),
         onClick = onClick,
-        shape = MaterialTheme.shapes.medium,
+        shape = shapes.medium,
         colors = ButtonDefaults.buttonColors(
-            containerColor = MaterialTheme.colorScheme.primary,
-            contentColor = MaterialTheme.colorScheme.surface
+            containerColor = colorScheme.primary,
+            contentColor = colorScheme.surface
         )
     ) {
         Text(
             text = text,
-            style = MaterialTheme.typography.titleLarge
+            style = typography.titleLarge
         )
     }
 }
@@ -61,12 +63,15 @@ fun SignInWithButton(
             .fillMaxWidth()
             .height(56.dp),
         onClick = onClick,
-        shape = MaterialTheme.shapes.medium,
+        shape = shapes.medium,
         colors = ButtonDefaults.outlinedButtonColors(
-            containerColor = MaterialTheme.colorScheme.surface,
-            contentColor = MaterialTheme.colorScheme.onBackground
+            containerColor = colorScheme.surface,
+            contentColor = colorScheme.onBackground
         ),
-        border = BorderStroke(width = 1.dp, color = MaterialTheme.colorScheme.secondary)
+        border = BorderStroke(
+            width = 1.dp,
+            color = colorScheme.secondary
+        )
     ) {
         Row(
             modifier = Modifier.fillMaxWidth(),
@@ -80,7 +85,7 @@ fun SignInWithButton(
             )
             Text(
                 text = text,
-                style = MaterialTheme.typography.titleLarge,
+                style = typography.titleLarge,
                 textAlign = TextAlign.Center
             )
             Spacer(
@@ -89,7 +94,6 @@ fun SignInWithButton(
         }
     }
 }
-
 
 @Preview
 @Composable

@@ -10,7 +10,8 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.text.ClickableText
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
-import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.MaterialTheme.colorScheme
+import androidx.compose.material3.MaterialTheme.typography
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -26,8 +27,8 @@ import com.jokku.aggregate.ui.theme.AggregateTheme
 
 @Composable
 fun HeadlineAndDescriptionText(
-    headline: Int,
-    description: Int,
+    headline: String,
+    description: String,
     modifier: Modifier = Modifier
 ) {
     Column(
@@ -35,14 +36,14 @@ fun HeadlineAndDescriptionText(
         horizontalAlignment = Alignment.Start
     ) {
         Text(
-            text = stringResource(id = headline),
-            style = MaterialTheme.typography.headlineLarge,
-            color = MaterialTheme.colorScheme.onSurfaceVariant
+            text = headline,
+            style = typography.headlineLarge,
+            color = colorScheme.onSurfaceVariant
         )
         Text(
-            text = stringResource(id = description),
-            style = MaterialTheme.typography.bodyMedium,
-            color = MaterialTheme.colorScheme.onSecondary
+            text = description,
+            style = typography.bodyMedium,
+            color = colorScheme.onSecondary
         )
     }
 }
@@ -58,19 +59,17 @@ fun BackButtonAndHeadlineText(
         verticalAlignment = Alignment.CenterVertically,
         modifier = modifier.fillMaxWidth()
     ) {
-        IconButton(
-            onClick = onClick
-        ) {
+        IconButton(onClick = onClick) {
             Icon(
                 imageVector = ImageVector.vectorResource(id = R.drawable.ic_arrow_back),
                 contentDescription = null,
-                tint = MaterialTheme.colorScheme.onSecondary
+                tint = colorScheme.onSecondary
             )
         }
         Text(
             text = headline,
-            style = MaterialTheme.typography.headlineLarge,
-            color = MaterialTheme.colorScheme.onSurfaceVariant
+            style = typography.headlineLarge,
+            color = colorScheme.onSurfaceVariant
         )
         Spacer(modifier = Modifier.size(48.dp))
     }
@@ -80,8 +79,8 @@ fun BackButtonAndHeadlineText(
 fun HelpBottomText(
     questionText: String,
     actionText: AnnotatedString,
-    modifier: Modifier = Modifier,
-    onClick: (Int) -> Unit
+    onClick: (Int) -> Unit,
+    modifier: Modifier = Modifier
 ) {
     Row(
         modifier = modifier
@@ -91,23 +90,43 @@ fun HelpBottomText(
     ) {
         Text(
             text = "$questionText ",
-            style = MaterialTheme.typography.bodyLarge,
-            color = MaterialTheme.colorScheme.onSecondary
+            style = typography.bodyLarge,
+            color = colorScheme.onSecondary
         )
         ClickableText(
             text = actionText,
-            style = MaterialTheme.typography.bodyLarge.copy(
-                color = MaterialTheme.colorScheme.onSurfaceVariant
+            style = typography.bodyLarge.copy(
+                color = colorScheme.onSurfaceVariant
             ),
             onClick = onClick
         )
     }
 }
 
-@Preview(showBackground = true, backgroundColor = 0xFFFFFFFF)
+@Preview(showBackground = true)
+@Composable
+fun HeadlineAndDescriptionTextPreview() {
+    AggregateTheme {
+        HeadlineAndDescriptionText(headline = "Headline", description = "Long description")
+    }
+}
+
+@Preview(showBackground = true)
 @Composable
 fun BackButtonAndHeadlineTextPreview() {
     AggregateTheme {
         BackButtonAndHeadlineText(headline = stringResource(R.string.language), onClick = {})
+    }
+}
+
+@Preview(showBackground = true)
+@Composable
+fun HelpBottomTextPreview() {
+    AggregateTheme {
+        HelpBottomText(
+            questionText = "Question text?",
+            actionText = AnnotatedString("Action text"),
+            onClick = {}
+        )
     }
 }

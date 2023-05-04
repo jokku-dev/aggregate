@@ -1,15 +1,10 @@
 package com.jokku.aggregate.ui.screens
 
-import androidx.compose.foundation.Image
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
@@ -20,11 +15,9 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
@@ -35,6 +28,7 @@ import com.jokku.aggregate.ui.nav.Screen
 import com.jokku.aggregate.ui.theme.AggregateTheme
 import com.jokku.aggregate.ui.viewmodel.Article
 import com.jokku.aggregate.ui.viewmodel.MainNewsViewModel
+import com.jokku.aggregate.ui.views.BookmarkedArticleItem
 import com.jokku.aggregate.ui.views.CommonColumn
 import com.jokku.aggregate.ui.views.HeadlineAndDescriptionText
 
@@ -61,8 +55,8 @@ fun BookmarksScreenContent(
 ) {
     CommonColumn {
         HeadlineAndDescriptionText(
-            headline = R.string.bookmarks,
-            description = R.string.saved_articles
+            headline = stringResource(id = R.string.bookmarks),
+            description = stringResource(id = R.string.saved_articles)
         )
         if (articles.isEmpty()) {
             Column(
@@ -104,8 +98,10 @@ fun BookmarksScreenContent(
             ) {
                 items(count = articles.size) {
                     BookmarkedArticleItem(
-                        article = articles[it],
-                        onItemClick = openArticle
+                        image = articles[it].image,
+                        title = articles[it].title,
+                        sourceName = articles[it].sourceName,
+                        onItemClick = { openArticle(articles[it]) }
                     )
                 }
             }
@@ -113,51 +109,7 @@ fun BookmarksScreenContent(
     }
 }
 
-@Composable
-fun BookmarkedArticleItem(
-    article: Article,
-    onItemClick: (Article) -> Unit
-) {
-    Row(
-        modifier = Modifier
-            .fillMaxWidth()
-            .height(96.dp)
-            .clickable(onClick = { onItemClick(article) }),
-        horizontalArrangement = Arrangement.Start,
-        verticalAlignment = Alignment.CenterVertically
-    ) {
-//        AsyncImage(
-//            model = ImageRequest.Builder(LocalContext.current)
-//                .data(article.image)
-//                .size(96)
-//                .build(),
-//            contentDescription = article.title,
-//            modifier = Modifier.clip(MaterialTheme.shapes.medium),
-//            alignment = Alignment.CenterStart
-//        )
-        Image(painter = painterResource(id = article.image), contentDescription = article.title)
-        Column(
-            modifier = Modifier
-                .fillMaxHeight()
-                .padding(start = 16.dp),
-            verticalArrangement = Arrangement.Center,
-            horizontalAlignment = Alignment.Start
-        ) {
-            Text(
-                text = article.sourceName,
-                style = MaterialTheme.typography.labelMedium,
-                color = MaterialTheme.colorScheme.onSecondary
-            )
-            Text(
-                text = article.title,
-                style = MaterialTheme.typography.titleSmall,
-                color = MaterialTheme.colorScheme.onSurfaceVariant,
-                maxLines = 3,
-                overflow = TextOverflow.Ellipsis
-            )
-        }
-    }
-}
+
 
 @Preview(showBackground = true)
 @Composable
@@ -195,25 +147,5 @@ fun BookmarksScreenPreview() {
             ),
             openArticle = {}
         )
-
     }
-}
-
-@Preview(showBackground = true)
-@Composable
-fun BookmarkedArticleItemPreview() {
-    AggregateTheme {
-        BookmarkedArticleItem(
-            article = Article(
-                sourceName = "CNN",
-                author = "Oliver Darcy",
-                title = "Fox News' sudden firing of Tucker Carlson may have come down to one simple calculation - CNN",
-                url = "",
-                image = R.drawable.img_news_mock_1,
-                publishedAt = "2023-04-25T08:36",
-                bookmarked = false
-            )
-        ) {}
-    }
-
 }

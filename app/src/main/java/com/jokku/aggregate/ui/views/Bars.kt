@@ -72,6 +72,7 @@ fun ArticleTopBar(
     // derived state triggers recomposition only if result changes and not if changes any inner state
     // so we use it to reduce unnecessary recompositions when some inner state changes
     val showTopBar by remember { derivedStateOf { scrollState.value >= topBarBottom } }
+
     LaunchedEffect(key1 = showTopBar) {
         if (showTopBar) systemUiController.setStatusBarColor(color = colorScheme.surface)
         else systemUiController.setStatusBarColor(color = Color.Transparent)
@@ -92,6 +93,15 @@ fun ArticleTopBar(
                     )
                 }
             },
+            title = {
+                Text(
+                    text = sourceName,
+                    style = typography.headlineMedium,
+                    maxLines = 1,
+                    overflow = TextOverflow.Clip,
+                    softWrap = false
+                )
+            },
             actions = {
                 IconButton(onClick = onShareClick) {
                     Icon(
@@ -107,15 +117,6 @@ fun ArticleTopBar(
                         else stringResource(id = R.string.not_bookmarked)
                     )
                 }
-            },
-            title = {
-                Text(
-                    text = sourceName,
-                    style = typography.headlineMedium,
-                    maxLines = 1,
-                    overflow = TextOverflow.Clip,
-                    softWrap = false
-                )
             },
             colors = TopAppBarDefaults.centerAlignedTopAppBarColors(
                 containerColor = colorScheme.surface,
@@ -181,14 +182,14 @@ fun BottomBar(
                             }
                         }
                     },
-                    // Defines whether any of hierarchy destinations and item roots are the same
-                    // (in cases of nested navigation)
-                    selected = currentDestination?.hierarchy?.any { it.route == item.route } == true,
                     colors = NavigationBarItemDefaults.colors(
                         selectedIconColor = colorScheme.primary,
                         unselectedIconColor = colorScheme.onSurface,
                         indicatorColor = colorScheme.surface
                     ),
+                    // Defines whether any of hierarchy destinations and item roots are the same
+                    // (in cases of nested navigation)
+                    selected = currentDestination?.hierarchy?.any { it.route == item.route } == true,
                     onClick = {
                         navController.navigate(item.route) {
                             // pops all previous destinations up to start destination
@@ -212,7 +213,7 @@ fun BottomBar(
 fun ArticleTopBarPreview() {
     AggregateTheme {
         ArticleTopBar(
-            sourceName = "SourceName",
+            sourceName = "Source Name",
             url = "",
             bookmarked = true,
             scrollState = rememberScrollState(),

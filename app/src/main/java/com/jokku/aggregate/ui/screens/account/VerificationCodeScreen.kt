@@ -146,10 +146,9 @@ fun VerificationCodeScreen(
         Spacer(modifier = Modifier.weight(1f))
         HelpBottomText(
             questionText = stringResource(id = R.string.did_not_receive_an_email),
-            actionText = AnnotatedString(stringResource(id = R.string.send_again))
-        ) {
-            TODO()
-        }
+            actionText = AnnotatedString(stringResource(id = R.string.send_again)),
+            onClick = { }
+        )
         //request textField focus and show keyboard in case of onResume event
         DisposableEffect(key1 = lifecycleOwner) {
             val observer = LifecycleEventObserver { _, event ->

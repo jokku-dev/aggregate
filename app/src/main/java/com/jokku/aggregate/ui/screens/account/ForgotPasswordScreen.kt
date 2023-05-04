@@ -31,8 +31,8 @@ fun ForgotPasswordScreen(
 
     CommonColumn {
         HeadlineAndDescriptionText(
-            headline = R.string.forgot_password,
-            description = R.string.we_need_your_email
+            headline = stringResource(id = R.string.forgot_password),
+            description = stringResource(id = R.string.we_need_your_email)
         )
         EmailTextField(
             modifier = Modifier.padding(top = 32.dp),
@@ -51,11 +51,12 @@ fun ForgotPasswordScreen(
         Spacer(modifier = Modifier.weight(1f))
         HelpBottomText(
             questionText = stringResource(id = R.string.remember_the_password),
-            actionText = AnnotatedString(stringResource(id = R.string.try_again))
-        ) {
-            navController.popBackStack(route = Screen.SignIn.route, inclusive = true)
-            navController.navigate(route = Screen.SignIn.route)
-        }
+            actionText = AnnotatedString(stringResource(id = R.string.try_again)),
+            onClick = {
+                navController.popBackStack(route = Screen.SignIn.route, inclusive = true)
+                navController.navigate(route = Screen.SignIn.route)
+            }
+        )
     }
 }
 

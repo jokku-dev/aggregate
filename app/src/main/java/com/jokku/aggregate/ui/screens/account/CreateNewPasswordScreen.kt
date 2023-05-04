@@ -32,8 +32,8 @@ fun CreateNewPasswordScreen(
 
     CommonColumn {
         HeadlineAndDescriptionText(
-            headline = R.string.create_new_password,
-            description = R.string.you_can_create_a_new_password
+            headline = stringResource(id = R.string.create_new_password),
+            description = stringResource(id = R.string.you_can_create_a_new_password)
         )
         PasswordTextField(
             modifier = Modifier.padding(top = 32.dp),
@@ -61,11 +61,12 @@ fun CreateNewPasswordScreen(
         Spacer(modifier = Modifier.weight(1f))
         HelpBottomText(
             questionText = stringResource(id = R.string.remember_an_old_password),
-            actionText = AnnotatedString(stringResource(id = R.string.try_again))
-        ) {
-            navController.popBackStack()
-            navController.navigate(route = Screen.SignIn.route)
-        }
+            actionText = AnnotatedString(stringResource(id = R.string.try_again)),
+            onClick = {
+                navController.popBackStack()
+                navController.navigate(route = Screen.SignIn.route)
+            }
+        )
     }
 }
 
