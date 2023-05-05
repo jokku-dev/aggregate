@@ -2,8 +2,11 @@ package com.jokku.aggregate.ui.screens.account
 
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.text.ClickableText
-import androidx.compose.material3.MaterialTheme
+import androidx.compose.foundation.verticalScroll
+import androidx.compose.material3.MaterialTheme.colorScheme
+import androidx.compose.material3.MaterialTheme.typography
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -19,9 +22,9 @@ import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
-import androidx.navigation.compose.rememberNavController
 import com.jokku.aggregate.R
 import com.jokku.aggregate.ui.nav.Screen
+import com.jokku.aggregate.ui.theme.AggregateTheme
 import com.jokku.aggregate.ui.views.BigActionButton
 import com.jokku.aggregate.ui.views.CommonColumn
 import com.jokku.aggregate.ui.views.EmailTextField
@@ -37,7 +40,37 @@ fun SignInScreen(
     var email by rememberSaveable { mutableStateOf("") }
     var password by rememberSaveable { mutableStateOf("") }
 
-    CommonColumn {
+    SignInScreenContent(
+        email = email,
+        password = password,
+        onEmailChange = { newEmail -> email = newEmail },
+        onPasswordChange = { newPassword -> password = newPassword },
+        onButtonClick = {
+            navController.popBackStack(route = Screen.SignIn.route, inclusive = true)
+            navController.navigate(route = Screen.Home.route)
+        },
+        onForgotPasswordClick = { navController.navigate(route = Screen.ForgotPassword.route) },
+        onSignInWithGoogleClick = {},
+        onSignInWithFacebookClick = {},
+        onBottomTextClick = { navController.navigate(route = Screen.SignUp.route) }
+    )
+}
+
+@Composable
+fun SignInScreenContent(
+    email: String,
+    password: String,
+    onEmailChange: (String) -> Unit,
+    onPasswordChange: (String) -> Unit,
+    onButtonClick: () -> Unit,
+    onForgotPasswordClick: () -> Unit,
+    onSignInWithGoogleClick: () -> Unit,
+    onSignInWithFacebookClick: () -> Unit,
+    onBottomTextClick: () -> Unit
+) {
+    val scrollState = rememberScrollState()
+
+    CommonColumn(modifier = Modifier.verticalScroll(state = scrollState)) {
         HeadlineAndDescriptionText(
             headline = stringResource(id = R.string.welcome_back),
             description = stringResource(id = R.string.i_am_happy_to_see_you_again)
@@ -46,65 +79,52 @@ fun SignInScreen(
             modifier = Modifier.padding(top = 32.dp),
             imeAction = ImeAction.Next,
             email = email,
-            onEmailChange = { newEmail -> email = newEmail }
+            onEmailChange = { newEmail -> onEmailChange(newEmail) }
         )
         PasswordTextField(
             modifier = Modifier.padding(top = 16.dp),
             placeholder = stringResource(id = R.string.password_hint),
             imeAction = ImeAction.Done,
-            keyboardAction = {
-                navController.popBackStack()
-                navController.navigate(route = Screen.Verification.route)
-            },
+            keyboardAction = { onButtonClick() },
             password = password,
-            onPasswordChange = { newPassword -> password = newPassword }
+            onPasswordChange = { newPassword -> onPasswordChange(newPassword) }
         )
         ClickableText(
             modifier = Modifier
                 .align(alignment = Alignment.End)
                 .padding(top = 16.dp),
             text = AnnotatedString(text = stringResource(id = R.string.forgot_password_question)),
-            style = MaterialTheme.typography.bodyLarge.copy(
-                color = MaterialTheme.colorScheme.onSurfaceVariant
-            )
-        ) {
-            navController.navigate(route = Screen.ForgotPassword.route)
-        }
+            style = typography.bodyLarge.copy(color = colorScheme.onSurfaceVariant),
+            onClick = { onForgotPasswordClick() }
+        )
         BigActionButton(
             modifier = Modifier.padding(top = 24.dp),
             text = stringResource(id = R.string.sign_in),
-            onClick = {
-                navController.popBackStack()
-                navController.navigate(route = Screen.SelectFavoriteTopics.route)
-            }
+            onClick = onButtonClick
         )
         Text(
             modifier = Modifier.padding(top = 48.dp),
             text = stringResource(id = R.string.or),
-            style = MaterialTheme.typography.titleLarge,
-            color = MaterialTheme.colorScheme.onSecondary
+            style = typography.titleLarge,
+            color = colorScheme.onSecondary
         )
         SignInWithButton(
             modifier = Modifier.padding(top = 48.dp),
             painter = painterResource(id = R.drawable.ic_logo_google),
             text = stringResource(id = R.string.sign_in_with_google),
-            onClick = {
-                TODO()
-            }
+            onClick = onSignInWithGoogleClick
         )
         SignInWithButton(
             modifier = Modifier.padding(top = 16.dp),
             painter = painterResource(id = R.drawable.ic_logo_facebook),
             text = stringResource(id = R.string.sign_in_with_facebook),
-            onClick = {
-                TODO()
-            }
+            onClick = onSignInWithFacebookClick
         )
         Spacer(modifier = Modifier.weight(1f))
         HelpBottomText(
             questionText = stringResource(id = R.string.do_not_have_an_account),
             actionText = AnnotatedString(text = stringResource(id = R.string.sign_up)),
-            onClick = { navController.navigate(route = Screen.SignUp.route) }
+            onClick = onBottomTextClick
         )
     }
 }
@@ -112,5 +132,17 @@ fun SignInScreen(
 @Preview(showBackground = true)
 @Composable
 fun SignInScreenPreview() {
-    SignInScreen(navController = rememberNavController())
+    AggregateTheme {
+        SignInScreenContent(
+            email = "Email",
+            password = "Password",
+            onEmailChange = {},
+            onPasswordChange = {},
+            onButtonClick = {},
+            onForgotPasswordClick = {},
+            onSignInWithGoogleClick = {},
+            onSignInWithFacebookClick = {},
+            onBottomTextClick = {}
+        )
+    }
 }

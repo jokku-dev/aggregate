@@ -18,6 +18,7 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.MaterialTheme.colorScheme
 import androidx.compose.material3.MaterialTheme.shapes
 import androidx.compose.material3.MaterialTheme.typography
@@ -210,6 +211,28 @@ fun BookmarkedArticleItem(
     }
 }
 
+@Composable
+fun TopicItem(
+    text: String,
+    selected: Boolean,
+    onItemClick: () -> Unit
+) {
+    Box(
+        modifier = Modifier
+            .size(width = 160.dp, height = 72.dp)
+            .clip(shapes.medium)
+            .background(color = if (selected) colorScheme.primary else colorScheme.secondary)
+            .clickable(onClick = onItemClick),
+        contentAlignment = Alignment.Center
+    ) {
+        Text(
+            text = text,
+            style = typography.titleLarge,
+            color = if (selected) colorScheme.surface else colorScheme.onBackground
+        )
+    }
+}
+
 @Preview
 @Composable
 fun CategoryItemPreview() {
@@ -263,5 +286,16 @@ fun BookmarkedArticleItemPreview() {
             sourceName = "CNN",
             onItemClick = {}
         )
+    }
+}
+
+@Preview
+@Composable
+fun TopicItemPreview() {
+    AggregateTheme {
+        Column {
+            TopicItem(text = "Topic name", selected = true, onItemClick = {})
+            TopicItem(text = "Topic name", selected = false, onItemClick = {})
+        }
     }
 }

@@ -5,6 +5,7 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
@@ -12,47 +13,39 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavController
-import androidx.navigation.NavOptions
-import androidx.navigation.compose.rememberNavController
 import com.jokku.aggregate.R
 import com.jokku.aggregate.ui.nav.Screen
 import com.jokku.aggregate.ui.theme.AggregateTheme
-import com.jokku.aggregate.ui.viewmodel.AppLanguageState
 import com.jokku.aggregate.ui.viewmodel.Language
 import com.jokku.aggregate.ui.viewmodel.MainProfileViewModel
 import com.jokku.aggregate.ui.viewmodel.ProfileViewModel
 import com.jokku.aggregate.ui.views.BackButtonAndHeadlineText
+import com.jokku.aggregate.ui.views.ButtonType
 import com.jokku.aggregate.ui.views.CommonColumn
+import com.jokku.aggregate.ui.views.PreferencesButton
 
 @Composable
 fun AppLanguageScreen(
     navController: NavController,
     viewModel: ProfileViewModel = hiltViewModel<MainProfileViewModel>()
 ) {
-    val state = viewModel.appLanguageState.collectAsStateWithLifecycle().value
+    val state by viewModel.appLanguageState.collectAsStateWithLifecycle()
 
     AppLanguageScreenContent(
-        state = state,
-        navController = navController
+        languages = state.languages,
+        onBackButtonClick = { navController.popBackStack(route = Screen.Profile.route, inclusive = false) }
     )
 }
 
 @Composable
 fun AppLanguageScreenContent(
-    state: AppLanguageState,
-    navController: NavController,
+    languages: List<Language>,
+    onBackButtonClick: () -> Unit
 ) {
     CommonColumn {
         BackButtonAndHeadlineText(
             headline = stringResource(R.string.language),
-            onClick = {
-                navController.navigate(
-                    route = Screen.Profile.route,
-                    navOptions = NavOptions.Builder()
-                        .setPopUpTo(route = Screen.Profile.route, inclusive = true)
-                        .build()
-                )
-            }
+            onClick = onBackButtonClick
         )
         Column(
             modifier = Modifier
@@ -60,7 +53,7 @@ fun AppLanguageScreenContent(
                 .padding(top = 16.dp),
             verticalArrangement = Arrangement.spacedBy(16.dp)
         ) {
-            state.languages.forEach { language ->
+            languages.forEach { language ->
                 PreferencesButton(
                     title = language.language,
                     buttonType = ButtonType.SELECT,
@@ -69,24 +62,20 @@ fun AppLanguageScreenContent(
                 )
             }
         }
-
     }
 }
 
-
-@Preview(showBackground = true, backgroundColor = 0xFFFFFFFF)
+@Preview(showBackground = true)
 @Composable
 fun AppLanguageScreenPreview() {
     AggregateTheme {
         AppLanguageScreenContent(
-            state = AppLanguageState(
-                listOf(
-                    Language(R.string.system, true),
-                    Language(R.string.english, false),
-                    Language(R.string.russian, false)
-                )
+            languages = listOf(
+                Language(language = R.string.system, selected = false),
+                Language(language = R.string.english, selected = true),
+                Language(language = R.string.russian, selected = false),
             ),
-            navController = rememberNavController()
+            onBackButtonClick = {}
         )
     }
 }

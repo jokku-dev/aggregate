@@ -79,7 +79,7 @@ fun BackButtonAndHeadlineText(
 fun HelpBottomText(
     questionText: String,
     actionText: AnnotatedString,
-    onClick: (Int) -> Unit,
+    onClick: () -> Unit,
     modifier: Modifier = Modifier
 ) {
     Row(
@@ -98,7 +98,7 @@ fun HelpBottomText(
             style = typography.bodyLarge.copy(
                 color = colorScheme.onSurfaceVariant
             ),
-            onClick = onClick
+            onClick = { onClick() },
         )
     }
 }

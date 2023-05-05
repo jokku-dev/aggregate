@@ -8,6 +8,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.systemBarsPadding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyRow
+import androidx.compose.foundation.text.KeyboardActionScope
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -36,14 +37,20 @@ fun HomepageScreen(
     navController: NavHostController,
     viewModel: MainNewsViewModel = hiltViewModel()
 ) { 
-    val state = viewModel.homeState.collectAsStateWithLifecycle().value
+    val state by viewModel.homeState.collectAsStateWithLifecycle()
+
+    var search by rememberSaveable { mutableStateOf("") }
     
     HomepageScreenContent(
         categories = state.categories,
         articles = state.articles,
+        search = search,
+        onSearchChanged = { newSearch -> search = newSearch},
         selectCategory = { category ->
             viewModel.selectCategory(category)
-        }
+        },
+        keyboardAction = {},
+        onArticleClick = {}
     )
 }
 
@@ -51,10 +58,12 @@ fun HomepageScreen(
 fun HomepageScreenContent(
     categories: List<Category>,
     articles: List<Article>,
-    selectCategory: (Category) -> Unit
+    search: String,
+    onSearchChanged: (String) -> Unit,
+    selectCategory: (Category) -> Unit,
+    keyboardAction: KeyboardActionScope.() -> Unit,
+    onArticleClick: () -> Unit
 ) {
-    var search by rememberSaveable { mutableStateOf("") }
-    
     Column(
         modifier = Modifier
             .fillMaxWidth()
@@ -70,8 +79,8 @@ fun HomepageScreenContent(
         )
         SearchTextField(
             search = search,
-            onSearchChange = { newSearch -> search = newSearch },
-            keyboardAction = {  },
+            onSearchChange = { newSearch -> onSearchChanged(newSearch) },
+            keyboardAction = keyboardAction,
             modifier = Modifier
                 .padding(horizontal = 16.dp)
                 .padding(top = 32.dp)
@@ -103,7 +112,7 @@ fun HomepageScreenContent(
                     title = articles[it].title,
                     publishedAt = articles[it].publishedAt,
                     bookmarked = articles[it].bookmarked,
-                    onItemClick = { }
+                    onItemClick = onArticleClick
                 )
             }
         }
@@ -133,7 +142,11 @@ fun GreetingPreview() {
                 Article(),
                 Article()
             ),
-            selectCategory = {}
+            search = "",
+            onSearchChanged = {},
+            selectCategory = {},
+            keyboardAction = {},
+            onArticleClick = {}
         )
     }
 }

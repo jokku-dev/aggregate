@@ -5,6 +5,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
@@ -25,7 +26,7 @@ fun SourcesScreen(
     navController: NavHostController,
     viewModel: MainNewsViewModel = hiltViewModel()
 ) {
-    val state = viewModel.sourceState.collectAsStateWithLifecycle().value
+    val state by viewModel.sourceState.collectAsStateWithLifecycle()
 
     SourcesScreenContent(
         sources = state.sources

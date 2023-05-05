@@ -16,8 +16,6 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
-import androidx.navigation.NavOptions
-import androidx.navigation.compose.rememberNavController
 import com.jokku.aggregate.R
 import com.jokku.aggregate.ui.nav.Screen
 import com.jokku.aggregate.ui.theme.AggregateTheme
@@ -33,28 +31,40 @@ fun ChangePasswordScreen(
     navController: NavHostController,
     viewModel: ProfileViewModel = hiltViewModel<MainProfileViewModel>()
 ) {
-    ChangePasswordScreenContent(navController = navController)
+    var currentPassword by rememberSaveable { mutableStateOf("") }
+    var newPassword by rememberSaveable { mutableStateOf("") }
+    var repeatedPassword by rememberSaveable { mutableStateOf("") }
+
+    ChangePasswordScreenContent(
+        currentPassword = currentPassword,
+        newPassword = newPassword,
+        repeatedPassword = repeatedPassword,
+        onCurrentPasswordChange = { newCurrentPassword -> currentPassword = newCurrentPassword },
+        onNewPasswordChange = { newNewPassword -> newPassword = newNewPassword },
+        onRepeatedPasswordChange = { newRepeatedPassword -> repeatedPassword = newRepeatedPassword },
+        onBackButtonClick = { navController.popBackStack(route = Screen.Profile.route, inclusive = false) },
+        onButtonClick = {
+            navController.popBackStack(route = Screen.Profile.route, inclusive = false)
+            navController.navigate(route = Screen.SignIn.route)
+        }
+    )
 }
 
 @Composable
 fun ChangePasswordScreenContent(
-    navController: NavHostController
+    currentPassword: String,
+    newPassword: String,
+    repeatedPassword: String,
+    onCurrentPasswordChange: (String) -> Unit,
+    onNewPasswordChange: (String) -> Unit,
+    onRepeatedPasswordChange: (String) -> Unit,
+    onBackButtonClick: () -> Unit,
+    onButtonClick: () -> Unit
 ) {
-    var currentPassword by rememberSaveable { mutableStateOf("") }
-    var newPassword by rememberSaveable { mutableStateOf("") }
-    var repeatPassword by rememberSaveable { mutableStateOf("") }
-
     CommonColumn {
         BackButtonAndHeadlineText(
             headline = stringResource(R.string.change_password),
-            onClick = {
-                navController.navigate(
-                    route = Screen.Profile.route,
-                    navOptions = NavOptions.Builder()
-                        .setPopUpTo(route = Screen.Profile.route, inclusive = true)
-                        .build()
-                )
-            }
+            onClick = onBackButtonClick
         )
         Column(
             modifier = Modifier
@@ -66,38 +76,24 @@ fun ChangePasswordScreenContent(
                 placeholder = stringResource(id = R.string.current_password),
                 imeAction = ImeAction.Next,
                 password = currentPassword,
-                onPasswordChange = { newCurrentPassword -> currentPassword = newCurrentPassword }
+                onPasswordChange = { newCurrentPassword -> onCurrentPasswordChange(newCurrentPassword) }
             )
             PasswordTextField(
                 placeholder = stringResource(id = R.string.new_password),
                 imeAction = ImeAction.Next,
                 password = newPassword,
-                onPasswordChange = { newNewPassword -> newPassword = newNewPassword }
+                onPasswordChange = { newNewPassword -> onNewPasswordChange(newNewPassword) }
             )
             PasswordTextField(
                 placeholder = stringResource(id = R.string.repeat_new_password),
                 imeAction = ImeAction.Done,
-                password = repeatPassword,
-                onPasswordChange = { newRepeatPassword -> repeatPassword = newRepeatPassword },
-                keyboardAction = {
-                    navController.navigate(
-                        route = Screen.SignIn.route,
-                        navOptions = NavOptions.Builder()
-                            .setPopUpTo(route = Screen.Profile.route, inclusive = true)
-                            .build()
-                    )
-                }
+                password = repeatedPassword,
+                onPasswordChange = { newRepeatedPassword -> onRepeatedPasswordChange(newRepeatedPassword) },
+                keyboardAction = { onButtonClick() }
             )
             BigActionButton(
                 text = stringResource(id = R.string.change_password),
-                onClick = {
-                    navController.navigate(
-                        route = Screen.SignIn.route,
-                        navOptions = NavOptions.Builder()
-                            .setPopUpTo(route = Screen.Profile.route, inclusive = true)
-                            .build()
-                    )
-                }
+                onClick = onButtonClick
             )
         }
     }
@@ -108,7 +104,14 @@ fun ChangePasswordScreenContent(
 fun ChangePasswordScreenPreview() {
     AggregateTheme {
         ChangePasswordScreenContent(
-            navController = rememberNavController()
+            currentPassword = "",
+            newPassword = "",
+            repeatedPassword = "",
+            onCurrentPasswordChange = {},
+            onNewPasswordChange = {},
+            onRepeatedPasswordChange = {},
+            onBackButtonClick = {},
+            onButtonClick = {}
         )
     }
 }

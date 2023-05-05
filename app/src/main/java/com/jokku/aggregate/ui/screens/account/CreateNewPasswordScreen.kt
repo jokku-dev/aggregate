@@ -2,6 +2,8 @@ package com.jokku.aggregate.ui.screens.account
 
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -14,9 +16,9 @@ import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
-import androidx.navigation.compose.rememberNavController
 import com.jokku.aggregate.R
 import com.jokku.aggregate.ui.nav.Screen
+import com.jokku.aggregate.ui.theme.AggregateTheme
 import com.jokku.aggregate.ui.views.BigActionButton
 import com.jokku.aggregate.ui.views.CommonColumn
 import com.jokku.aggregate.ui.views.HeadlineAndDescriptionText
@@ -30,7 +32,32 @@ fun CreateNewPasswordScreen(
     var password by rememberSaveable { mutableStateOf("") }
     var passwordRepeat by rememberSaveable { mutableStateOf("") }
 
-    CommonColumn {
+    CreateNewPasswordScreenContent(
+        password = password,
+        passwordRepeat = passwordRepeat,
+        onPasswordChange = { newPassword -> password = newPassword },
+        onPasswordRepeatChange = { newPasswordRepeat -> passwordRepeat = newPasswordRepeat },
+        onButtonClick = {
+            navController.popBackStack(route = Screen.SignIn.route, inclusive = false)
+        },
+        onBottomTextClick = {
+            navController.popBackStack(route = Screen.SignIn.route, inclusive = false)
+        }
+    )
+}
+
+@Composable
+fun CreateNewPasswordScreenContent(
+    password: String,
+    passwordRepeat: String,
+    onPasswordChange: (String) -> Unit,
+    onPasswordRepeatChange: (String) -> Unit,
+    onButtonClick: () -> Unit,
+    onBottomTextClick: () -> Unit
+) {
+val scrollState = rememberScrollState()
+
+    CommonColumn(modifier = Modifier.verticalScroll(state = scrollState)) {
         HeadlineAndDescriptionText(
             headline = stringResource(id = R.string.create_new_password),
             description = stringResource(id = R.string.you_can_create_a_new_password)
@@ -40,38 +67,41 @@ fun CreateNewPasswordScreen(
             placeholder = stringResource(id = R.string.new_password),
             imeAction = ImeAction.Next,
             password = password,
-            onPasswordChange = { newPassword -> password = newPassword }
+            onPasswordChange = { newPassword -> onPasswordChange(newPassword) }
         )
         PasswordTextField(
             modifier = Modifier.padding(top = 16.dp),
             placeholder = stringResource(id = R.string.repeat_new_password),
             imeAction = ImeAction.Done,
-            keyboardAction = { navController.navigate(route = Screen.SignIn.route) },
+            keyboardAction = { onButtonClick() },
             password = passwordRepeat,
-            onPasswordChange = { newPassword -> passwordRepeat = newPassword }
+            onPasswordChange = { newPasswordRepeat -> onPasswordRepeatChange(newPasswordRepeat) }
         )
         BigActionButton(
             modifier = Modifier.padding(top = 16.dp),
             text = stringResource(id = R.string.confirm),
-            onClick = {
-                navController.popBackStack()
-                navController.navigate(route = Screen.SignIn.route)
-            }
+            onClick = onButtonClick
         )
         Spacer(modifier = Modifier.weight(1f))
         HelpBottomText(
             questionText = stringResource(id = R.string.remember_an_old_password),
             actionText = AnnotatedString(stringResource(id = R.string.try_again)),
-            onClick = {
-                navController.popBackStack()
-                navController.navigate(route = Screen.SignIn.route)
-            }
+            onClick = onBottomTextClick
         )
     }
 }
 
-@Preview
+@Preview(showBackground = true)
 @Composable
 fun CreateNewPasswordScreenPreview() {
-    CreateNewPasswordScreen(navController = rememberNavController())
+    AggregateTheme {
+        CreateNewPasswordScreenContent(
+            password = "password",
+            passwordRepeat = "",
+            onPasswordChange = {},
+            onPasswordRepeatChange = {},
+            onButtonClick = {},
+            onBottomTextClick = {}
+        )
+    }
 }

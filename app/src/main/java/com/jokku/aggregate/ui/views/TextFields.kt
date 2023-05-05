@@ -89,7 +89,8 @@ fun EmailTextField(
     onEmailChange: (String) -> Unit,
     modifier: Modifier = Modifier,
     placeholder: String = stringResource(id = R.string.email_hint),
-    focused: Boolean = false
+    focused: Boolean = false,
+    keyboardAction: KeyboardActionScope.() -> Unit = {}
 ) {
     var fieldFocused by rememberSaveable { mutableStateOf(focused) }
 
@@ -126,7 +127,8 @@ fun EmailTextField(
         keyboardOptions = KeyboardOptions(
             keyboardType = KeyboardType.Email,
             imeAction = imeAction
-        )
+        ),
+        keyboardActions = KeyboardActions(onDone = keyboardAction)
     )
 }
 

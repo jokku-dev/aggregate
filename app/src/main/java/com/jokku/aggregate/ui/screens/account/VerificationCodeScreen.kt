@@ -12,7 +12,9 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.text.BasicTextField
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
-import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.MaterialTheme.colorScheme
+import androidx.compose.material3.MaterialTheme.shapes
+import androidx.compose.material3.MaterialTheme.typography
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.DisposableEffect
@@ -43,9 +45,9 @@ import androidx.compose.ui.unit.dp
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleEventObserver
 import androidx.navigation.NavHostController
-import androidx.navigation.compose.rememberNavController
 import com.jokku.aggregate.R
 import com.jokku.aggregate.ui.nav.Screen
+import com.jokku.aggregate.ui.theme.AggregateTheme
 import com.jokku.aggregate.ui.views.BigActionButton
 import com.jokku.aggregate.ui.views.CommonColumn
 import com.jokku.aggregate.ui.views.HelpBottomText
@@ -59,17 +61,59 @@ fun VerificationCodeScreen(
     email: String
 ) {
     var otpValue by rememberSaveable { mutableStateOf("") }
-    val lifecycleOwner = LocalLifecycleOwner.current
-    val keyboardController = LocalSoftwareKeyboardController.current
     val focusRequester = remember { FocusRequester() }
+    val lifecycleOwner = LocalLifecycleOwner.current
     val scope = rememberCoroutineScope()
+    val keyboardController = LocalSoftwareKeyboardController.current
 
+    VerificationCodeScreenContent(
+        email = email,
+        otpValue = otpValue,
+        focusRequester = focusRequester,
+        onOtpValueChange = { newOtpValue -> otpValue = newOtpValue },
+        onButtonClick = {
+            if (otpValue.length == 4) {
+                navController.popBackStack(route = Screen.SignIn.route, inclusive = false)
+                navController.navigate(route = Screen.CreateNewPassword.route)
+            }
+        },
+        onBottomHelpTextClick = {
+            navController.popBackStack(route = Screen.ForgotPassword.route, inclusive = false)
+        }
+    )
+    // Request textField focus and show keyboard in case of onResume event
+    DisposableEffect(key1 = lifecycleOwner) {
+        val observer = LifecycleEventObserver { _, event ->
+            scope.launch {
+                if (event == Lifecycle.Event.ON_RESUME) {
+                    focusRequester.requestFocus()
+                    awaitFrame()
+                    keyboardController?.show()
+                }
+            }
+        }
+        lifecycleOwner.lifecycle.addObserver(observer)
+        onDispose {
+            lifecycleOwner.lifecycle.removeObserver(observer)
+        }
+    }
+}
+
+@Composable
+fun VerificationCodeScreenContent(
+    email: String,
+    otpValue: String,
+    focusRequester: FocusRequester,
+    onOtpValueChange: (String) -> Unit,
+    onButtonClick: () -> Unit,
+    onBottomHelpTextClick: () -> Unit
+) {
     CommonColumn {
         Text(
             modifier = Modifier.align(Alignment.Start),
             text = stringResource(id = R.string.verification_code),
-            style = MaterialTheme.typography.headlineLarge,
-            color = MaterialTheme.colorScheme.onSurfaceVariant
+            style = typography.headlineLarge,
+            color = colorScheme.onSurfaceVariant
         )
         Text(
             modifier = Modifier
@@ -79,14 +123,14 @@ fun VerificationCodeScreen(
                 append(stringResource(id = R.string.you_need_to_enter_code))
                 withStyle(
                     style = SpanStyle(
-                        color = MaterialTheme.colorScheme.onBackground,
+                        color = colorScheme.onBackground,
                         fontWeight = FontWeight.SemiBold
                     )
                 ) { append(" $email ") }
                 append(stringResource(id = R.string.email_address))
             },
-            style = MaterialTheme.typography.bodyMedium,
-            color = MaterialTheme.colorScheme.onSecondary
+            style = typography.bodyMedium,
+            color = colorScheme.onSecondary
         )
         BasicTextField(
             modifier = Modifier
@@ -94,13 +138,11 @@ fun VerificationCodeScreen(
                 .padding(top = 32.dp)
                 .focusRequester(focusRequester),
             value = otpValue,
-            onValueChange = { value -> if (value.length <= 4) otpValue = value },
+            onValueChange = { newValue -> if (newValue.length <= 4) onOtpValueChange(newValue) },
             keyboardOptions = KeyboardOptions(
                 keyboardType = KeyboardType.NumberPassword, imeAction = ImeAction.Done
             ),
-            keyboardActions = KeyboardActions(onDone = {
-                if (otpValue.length < 4) TODO()
-            })
+            keyboardActions = KeyboardActions(onDone = { onButtonClick() })
         ) {
             Row(horizontalArrangement = Arrangement.SpaceBetween) {
                 repeat(4) { index ->
@@ -112,24 +154,21 @@ fun VerificationCodeScreen(
                     Box(
                         modifier = Modifier
                             .size(72.dp)
-                            .clip(MaterialTheme.shapes.medium)
+                            .clip(shapes.medium)
                             .border(
                                 width = 1.dp,
-                                shape = MaterialTheme.shapes.medium,
-                                color = if (isFocused) MaterialTheme.colorScheme.primary
-                                else MaterialTheme.colorScheme.secondary
+                                shape = shapes.medium,
+                                color = if (isFocused) colorScheme.primary else colorScheme.secondary
                             )
                             .background(
-                                color = if (isFocused) MaterialTheme.colorScheme.surface
-                                else MaterialTheme.colorScheme.secondary
+                                color = if (isFocused) colorScheme.surface else colorScheme.secondary
                             ),
                         contentAlignment = Alignment.Center
                     ) {
                         Text(
                             text = char,
-                            style = MaterialTheme.typography.titleLarge,
-                            color = if (isFocused) MaterialTheme.colorScheme.primary
-                            else MaterialTheme.colorScheme.onSurfaceVariant
+                            style = typography.titleLarge,
+                            color = if (isFocused) colorScheme.primary else colorScheme.onSurfaceVariant
                         )
                     }
                 }
@@ -138,41 +177,28 @@ fun VerificationCodeScreen(
         BigActionButton(
             modifier = Modifier.padding(top = 16.dp),
             text = stringResource(id = R.string.confirm),
-            onClick = {
-                navController.popBackStack(route = Screen.ForgotPassword.route, inclusive = true)
-                navController.navigate(route = Screen.CreateNewPassword.route)
-            }
+            onClick = onButtonClick
         )
         Spacer(modifier = Modifier.weight(1f))
         HelpBottomText(
             questionText = stringResource(id = R.string.did_not_receive_an_email),
             actionText = AnnotatedString(stringResource(id = R.string.send_again)),
-            onClick = { }
+            onClick = onBottomHelpTextClick
         )
-        //request textField focus and show keyboard in case of onResume event
-        DisposableEffect(key1 = lifecycleOwner) {
-            val observer = LifecycleEventObserver { _, event ->
-                scope.launch {
-                    if (event == Lifecycle.Event.ON_RESUME) {
-                        focusRequester.requestFocus()
-                        awaitFrame()
-                        keyboardController?.show()
-                    }
-                }
-            }
-            lifecycleOwner.lifecycle.addObserver(observer)
-            onDispose {
-                lifecycleOwner.lifecycle.removeObserver(observer)
-            }
-        }
     }
 }
 
-@Preview
+@Preview(showBackground = true)
 @Composable
 fun VerificationCodeScreenPreview() {
-    VerificationCodeScreen(
-        navController = rememberNavController(),
-        email = "example@example.com"
-    )
+    AggregateTheme {
+        VerificationCodeScreenContent(
+            email = "email@gmail.com",
+            otpValue = "12",
+            focusRequester = FocusRequester(),
+            onOtpValueChange = {},
+            onButtonClick = {},
+            onBottomHelpTextClick = {}
+        )
+    }
 }

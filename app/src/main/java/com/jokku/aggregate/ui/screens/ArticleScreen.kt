@@ -73,9 +73,9 @@ fun ArticleScreen(
     systemUiController: SystemUiController = rememberSystemUiController(),
     colorScheme: ColorScheme = MaterialTheme.colorScheme
 ) {
-    val state = viewModel.articleState.collectAsStateWithLifecycle().value
-
+    val state by viewModel.articleState.collectAsStateWithLifecycle()
     var currentScreen by remember { mutableStateOf(Screen.Article.route) }
+    
     val onBackPressedDispatcher = LocalOnBackPressedDispatcherOwner.current?.onBackPressedDispatcher
     val lifecycleOwner = LocalLifecycleOwner.current
 

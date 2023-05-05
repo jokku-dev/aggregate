@@ -50,7 +50,7 @@ class MainProfileViewModel @Inject constructor(
 }
 
 data class ProfileState(
-    val userSignedIn: Boolean = false,
+    val userSignedIn: Boolean = true,
     val notificationsSwitchedOn: Boolean = false
 )
 

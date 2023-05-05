@@ -14,9 +14,9 @@ import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
-import androidx.navigation.compose.rememberNavController
 import com.jokku.aggregate.R
 import com.jokku.aggregate.ui.nav.Screen
+import com.jokku.aggregate.ui.theme.AggregateTheme
 import com.jokku.aggregate.ui.views.BigActionButton
 import com.jokku.aggregate.ui.views.CommonColumn
 import com.jokku.aggregate.ui.views.EmailTextField
@@ -29,6 +29,26 @@ fun ForgotPasswordScreen(
 ) {
     var email by rememberSaveable { mutableStateOf("") }
 
+    ForgotPasswordScreenContent(
+        email = email,
+        onEmailChange = { newEmail -> email = newEmail },
+        onButtonClick = {
+            if (email.isNotEmpty())
+                navController.navigate(route = Screen.Verification.withArgs(email))
+        },
+        onBottomTextClick = {
+            navController.popBackStack(route = Screen.SignIn.route, inclusive = false)
+        }
+    )
+}
+
+@Composable
+fun ForgotPasswordScreenContent(
+    email: String,
+    onEmailChange: (String) -> Unit,
+    onButtonClick: () -> Unit,
+    onBottomTextClick: () -> Unit
+) {
     CommonColumn {
         HeadlineAndDescriptionText(
             headline = stringResource(id = R.string.forgot_password),
@@ -38,24 +58,19 @@ fun ForgotPasswordScreen(
             modifier = Modifier.padding(top = 32.dp),
             imeAction = ImeAction.Done,
             email = email,
-            onEmailChange = { newEmail -> email = newEmail }
+            onEmailChange = { newEmail -> onEmailChange(newEmail) },
+            keyboardAction = { onButtonClick() }
         )
         BigActionButton(
             modifier = Modifier.padding(top = 16.dp),
             text = stringResource(id = R.string.next),
-            onClick = {
-                navController.popBackStack()
-                navController.navigate(route = Screen.Verification.withArgs(email))
-            }
+            onClick = onButtonClick
         )
         Spacer(modifier = Modifier.weight(1f))
         HelpBottomText(
             questionText = stringResource(id = R.string.remember_the_password),
             actionText = AnnotatedString(stringResource(id = R.string.try_again)),
-            onClick = {
-                navController.popBackStack(route = Screen.SignIn.route, inclusive = true)
-                navController.navigate(route = Screen.SignIn.route)
-            }
+            onClick = onBottomTextClick
         )
     }
 }
@@ -63,5 +78,12 @@ fun ForgotPasswordScreen(
 @Preview(showBackground = true)
 @Composable
 fun ForgotPasswordScreenPreview() {
-    ForgotPasswordScreen(navController = rememberNavController())
+    AggregateTheme {
+        ForgotPasswordScreenContent(
+            email = "email@gmail.com",
+            onEmailChange = {},
+            onButtonClick = {},
+            onBottomTextClick = {}
+        )
+    }
 }
