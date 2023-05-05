@@ -14,23 +14,25 @@ import androidx.compose.ui.platform.LocalContext
 import com.google.accompanist.systemuicontroller.SystemUiController
 import com.google.accompanist.systemuicontroller.rememberSystemUiController
 
-private val DarkColorScheme = darkColorScheme(
+private val darkColorScheme = darkColorScheme(
     primary = PurpleLight,
     secondary = GreyDark,
     onSecondary = GreyLight,
     surface = BlackDark,
     onSurface = GreyPrimary,
     onSurfaceVariant = BlackLight,
+    background = BlackDark,
     onBackground = GreyLighter
 )
 
-private val LightColorScheme = lightColorScheme(
+private val lightColorScheme = lightColorScheme(
     primary = PurplePrimary,
     secondary = GreyLighter,
     onSecondary = GreyPrimary,
     surface = White,
     onSurface = GreyLight,
     onSurfaceVariant = BlackPrimary,
+    background = White,
     onBackground = GreyDark
 )
 
@@ -38,16 +40,15 @@ private val LightColorScheme = lightColorScheme(
 fun AggregateTheme(
     darkTheme: Boolean = isSystemInDarkTheme(),
     systemUiController: SystemUiController = rememberSystemUiController(),
-    dynamicColor: Boolean = true,
+    dynamicColor: Boolean = false,
     content: @Composable () -> Unit
 ) {
+    val useDynamicColor = dynamicColor && Build.VERSION.SDK_INT >= Build.VERSION_CODES.S
     val colorScheme = when {
-        dynamicColor && Build.VERSION.SDK_INT >= Build.VERSION_CODES.S -> {
-            val context = LocalContext.current
-            if (darkTheme) dynamicDarkColorScheme(context) else dynamicLightColorScheme(context)
-        }
-        darkTheme -> DarkColorScheme
-        else -> LightColorScheme
+        useDynamicColor && darkTheme -> dynamicDarkColorScheme(LocalContext.current)
+        useDynamicColor && !darkTheme -> dynamicLightColorScheme(LocalContext.current)
+        darkTheme -> darkColorScheme
+        else -> lightColorScheme
     }
 
     SideEffect { systemUiController.setSystemBarsColor(color = colorScheme.surface) }

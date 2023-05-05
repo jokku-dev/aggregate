@@ -1,26 +1,35 @@
 package com.jokku.aggregate.ui.nav
 
+import com.jokku.aggregate.R
+
 sealed class Screen(val route: String) {
-    object Welcome: Screen("welcome_screen")
+    object OnBoarding: Screen("onBoarding")
+    object SelectFavoriteTopics: Screen("selectFavoriteTopics")
 
-    object SignIn: Screen("signIn_screen")
-    object Verification: Screen("verification_screen")
+    object Home: BottomNavigationScreen(
+        route = "home", icon = R.drawable.ic_home
+    )
+    object Sources: BottomNavigationScreen(
+        route = "sources", icon = R.drawable.ic_sources
+    )
+    object Bookmarks: BottomNavigationScreen(
+        route = "bookmarks", icon = R.drawable.ic_bookmark, badgeCount = 12
+    )
+    object Profile: BottomNavigationScreen(
+        route = "profile", icon = R.drawable.ic_profile
+    )
 
-    object ForgotPassword: Screen("forgotPassword_screen")
-    object CreateNewPassword: Screen("createNewPassword_screen")
+    object SignIn: Screen("signIn")
+    object SignUp: Screen("signUp")
+    object ForgotPassword: Screen("forgotPassword")
+    object Verification: Screen("verification")
+    object CreateNewPassword: Screen("createNewPassword")
 
-    object SignUp: Screen("signUp_screen")
-    object SelectFavoriteTopics: Screen("selectFavoriteTopics_screen")
-
-    object Home: Screen("home_screen")
-    object Categories: Screen("categories_screen")
-    object Bookmarks: Screen("bookmarks_screen")
-
-    object Article: Screen("article_screen")
-
-    object Profile: Screen("profile_screen")
-    object Language: Screen("language_screen")
-    object ChangePassword: Screen("changePassword_screen")
+    object Language: Screen("language")
+    object ChangePassword: Screen("changePassword")
+    object Privacy: Screen("privacy")
+    object TermsAndConditions: Screen("termsAndConditions")
+    object Article: Screen("article")
 
     fun withArgs(vararg args: String): String {
         return buildString {
@@ -29,3 +38,9 @@ sealed class Screen(val route: String) {
         }
     }
 }
+
+sealed class BottomNavigationScreen(
+    route: String,
+    val icon: Int,
+    val badgeCount: Int = 0
+) : Screen(route)

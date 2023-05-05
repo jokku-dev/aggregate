@@ -5,9 +5,8 @@ import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.runtime.getValue
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
+import androidx.core.view.WindowCompat
 import androidx.navigation.compose.rememberNavController
-import com.jokku.aggregate.ui.nav.Navigation
-import com.jokku.aggregate.ui.theme.AggregateTheme
 import com.jokku.aggregate.ui.viewmodel.SplashViewModel
 import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
@@ -20,20 +19,20 @@ class MainActivity : ComponentActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         val splashScreen = installSplashScreen()
+        WindowCompat.setDecorFitsSystemWindows(window, false)
+
         super.onCreate(savedInstanceState)
+
         splashScreen.setKeepOnScreenCondition {
             !splashViewModel.isLoading.value
         }
-
         actionBar?.hide()
 
         setContent {
-            AggregateTheme {
-                val screen by splashViewModel.startDestination
-                val navController = rememberNavController()
-                Navigation(navController = navController, startDestination = screen)
-            }
+            val screen by splashViewModel.startDestination
+            val navController = rememberNavController()
+            AggregateApp(startDestination = screen, navController = navController)
         }
-
     }
+
 }
