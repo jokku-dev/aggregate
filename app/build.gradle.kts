@@ -1,3 +1,5 @@
+import java.util.Properties
+
 plugins {
     id("com.android.application")
     id("com.google.dagger.hilt.android")
@@ -23,6 +25,11 @@ android {
         vectorDrawables {
             useSupportLibrary = true
         }
+
+        // setting field for generated BuildConfig class
+        val properties = Properties()
+        properties.load(project.rootProject.file("local.properties").inputStream())
+        buildConfigField("String", "API_KEY", "\"${properties.getProperty("API_KEY")}\"")
     }
 
     buildTypes {
@@ -40,6 +47,7 @@ android {
     }
     buildFeatures {
         compose = true
+        buildConfig = true
     }
     composeOptions {
         kotlinCompilerExtensionVersion = "1.4.5"
@@ -52,13 +60,13 @@ android {
 }
 
 dependencies {
-    implementation("androidx.core:core-ktx:1.10.0")
+    implementation("androidx.core:core-ktx:1.10.1")
     implementation("androidx.lifecycle:lifecycle-runtime-compose:2.6.1")
     implementation("androidx.lifecycle:lifecycle-runtime-ktx:2.6.1")
     implementation("androidx.lifecycle:lifecycle-viewmodel-compose:2.6.1")
     implementation("androidx.activity:activity-compose:1.7.1")
     // Compose BOM
-    implementation(platform("androidx.compose:compose-bom:2023.05.00"))
+    implementation(platform("androidx.compose:compose-bom:2023.05.01"))
     implementation("androidx.compose.material3:material3")
     implementation("androidx.compose.material3:material3-window-size-class")
     implementation("androidx.compose.ui:ui-tooling-data")
@@ -77,11 +85,11 @@ dependencies {
     implementation("androidx.datastore:datastore-preferences:1.0.0")
     implementation("androidx.datastore:datastore:1.0.0")
     implementation("org.jetbrains.kotlinx:kotlinx-collections-immutable:0.3.5")
-    implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.5.0")
+    implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.5.1")
     // Hilt DI
-    implementation("com.google.dagger:hilt-android:2.46")
+    implementation("com.google.dagger:hilt-android:2.46.1")
     implementation("androidx.hilt:hilt-navigation-compose:1.0.0")
-    kapt("com.google.dagger:hilt-compiler:2.46")
+    kapt("com.google.dagger:hilt-compiler:2.46.1")
     kapt("androidx.hilt:hilt-compiler:1.0.0")
     // Room
     implementation("androidx.room:room-runtime:2.5.1")
@@ -91,11 +99,20 @@ dependencies {
     implementation("com.google.android.gms:play-services-auth:20.5.0")
     // Coil
     implementation("io.coil-kt:coil-compose:2.3.0")
+    // KTor
+    val ktorVersion = "2.3.0"
+    implementation("io.ktor:ktor-client-core:$ktorVersion")
+    implementation("io.ktor:ktor-client-android:$ktorVersion")
+    implementation("io.ktor:ktor-client-content-negotiation:$ktorVersion")
+    implementation("io.ktor:ktor-client-serialization:$ktorVersion")
+    implementation("io.ktor:ktor-serialization-kotlinx-json:$ktorVersion")
+    implementation("io.ktor:ktor-client-logging:$ktorVersion")
+    implementation("ch.qos.logback:logback-classic:1.4.7")
 
     testImplementation("junit:junit:4.13.2")
     androidTestImplementation("androidx.test.ext:junit:1.1.5")
     androidTestImplementation("androidx.test.espresso:espresso-core:3.5.1")
-    androidTestImplementation(platform("androidx.compose:compose-bom:2023.05.00"))
+    androidTestImplementation(platform("androidx.compose:compose-bom:2023.05.01"))
     androidTestImplementation("androidx.compose.ui:ui-test-junit4")
     debugImplementation("androidx.compose.ui:ui-test-manifest")
 }
