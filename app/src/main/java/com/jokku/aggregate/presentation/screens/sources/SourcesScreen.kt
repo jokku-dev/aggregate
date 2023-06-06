@@ -33,7 +33,7 @@ fun SourcesScreen(
 
 @Composable
 fun SourcesScreenContent(
-    sources: List<Source>
+    sources: List<UiSource>
 ) {
     CommonColumn {
         HeadlineAndDescriptionText(
@@ -64,13 +64,13 @@ fun SourcesScreenPreview() {
     AggregateTheme {
         SourcesScreenContent(
             sources = listOf(
-                Source(
+                UiSource(
                     name = "Source Name",
                     description = "Source's description",
                     url = "",
                     country = "Source Country"
                 ),
-                Source(
+                UiSource(
                     name = "Source Name",
                     description = "Source's description",
                     url = "",

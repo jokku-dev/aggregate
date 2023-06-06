@@ -9,12 +9,12 @@ import androidx.datastore.preferences.core.PreferenceDataStoreFactory
 import androidx.datastore.preferences.core.Preferences
 import androidx.datastore.preferences.core.emptyPreferences
 import androidx.datastore.preferences.preferencesDataStoreFile
-import com.jokku.aggregate.data.ProtoPreferences
-import com.jokku.aggregate.data.CategoryPreferencesSerializer
+import com.jokku.aggregate.data.store.ProtoModel
+import com.jokku.aggregate.data.store.CategoryPreferencesSerializer
 import com.jokku.aggregate.data.remote.NewsRemoteDataSource
 import com.jokku.aggregate.data.remote.RemoteDataSource
-import com.jokku.aggregate.data.repo.DataStoreRepository
-import com.jokku.aggregate.data.repo.MainDataStoreRepository
+import com.jokku.aggregate.data.repo.PreferencesRepository
+import com.jokku.aggregate.data.repo.MainPreferencesRepository
 import com.jokku.aggregate.data.repo.MainNewsRepository
 import com.jokku.aggregate.data.repo.NewsRepository
 import dagger.Binds
@@ -25,16 +25,13 @@ import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
 import javax.inject.Singleton
 
-private const val USER_PREFERENCES = "user-preferences"
-private const val USER_TYPED_PREFERENCES = "user-typed-preferences"
-
 @Module
 @InstallIn(SingletonComponent::class)
 abstract class RepositoryModule {
 
     @Binds
     @Singleton
-    abstract fun bindDataStoreRepository(impl: MainDataStoreRepository): DataStoreRepository
+    abstract fun bindDataStoreRepository(impl: MainPreferencesRepository): PreferencesRepository
 
     @Binds
     @Singleton
@@ -45,6 +42,9 @@ abstract class RepositoryModule {
     abstract fun bindRemoteDataSource(impl: NewsRemoteDataSource): RemoteDataSource
 
     companion object {
+        private const val USER_PREFERENCES = "user-preferences"
+        private const val USER_TYPED_PREFERENCES = "user-typed-preferences"
+
         @Provides
         @Singleton
         fun providePreferencesDataStore(
@@ -58,11 +58,10 @@ abstract class RepositoryModule {
         @Singleton
         fun provideProtoDataStore(
             @ApplicationContext applicationContext: Context
-        ) : DataStore<ProtoPreferences> = DataStoreFactory.create(
+        ) : DataStore<ProtoModel> = DataStoreFactory.create(
             serializer = CategoryPreferencesSerializer,
-            corruptionHandler = ReplaceFileCorruptionHandler { ProtoPreferences() },
+            corruptionHandler = ReplaceFileCorruptionHandler { ProtoModel() },
             produceFile = { applicationContext.dataStoreFile(USER_TYPED_PREFERENCES) }
         )
     }
-
 }

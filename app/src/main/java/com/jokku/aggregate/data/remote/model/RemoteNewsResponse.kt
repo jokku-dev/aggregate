@@ -1,8 +1,9 @@
 package com.jokku.aggregate.data.remote.model
 
 import com.jokku.aggregate.data.ResponseStatus
-import com.jokku.aggregate.data.repo.model.RepositoryNewsResponse
 import com.jokku.aggregate.data.mapper.DataModelMapper
+import com.jokku.aggregate.data.mapper.mapList
+import com.jokku.aggregate.data.repo.model.NewsResponse
 import kotlinx.serialization.Serializable
 
 import kotlinx.serialization.SerialName
@@ -19,24 +20,24 @@ data class RemoteNewsResponse(
      * The results of the request.
      */
     @SerialName("articles")
-    val articles: List<RemoteArticle>?,
+    val articles: List<RemoteArticle>,
     /**
      * The total number of results available for your request. Only a limited number are shown at a
      * time though, so use the page parameter in your requests to page through them.
      */
     @SerialName("totalResults")
-    val totalResults: Int?,
+    val totalResults: Int,
     /**
      * Populated in the case of error status
      */
     @SerialName("code")
-    val errorCode: String?,
+    val errorCode: String,
     /**
      * Populated in the case of error status
      */
     @SerialName("message")
-    val errorMessage: String?
-) : DataModelMapper<RepositoryNewsResponse> {
+    val errorMessage: String
+) : DataModelMapper<NewsResponse> {
 
     private val expectedStatus = if (status == ResponseStatus.OK.value) ResponseStatus.OK
     else ResponseStatus.ERROR
@@ -47,14 +48,14 @@ data class RemoteNewsResponse(
     val isSuccess: Boolean
         get() = status == ResponseStatus.OK.value
 
-    override fun map(): RepositoryNewsResponse {
+    override fun map(): NewsResponse {
         return when (expectedStatus) {
-            ResponseStatus.OK -> RepositoryNewsResponse(
-                articles = articles,
+            ResponseStatus.OK -> NewsResponse.OkNewsResponse(
+                articles = articles.mapList(),
                 totalResults = totalResults
             )
 
-            ResponseStatus.ERROR -> RepositoryNewsResponse(
+            ResponseStatus.ERROR -> NewsResponse.ErrorNewsResponse(
                 errorCode = errorCode,
                 errorMessage = errorMessage
             )

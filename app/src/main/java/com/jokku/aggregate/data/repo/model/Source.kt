@@ -1,6 +1,6 @@
 package com.jokku.aggregate.data.repo.model
 
-data class RepositorySource(
+data class Source(
     val category: String,
     val country: String,
     val description: String,

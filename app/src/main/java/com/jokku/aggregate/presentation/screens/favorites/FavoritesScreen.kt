@@ -50,10 +50,10 @@ fun FavoritesScreen(
     navController: NavHostController,
     viewModel: FavoritesViewModel = hiltViewModel<MainFavoritesViewModel>()
 ) {
-    val state by viewModel.favoritesUiState.collectAsStateWithLifecycle()
+    val state by viewModel.favoritesState.collectAsStateWithLifecycle()
 
     FavoritesScreenContent(
-        categorisedArticles = (state as? FavoritesUiState.HasArticles)?.categorisedArticles ?: emptyList()
+        categorisedArticles = (state as? FavoritesState.HasArticles)?.categorisedArticles ?: emptyList()
     )
 }
 
@@ -85,7 +85,7 @@ fun FavoritesScreenContent(
         ) {
             repeat(categorisedArticles.size) {
                 CategoryNewsBlock(
-                    category = stringResource(id = categorisedArticles[it].uiCategory.text),
+                    category = stringResource(id = categorisedArticles[it].category.text),
                     articles = categorisedArticles[it].articles,
                     onArticleClick = { }
                 )
@@ -209,7 +209,7 @@ fun FavoritesScreenPreview() {
                         UiArticle(),
                         UiArticle()
                     ),
-                    uiCategory = UiSelectableCategory(text = R.string.sports)
+                    category = UiSelectableCategory(text = R.string.sports)
                 )
             )
         )

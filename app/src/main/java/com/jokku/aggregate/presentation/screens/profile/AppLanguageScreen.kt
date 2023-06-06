@@ -36,7 +36,7 @@ fun AppLanguageScreen(
 
 @Composable
 fun AppLanguageScreenContent(
-    languages: List<Language>,
+    languages: List<UiAppLanguage>,
     onBackButtonClick: () -> Unit
 ) {
     CommonColumn {
@@ -68,9 +68,9 @@ fun AppLanguageScreenPreview() {
     AggregateTheme {
         AppLanguageScreenContent(
             languages = listOf(
-                Language(language = R.string.system, selected = false),
-                Language(language = R.string.english, selected = true),
-                Language(language = R.string.russian, selected = false),
+                UiAppLanguage(language = R.string.system, selected = false),
+                UiAppLanguage(language = R.string.english, selected = true),
+                UiAppLanguage(language = R.string.russian, selected = false),
             ),
             onBackButtonClick = {}
         )

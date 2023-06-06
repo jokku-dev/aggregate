@@ -5,14 +5,14 @@ import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.jokku.aggregate.data.repo.DataStoreRepository
+import com.jokku.aggregate.data.repo.PreferencesRepository
 import com.jokku.aggregate.domain.Result
 import com.jokku.aggregate.presentation.nav.Screen
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 class SplashViewModel @Inject constructor(
-    private val repository: DataStoreRepository
+    private val repository: PreferencesRepository
 ): ViewModel() {
     private val _isLoading: MutableState<Boolean> = mutableStateOf(true)
     val isLoading: State<Boolean> = _isLoading

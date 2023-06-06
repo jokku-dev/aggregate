@@ -1,11 +1,10 @@
 package com.jokku.aggregate.presentation.screens.welcome
 
 import androidx.lifecycle.viewModelScope
-import com.jokku.aggregate.data.repo.DataStoreRepository
+import com.jokku.aggregate.data.repo.PreferencesRepository
 import com.jokku.aggregate.presentation.screens.BaseNewsViewModel
 import com.jokku.aggregate.presentation.model.UiOnBoardingPage
-import com.jokku.aggregate.domain.Result
-import com.jokku.aggregate.presentation.model.UiSelectableCategory
+import com.jokku.aggregate.presentation.model.UiCategory
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Dispatchers
@@ -19,34 +18,25 @@ import javax.inject.Inject
 interface WelcomeViewModel {
     fun setLaunchScreen(screen: String): Job
     fun checkNextPageIsLast(nextPage: UiOnBoardingPage)
-    fun changeIsTopicFavorite(changedCategory: UiSelectableCategory)
-    fun setFavoriteTopics(categories: List<UiSelectableCategory>): Job
+    fun loadCategoryState(type: CategoryType): Job
+    fun switchIsTopicFavorite(changedCategory: UiCategory)
+    fun setFavoriteTopics(categories: List<UiCategory>): Job
 }
 
 @HiltViewModel
 class MainWelcomeViewModel @Inject constructor(
-    private val dataStoreRepository: DataStoreRepository,
-    private val welcomeStateProvider: WelcomeStateProvider,
+    private val preferencesRepository: PreferencesRepository,
     private val dispatcher: CoroutineDispatcher = Dispatchers.Main
 ) : BaseNewsViewModel(), WelcomeViewModel {
 
-    private val _onBoardingState = MutableStateFlow<Result<OnBoardingState>>(Result.Loading)
+    private val _onBoardingState = MutableStateFlow(OnBoardingState())
     val onBoardingState = _onBoardingState.asStateFlow()
 
-    private val _favoriteCategoriesState = MutableStateFlow<Result<FavoriteCategoriesState>>(Result.Loading)
-    val favoriteTopicsState = _favoriteCategoriesState.asStateFlow()
-
-
-    init {
-        val onBoardingState = welcomeStateProvider.createOnBoardingState()
-        _onBoardingState.update {  }
-        val favoriteCategoriesState = welcomeStateProvider.createFavoriteCategoriesState()
-
-
-    }
+    private val _favoriteCategoriesState = MutableStateFlow(FavoriteCategoriesState())
+    val favoriteCategoriesState = _favoriteCategoriesState.asStateFlow()
 
     override fun setLaunchScreen(screen: String) = viewModelScope.launch(dispatcher) {
-        dataStoreRepository.setLaunchScreen(screen = screen)
+        preferencesRepository.setLaunchScreen(screen = screen)
     }
 
 
@@ -55,17 +45,20 @@ class MainWelcomeViewModel @Inject constructor(
         _onBoardingState.update { state -> state.copy(isLastPage = isLastPage) }
     }
 
+    override fun loadCategoryState(type: CategoryType): Job {
+        preferencesRepository
+    }
 
-    override fun changeIsTopicFavorite(changedCategory: UiSelectableCategory) {
-        val changedTopics = _favoriteCategoriesState.value.categories.map { currentTopic ->
+    override fun switchIsTopicFavorite(changedCategory: UiCategory) {
+        val switchedTopics = _favoriteCategoriesState.value.categories.map { currentTopic ->
             if (currentTopic == changedCategory) currentTopic.copy(selected = !currentTopic.selected)
             else currentTopic
         }
-        _favoriteCategoriesState.update { state -> state.copy(categories = changedTopics) }
+        _favoriteCategoriesState.update { state -> state.copy(categories = switchedTopics) }
     }
 
-    override fun setFavoriteTopics(categories: List<UiSelectableCategory>) = viewModelScope.launch(dispatcher) {
-        dataStoreRepository.setFavoriteTopics(categories)
+    override fun setFavoriteTopics(categories: List<UiCategory>, type: CategoryType) = viewModelScope.launch(dispatcher) {
+        preferencesRepository.setFavoriteCategories(categories = categories, type = type)
     }
 }
 
@@ -75,9 +68,9 @@ data class OnBoardingState(
 )
 
 data class FavoriteCategoriesState(
-    val languages: List<UiSelectableCategory> = emptyList(),
-    val categories: List<UiSelectableCategory> = emptyList(),
-    val countries: List<UiSelectableCategory> = emptyList(),
-    val sources: List<UiSelectableCategory> = emptyList()
+    val languages: List<UiCategory> = emptyList(),
+    val categories: List<UiCategory> = emptyList(),
+    val countries: List<UiCategory> = emptyList(),
+    val sources: List<UiCategory> = emptyList()
 )
 

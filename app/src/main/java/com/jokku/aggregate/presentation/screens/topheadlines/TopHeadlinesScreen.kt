@@ -35,7 +35,7 @@ fun TopHeadlinesScreen(
     navController: NavHostController,
     viewModel: TopHeadlinesViewModel = hiltViewModel<MainTopHeadlinesViewModel>()
 ) { 
-    val state by viewModel.topHeadlinesUiState.collectAsStateWithLifecycle()
+    val state by viewModel.topHeadlinesState.collectAsStateWithLifecycle()
 
     var search by rememberSaveable { mutableStateOf("") }
     

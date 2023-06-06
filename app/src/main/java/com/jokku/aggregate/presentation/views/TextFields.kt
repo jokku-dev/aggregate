@@ -12,6 +12,7 @@ import androidx.compose.material3.MaterialTheme.colorScheme
 import androidx.compose.material3.MaterialTheme.shapes
 import androidx.compose.material3.MaterialTheme.typography
 import androidx.compose.material3.OutlinedTextField
+import androidx.compose.material3.OutlinedTextFieldDefaults
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.runtime.Composable
@@ -32,22 +33,16 @@ import androidx.compose.ui.tooling.preview.Preview
 import com.jokku.aggregate.R
 import com.jokku.aggregate.presentation.theme.AggregateTheme
 
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun UsernameTextField(
     username: String,
     imeAction: ImeAction,
     onUsernameChange: (String) -> Unit,
     modifier: Modifier = Modifier,
-    placeholder: String = stringResource(id = R.string.username_hint),
-    focused: Boolean = false
+    placeholder: String = stringResource(id = R.string.username_hint)
 ) {
-    var fieldFocused by rememberSaveable { mutableStateOf(focused) }
-
     OutlinedTextField(
-        modifier = modifier
-            .fillMaxWidth()
-            .onFocusChanged { focusState -> fieldFocused = focusState.hasFocus },
+        modifier = modifier.fillMaxWidth(),
         value = username,
         onValueChange = { newValue -> onUsernameChange(newValue) },
         singleLine = true,
@@ -65,14 +60,17 @@ fun UsernameTextField(
         },
         shape = shapes.medium,
         textStyle = typography.bodyLarge,
-        colors = TextFieldDefaults.outlinedTextFieldColors(
-            textColor = colorScheme.onSurfaceVariant,
-            containerColor = if (fieldFocused) colorScheme.surface else colorScheme.secondary,
+        colors = OutlinedTextFieldDefaults.colors(
+            focusedTextColor = colorScheme.onSurfaceVariant,
+            unfocusedTextColor = colorScheme.onSurfaceVariant,
+            focusedContainerColor = colorScheme.surface,
+            unfocusedContainerColor = colorScheme.secondary,
             focusedBorderColor = colorScheme.primary,
             unfocusedBorderColor = colorScheme.secondary,
             focusedLeadingIconColor = colorScheme.primary,
             unfocusedLeadingIconColor = colorScheme.onSecondary,
-            placeholderColor = colorScheme.onSecondary
+            focusedPlaceholderColor = colorScheme.onSecondary,
+            unfocusedPlaceholderColor = colorScheme.onSecondary
         ),
         keyboardOptions = KeyboardOptions(
             keyboardType = KeyboardType.Text,
@@ -81,7 +79,6 @@ fun UsernameTextField(
     )
 }
 
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun EmailTextField(
     email: String,
@@ -89,15 +86,10 @@ fun EmailTextField(
     onEmailChange: (String) -> Unit,
     modifier: Modifier = Modifier,
     placeholder: String = stringResource(id = R.string.email_hint),
-    focused: Boolean = false,
     keyboardAction: KeyboardActionScope.() -> Unit = {}
 ) {
-    var fieldFocused by rememberSaveable { mutableStateOf(focused) }
-
     OutlinedTextField(
-        modifier = modifier
-            .fillMaxWidth()
-            .onFocusChanged { focusState -> fieldFocused = focusState.hasFocus },
+        modifier = modifier.fillMaxWidth(),
         value = email,
         onValueChange = { newValue -> onEmailChange(newValue) },
         singleLine = true,
@@ -115,14 +107,17 @@ fun EmailTextField(
         },
         shape = shapes.medium,
         textStyle = typography.bodyLarge,
-        colors = TextFieldDefaults.outlinedTextFieldColors(
-            textColor = colorScheme.onSurfaceVariant,
-            containerColor = if (fieldFocused) colorScheme.surface else colorScheme.secondary,
+        colors = OutlinedTextFieldDefaults.colors(
+            focusedTextColor = colorScheme.onSurfaceVariant,
+            unfocusedTextColor = colorScheme.onSurfaceVariant,
+            focusedContainerColor = colorScheme.surface,
+            unfocusedContainerColor = colorScheme.secondary,
             focusedBorderColor = colorScheme.primary,
             unfocusedBorderColor = colorScheme.secondary,
             focusedLeadingIconColor = colorScheme.primary,
             unfocusedLeadingIconColor = colorScheme.onSecondary,
-            placeholderColor = colorScheme.onSecondary
+            focusedPlaceholderColor = colorScheme.onSecondary,
+            unfocusedPlaceholderColor = colorScheme.onSecondary
         ),
         keyboardOptions = KeyboardOptions(
             keyboardType = KeyboardType.Email,
@@ -132,7 +127,6 @@ fun EmailTextField(
     )
 }
 
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun PasswordTextField(
     placeholder: String,
@@ -141,16 +135,12 @@ fun PasswordTextField(
     onPasswordChange: (String) -> Unit,
     modifier: Modifier = Modifier,
     keyboardAction: KeyboardActionScope.() -> Unit = {},
-    visible: Boolean = false,
-    focused: Boolean = false
+    visible: Boolean = false
 ) {
     var passwordVisible by rememberSaveable { mutableStateOf(visible) }
-    var fieldFocused by rememberSaveable { mutableStateOf(focused) }
 
     OutlinedTextField(
-        modifier = modifier
-            .fillMaxWidth()
-            .onFocusChanged { focusState -> fieldFocused = focusState.hasFocus },
+        modifier = modifier.fillMaxWidth(),
         value = password,
         onValueChange = { newValue -> onPasswordChange(newValue) },
         singleLine = true,
@@ -180,14 +170,17 @@ fun PasswordTextField(
         else PasswordVisualTransformation('\u002a'),
         shape = shapes.medium,
         textStyle = typography.bodyLarge,
-        colors = TextFieldDefaults.outlinedTextFieldColors(
-            textColor = colorScheme.onSurfaceVariant,
-            containerColor = if (fieldFocused) colorScheme.surface else colorScheme.secondary,
+        colors = OutlinedTextFieldDefaults.colors(
+            focusedTextColor = colorScheme.onSurfaceVariant,
+            unfocusedTextColor = colorScheme.onSurfaceVariant,
+            focusedContainerColor = colorScheme.surface,
+            unfocusedContainerColor = colorScheme.secondary,
             focusedBorderColor = colorScheme.primary,
             unfocusedBorderColor = colorScheme.secondary,
             focusedLeadingIconColor = colorScheme.primary,
             unfocusedLeadingIconColor = colorScheme.onSecondary,
-            placeholderColor = colorScheme.onSecondary,
+            focusedPlaceholderColor = colorScheme.onSecondary,
+            unfocusedPlaceholderColor = colorScheme.onSecondary,
             focusedTrailingIconColor = colorScheme.primary,
             unfocusedTrailingIconColor = colorScheme.onSecondary
         ),
@@ -199,23 +192,17 @@ fun PasswordTextField(
     )
 }
 
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun SearchTextField(
     search: String,
     onSearchChange: (String) -> Unit,
     keyboardAction: KeyboardActionScope.() -> Unit,
-    modifier: Modifier = Modifier,
-    focused: Boolean = false
+    modifier: Modifier = Modifier
 ) {
-    var fieldFocused by rememberSaveable { mutableStateOf(focused) }
-
     OutlinedTextField(
         value = search,
         onValueChange = { newValue -> onSearchChange(newValue) },
-        modifier = modifier
-            .fillMaxWidth()
-            .onFocusChanged { focusState -> fieldFocused = focusState.hasFocus },
+        modifier = modifier.fillMaxWidth(),
         textStyle = typography.bodyLarge,
         leadingIcon = {
             Icon(
@@ -239,14 +226,17 @@ fun SearchTextField(
         },
         singleLine = true,
         shape = shapes.medium,
-        colors = TextFieldDefaults.outlinedTextFieldColors(
-            textColor = colorScheme.onSurfaceVariant,
-            containerColor = if (fieldFocused) colorScheme.surface else colorScheme.secondary,
+        colors = OutlinedTextFieldDefaults.colors(
+            focusedTextColor = colorScheme.onSurfaceVariant,
+            unfocusedTextColor = colorScheme.onSurfaceVariant,
+            focusedContainerColor = colorScheme.surface,
+            unfocusedContainerColor = colorScheme.secondary,
             focusedBorderColor = colorScheme.primary,
             unfocusedBorderColor = colorScheme.secondary,
             focusedLeadingIconColor = colorScheme.primary,
             unfocusedLeadingIconColor = colorScheme.onSecondary,
-            placeholderColor = colorScheme.onSecondary,
+            focusedPlaceholderColor = colorScheme.onSecondary,
+            unfocusedPlaceholderColor = colorScheme.onSecondary,
             focusedTrailingIconColor = colorScheme.primary,
             unfocusedTrailingIconColor = colorScheme.onSecondary
         ),
@@ -266,14 +256,12 @@ fun UsernameTextFieldPreview() {
             UsernameTextField(
                 username = "Username",
                 imeAction = ImeAction.Next,
-                onUsernameChange = {},
-                focused = false
+                onUsernameChange = {}
             )
             UsernameTextField(
                 username = "Username",
                 imeAction = ImeAction.Next,
-                onUsernameChange = {},
-                focused = true
+                onUsernameChange = {}
             )
         }
 
@@ -288,14 +276,12 @@ private fun EmailTextFieldPreview() {
             EmailTextField(
                 email = "Email",
                 imeAction = ImeAction.Next,
-                onEmailChange = {},
-                focused = false
+                onEmailChange = {}
             )
             EmailTextField(
                 email = "Email",
                 imeAction = ImeAction.Next,
-                onEmailChange = {},
-                focused = true
+                onEmailChange = {}
             )
         }
     }
@@ -317,8 +303,7 @@ private fun PasswordTextFieldPreview() {
                 password = "password",
                 imeAction = ImeAction.Next,
                 onPasswordChange = {},
-                visible = true,
-                focused = true
+                visible = true
             )
         }
     }
@@ -332,14 +317,12 @@ fun SearchTextFieldPreview() {
             SearchTextField(
                 search = "Search",
                 onSearchChange = {},
-                keyboardAction = {},
-                focused = false
+                keyboardAction = {}
             )
             SearchTextField(
                 search = "Search",
                 onSearchChange = {},
-                keyboardAction = {},
-                focused = true
+                keyboardAction = {}
             )
         }
     }

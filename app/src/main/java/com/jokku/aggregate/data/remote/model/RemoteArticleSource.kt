@@ -1,8 +1,7 @@
 package com.jokku.aggregate.data.remote.model
 
 import com.jokku.aggregate.data.mapper.DataModelMapper
-import com.jokku.aggregate.data.repo.model.RepositoryArticleSource
-import com.jokku.aggregate.presentation.model.UiArticleSource
+import com.jokku.aggregate.data.repo.model.ArticleSource
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
@@ -18,9 +17,9 @@ data class RemoteArticleSource(
      */
     @SerialName("name")
     val name: String
-) : DataModelMapper<RepositoryArticleSource> {
+) : DataModelMapper<ArticleSource> {
 
-    override fun map() = RepositoryArticleSource(
+    override fun map() = ArticleSource(
         id = id,
         name = name
     )

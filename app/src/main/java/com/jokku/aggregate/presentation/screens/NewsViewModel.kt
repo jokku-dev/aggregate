@@ -1,7 +1,7 @@
 package com.jokku.aggregate.presentation.screens
 
 import androidx.lifecycle.ViewModel
-import com.jokku.aggregate.domain.Request
+import com.jokku.aggregate.domain.TopHeadlinesRequest
 import com.jokku.aggregate.presentation.model.UiArticle
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -17,7 +17,7 @@ interface NewsViewModel {
     fun setChosenArticle(uiArticle: UiArticle)
     fun checkIfArticlesBookmarked(uiArticles: List<UiArticle>)
     fun changeArticleBookmarkedStatus(uiArticle: UiArticle)
-    fun getArticlesByRequestParameters(request: Request)
+    fun getArticlesByRequestParameters(request: TopHeadlinesRequest)
     fun cacheArticles(uiArticles: List<UiArticle>)
 }
 
@@ -40,7 +40,7 @@ open class BaseNewsViewModel @Inject constructor(
         TODO("Not yet implemented")
     }
 
-    override fun getArticlesByRequestParameters(request: Request) {
+    override fun getArticlesByRequestParameters(request: TopHeadlinesRequest) {
         TODO("Not yet implemented")
     }
 

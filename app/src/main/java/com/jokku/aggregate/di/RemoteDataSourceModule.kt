@@ -27,7 +27,11 @@ import javax.inject.Singleton
 
 @Module
 @InstallIn(SingletonComponent::class)
-class DataSourceModule {
+object RemoteDataSourceModule {
+
+    private const val TIME_OUT = 10_000
+    private const val TAG_KTOR_LOGGER = "ktor_logger:"
+    private const val TAG_HTTP_STATUS_LOGGER = "http_status:"
 
     @Singleton
     @Provides
@@ -65,9 +69,4 @@ class DataSourceModule {
             }
         }
     )
-    companion object {
-        private const val TIME_OUT = 10_000
-        private const val TAG_KTOR_LOGGER = "ktor_logger:"
-        private const val TAG_HTTP_STATUS_LOGGER = "http_status:"
-    }
 }

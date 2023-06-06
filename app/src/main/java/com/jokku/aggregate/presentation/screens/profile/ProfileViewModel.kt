@@ -1,10 +1,11 @@
 package com.jokku.aggregate.presentation.screens.profile
 
-import androidx.annotation.StringRes
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.jokku.aggregate.R
 import com.jokku.aggregate.data.repo.NewsRepository
+import com.jokku.aggregate.presentation.model.UiAppLanguage
+import com.jokku.aggregate.presentation.model.UiText
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Dispatchers
@@ -17,7 +18,6 @@ import javax.inject.Inject
 
 interface ProfileViewModel {
     val profileState: StateFlow<ProfileState>
-    val appLanguageState: StateFlow<AppLanguageState>
 
     fun changeNotificationsStatus(status: Boolean): Job
     fun changeSignInStatus(status: Boolean): Job
@@ -32,9 +32,6 @@ class MainProfileViewModel @Inject constructor(
 
     private val _profileState = MutableStateFlow(ProfileState())
     override val profileState = _profileState.asStateFlow()
-
-    private val _appLanguageState = MutableStateFlow(AppLanguageState())
-    override val appLanguageState = _appLanguageState.asStateFlow()
 
     override fun changeNotificationsStatus(status: Boolean) = viewModelScope.launch(dispatcher) {
 
@@ -51,18 +48,6 @@ class MainProfileViewModel @Inject constructor(
 
 data class ProfileState(
     val userSignedIn: Boolean = true,
-    val notificationsSwitchedOn: Boolean = false
-)
-
-data class AppLanguageState(
-    val languages: List<Language> = listOf(
-        Language(R.string.system, true),
-        Language(R.string.english, false),
-        Language(R.string.russian, false)
-    )
-)
-
-data class Language(
-    @StringRes val language: Int,
-    val selected: Boolean = false
+    val notificationsSwitchedOn: Boolean = false,
+    val languages: List<UiAppLanguage> = emptyList()
 )
