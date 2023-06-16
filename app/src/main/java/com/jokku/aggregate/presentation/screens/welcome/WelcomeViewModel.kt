@@ -1,14 +1,13 @@
 package com.jokku.aggregate.presentation.screens.welcome
 
 import androidx.lifecycle.viewModelScope
-import com.jokku.aggregate.data.repo.PreferencesRepository
+import com.jokku.aggregate.data.local.preferences.PreferencesDataSource
 import com.jokku.aggregate.presentation.screens.BaseNewsViewModel
 import com.jokku.aggregate.presentation.model.UiOnBoardingPage
 import com.jokku.aggregate.presentation.model.UiCategory
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
@@ -16,16 +15,16 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 interface WelcomeViewModel {
-    fun setLaunchScreen(screen: String): Job
+    fun setLaunchScreen(screen: String)
     fun checkNextPageIsLast(nextPage: UiOnBoardingPage)
-    fun loadCategoryState(type: CategoryType): Job
+    fun loadCategoryState(type: CategoryType)
     fun switchIsTopicFavorite(changedCategory: UiCategory)
-    fun setFavoriteTopics(categories: List<UiCategory>): Job
+    fun setFavoriteTopics(categories: List<UiCategory>, type: CategoryType)
 }
 
 @HiltViewModel
 class MainWelcomeViewModel @Inject constructor(
-    private val preferencesRepository: PreferencesRepository,
+    private val preferencesDataSource: PreferencesDataSource,
     private val dispatcher: CoroutineDispatcher = Dispatchers.Main
 ) : BaseNewsViewModel(), WelcomeViewModel {
 
@@ -35,18 +34,19 @@ class MainWelcomeViewModel @Inject constructor(
     private val _favoriteCategoriesState = MutableStateFlow(FavoriteCategoriesState())
     val favoriteCategoriesState = _favoriteCategoriesState.asStateFlow()
 
-    override fun setLaunchScreen(screen: String) = viewModelScope.launch(dispatcher) {
-        preferencesRepository.setLaunchScreen(screen = screen)
+    override fun setLaunchScreen(screen: String) {
+        viewModelScope.launch(dispatcher) {
+            preferencesDataSource.setLaunchScreen(screen = screen)
+        }
     }
-
 
     override fun checkNextPageIsLast(nextPage: UiOnBoardingPage) {
         val isLastPage = _onBoardingState.value.pages.last() == nextPage
         _onBoardingState.update { state -> state.copy(isLastPage = isLastPage) }
     }
 
-    override fun loadCategoryState(type: CategoryType): Job {
-        preferencesRepository
+    override fun loadCategoryState(type: CategoryType) {
+        preferencesDataSource
     }
 
     override fun switchIsTopicFavorite(changedCategory: UiCategory) {
@@ -57,8 +57,10 @@ class MainWelcomeViewModel @Inject constructor(
         _favoriteCategoriesState.update { state -> state.copy(categories = switchedTopics) }
     }
 
-    override fun setFavoriteTopics(categories: List<UiCategory>, type: CategoryType) = viewModelScope.launch(dispatcher) {
-        preferencesRepository.setFavoriteCategories(categories = categories, type = type)
+    override fun setFavoriteTopics(categories: List<UiCategory>, type: CategoryType) {
+        viewModelScope.launch(dispatcher) {
+            preferencesDataSource.setFavoriteCategories(categories = categories, type = type)
+        }
     }
 }
 

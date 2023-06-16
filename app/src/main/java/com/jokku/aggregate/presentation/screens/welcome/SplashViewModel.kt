@@ -5,14 +5,13 @@ import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.jokku.aggregate.data.repo.PreferencesRepository
-import com.jokku.aggregate.domain.Result
+import com.jokku.aggregate.data.local.preferences.PreferencesDataSource
 import com.jokku.aggregate.presentation.nav.Screen
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 class SplashViewModel @Inject constructor(
-    private val repository: PreferencesRepository
+    private val repository: PreferencesDataSource
 ): ViewModel() {
     private val _isLoading: MutableState<Boolean> = mutableStateOf(true)
     val isLoading: State<Boolean> = _isLoading
@@ -23,7 +22,7 @@ class SplashViewModel @Inject constructor(
     init {
         viewModelScope.launch {
             repository.readLaunchScreen().collect { state ->
-                if (state is com.jokku.aggregate.domain.ResultState.Result.Success) _startDestination.value = state.data
+                if (state.isNotEmpty()) _startDestination.value = state
                 else _startDestination.value = Screen.OnBoarding.route
             }
             _isLoading.value = false

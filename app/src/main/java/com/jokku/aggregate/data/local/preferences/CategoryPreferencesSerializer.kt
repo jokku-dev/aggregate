@@ -1,6 +1,7 @@
-package com.jokku.aggregate.data.store
+package com.jokku.aggregate.data.local.preferences
 
 import androidx.datastore.core.Serializer
+import com.jokku.aggregate.data.local.preferences.model.ProtoModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import kotlinx.serialization.SerializationException
@@ -24,12 +25,12 @@ object CategoryPreferencesSerializer : Serializer<ProtoModel> {
         }
     }
 
-    override suspend fun writeTo(t: ProtoModel, output: OutputStream) {
+    override suspend fun writeTo(model: ProtoModel, output: OutputStream) {
         withContext(Dispatchers.IO) {
             output.write(
                 Json.encodeToString(
                     serializer = ProtoModel.serializer(),
-                    value = t
+                    value = model
                 ).encodeToByteArray()
             )
         }

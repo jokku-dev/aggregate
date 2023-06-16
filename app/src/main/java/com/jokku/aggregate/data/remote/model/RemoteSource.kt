@@ -1,6 +1,7 @@
 package com.jokku.aggregate.data.remote.model
 
 
+import com.jokku.aggregate.data.local.database.entity.LocalSource
 import com.jokku.aggregate.data.mapper.DataModelMapper
 import com.jokku.aggregate.data.repo.model.Source
 import kotlinx.serialization.SerialName
@@ -43,17 +44,15 @@ data class RemoteSource(
      */
     @SerialName("url")
     val url: String
-) : DataModelMapper<Source> {
+) : DataModelMapper<LocalSource> {
 
-    override fun map(): Source {
-        return Source(
-            category = category,
-            country = country,
-            description = description,
-            id = id,
-            language = language,
-            name = name,
-            url = url
-        )
-    }
+    override fun map() = LocalSource(
+        category = category,
+        country = country,
+        description = description,
+        id = id,
+        language = language,
+        name = name,
+        url = url
+    )
 }

@@ -1,7 +1,6 @@
 package com.jokku.aggregate.presentation.screens.favorites
 
 import androidx.lifecycle.viewModelScope
-import com.jokku.aggregate.data.repo.PreferencesRepository
 import com.jokku.aggregate.data.repo.NewsRepository
 import com.jokku.aggregate.presentation.model.UiArticle
 import com.jokku.aggregate.presentation.screens.BaseNewsViewModel
@@ -11,7 +10,6 @@ import com.jokku.aggregate.presentation.model.UiCategoryArticles
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -22,21 +20,22 @@ import javax.inject.Inject
 interface FavoritesViewModel {
     val favoritesState: StateFlow<Result<FavoritesState>>
 
-    fun getArticlesOfFavoriteCategories(): Job
+    fun getArticlesOfFavoriteCategories()
 }
 
 @HiltViewModel
-class MainFavoritesViewModel @Inject constructor(
+class DefaultFavoritesViewModel @Inject constructor(
     private val newsRepository: NewsRepository,
-    private val preferencesRepository: PreferencesRepository,
     private val dispatcher: CoroutineDispatcher = Dispatchers.Main
 ) : BaseNewsViewModel(), FavoritesViewModel {
 
     private val _favoritesState = MutableStateFlow<Result<FavoritesState>>(Result.Loading)
     override val favoritesState = _favoritesState.asStateFlow()
 
-    override fun getArticlesOfFavoriteCategories() = viewModelScope.launch(dispatcher) {
-        TODO("Not yet implemented")
+    override fun getArticlesOfFavoriteCategories() {
+        viewModelScope.launch(dispatcher) {
+            TODO("Not yet implemented")
+        }
     }
 
     private suspend fun getFavoriteCategories(): List<UiCategory> {

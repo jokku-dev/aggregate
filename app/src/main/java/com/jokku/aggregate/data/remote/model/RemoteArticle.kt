@@ -1,5 +1,6 @@
 package com.jokku.aggregate.data.remote.model
 
+import com.jokku.aggregate.data.local.database.entity.LocalArticle
 import com.jokku.aggregate.data.mapper.DataModelMapper
 import com.jokku.aggregate.data.repo.model.Article
 import kotlinx.serialization.SerialName
@@ -47,9 +48,9 @@ data class RemoteArticle(
      */
     @SerialName("urlToImage")
     val urlToImage: String
-) : DataModelMapper<Article> {
+) : DataModelMapper<LocalArticle> {
 
-    override fun map() = Article(
+    override fun map() = LocalArticle(
         author = author,
         content = content,
         description = description,

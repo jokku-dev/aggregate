@@ -48,7 +48,7 @@ import com.jokku.aggregate.presentation.views.HeadlineAndDescriptionText
 @Composable
 fun FavoritesScreen(
     navController: NavHostController,
-    viewModel: FavoritesViewModel = hiltViewModel<MainFavoritesViewModel>()
+    viewModel: FavoritesViewModel = hiltViewModel<DefaultFavoritesViewModel>()
 ) {
     val state by viewModel.favoritesState.collectAsStateWithLifecycle()
 

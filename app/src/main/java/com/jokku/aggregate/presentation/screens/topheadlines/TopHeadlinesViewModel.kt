@@ -3,7 +3,7 @@ package com.jokku.aggregate.presentation.screens.topheadlines
 import androidx.lifecycle.viewModelScope
 import com.jokku.aggregate.R
 import com.jokku.aggregate.presentation.model.UiErrorMessage
-import com.jokku.aggregate.data.repo.PreferencesRepository
+import com.jokku.aggregate.data.local.preferences.PreferencesDataSource
 import com.jokku.aggregate.data.repo.NewsRepository
 import com.jokku.aggregate.presentation.model.UiArticle
 import com.jokku.aggregate.presentation.screens.BaseNewsViewModel
@@ -35,7 +35,7 @@ interface TopHeadlinesViewModel {
 @HiltViewModel
 class MainTopHeadlinesViewModel @Inject constructor(
     private val newsRepository: NewsRepository,
-    private val preferencesRepository: PreferencesRepository,
+    private val preferencesDataSource: PreferencesDataSource,
     private val dispatcher: CoroutineDispatcher = Dispatchers.Main
 ) : BaseNewsViewModel(), TopHeadlinesViewModel {
 
@@ -80,7 +80,7 @@ class MainTopHeadlinesViewModel @Inject constructor(
     }
 
     override fun getSignInStatus() = viewModelScope.launch(dispatcher) {
-        preferencesRepository.readUserLoggedIn().collect { logged ->
+        preferencesDataSource.readUserLoggedIn().collect { logged ->
             topHeadlinesViewModelState.update { it.copy(loggedIn = logged) }
         }
     }

@@ -1,6 +1,5 @@
 package com.jokku.aggregate.data.remote.model
-
-import com.jokku.aggregate.data.ResponseStatus
+import com.jokku.aggregate.data.local.database.entity.LocalNewsResponse
 import com.jokku.aggregate.data.mapper.DataModelMapper
 import com.jokku.aggregate.data.mapper.mapList
 import com.jokku.aggregate.data.repo.model.NewsResponse
@@ -37,28 +36,10 @@ data class RemoteNewsResponse(
      */
     @SerialName("message")
     val errorMessage: String
-) : DataModelMapper<NewsResponse> {
+) : DataModelMapper<LocalNewsResponse> {
 
-    private val expectedStatus = if (status == ResponseStatus.OK.value) ResponseStatus.OK
-    else ResponseStatus.ERROR
-
-    val isError: Boolean
-        get() = status == ResponseStatus.ERROR.value
-
-    val isSuccess: Boolean
-        get() = status == ResponseStatus.OK.value
-
-    override fun map(): NewsResponse {
-        return when (expectedStatus) {
-            ResponseStatus.OK -> NewsResponse.OkNewsResponse(
-                articles = articles.mapList(),
-                totalResults = totalResults
-            )
-
-            ResponseStatus.ERROR -> NewsResponse.ErrorNewsResponse(
-                errorCode = errorCode,
-                errorMessage = errorMessage
-            )
-        }
-    }
+    override fun map() = LocalNewsResponse(
+        articles = articles.mapList(),
+        totalResults = totalResults
+    )
 }

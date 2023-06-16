@@ -1,4 +1,4 @@
-package com.jokku.aggregate.data.repo
+package com.jokku.aggregate.data.local.preferences
 
 import android.util.Log
 import androidx.datastore.core.DataStore
@@ -6,7 +6,7 @@ import androidx.datastore.preferences.core.Preferences
 import androidx.datastore.preferences.core.booleanPreferencesKey
 import androidx.datastore.preferences.core.edit
 import androidx.datastore.preferences.core.stringPreferencesKey
-import com.jokku.aggregate.data.store.ProtoModel
+import com.jokku.aggregate.data.local.preferences.model.ProtoModel
 import com.jokku.aggregate.presentation.nav.Screen
 import com.jokku.aggregate.presentation.model.UiCategory
 import com.jokku.aggregate.presentation.screens.welcome.CategoryType
@@ -19,7 +19,7 @@ import javax.inject.Singleton
 
 const val DATA_STORE = "data_store"
 
-interface PreferencesRepository {
+interface PreferencesDataSource {
     suspend fun setLaunchScreen(screen: String)
     fun readLaunchScreen(): Flow<String>
     suspend fun setUserLoggedIn(logged: Boolean)
@@ -29,11 +29,11 @@ interface PreferencesRepository {
 }
 
 @Singleton
-class MainPreferencesRepository @Inject constructor(
+class NewsPreferencesDataSource @Inject constructor(
     private val preferences: DataStore<Preferences>,
     private val proto: DataStore<ProtoModel>,
     private val localDataProvider: LocalDataProvider
-) : PreferencesRepository {
+) : PreferencesDataSource {
 
     private companion object {
         val screenAfterLaunchKey = stringPreferencesKey(name = "after_launch_screen")

@@ -9,13 +9,13 @@ import androidx.datastore.preferences.core.PreferenceDataStoreFactory
 import androidx.datastore.preferences.core.Preferences
 import androidx.datastore.preferences.core.emptyPreferences
 import androidx.datastore.preferences.preferencesDataStoreFile
-import com.jokku.aggregate.data.store.ProtoModel
-import com.jokku.aggregate.data.store.CategoryPreferencesSerializer
+import com.jokku.aggregate.data.local.preferences.model.ProtoModel
+import com.jokku.aggregate.data.local.preferences.CategoryPreferencesSerializer
 import com.jokku.aggregate.data.remote.NewsRemoteDataSource
 import com.jokku.aggregate.data.remote.RemoteDataSource
-import com.jokku.aggregate.data.repo.PreferencesRepository
-import com.jokku.aggregate.data.repo.MainPreferencesRepository
-import com.jokku.aggregate.data.repo.MainNewsRepository
+import com.jokku.aggregate.data.local.preferences.PreferencesDataSource
+import com.jokku.aggregate.data.local.preferences.NewsPreferencesDataSource
+import com.jokku.aggregate.data.repo.DefaultNewsRepository
 import com.jokku.aggregate.data.repo.NewsRepository
 import dagger.Binds
 import dagger.Module
@@ -31,11 +31,11 @@ abstract class RepositoryModule {
 
     @Binds
     @Singleton
-    abstract fun bindDataStoreRepository(impl: MainPreferencesRepository): PreferencesRepository
+    abstract fun bindDataStoreRepository(impl: NewsPreferencesDataSource): PreferencesDataSource
 
     @Binds
     @Singleton
-    abstract fun bindNewsRepository(impl: MainNewsRepository): NewsRepository
+    abstract fun bindNewsRepository(impl: DefaultNewsRepository): NewsRepository
 
     @Binds
     @Singleton

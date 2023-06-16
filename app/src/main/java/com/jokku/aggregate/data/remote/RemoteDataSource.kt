@@ -8,6 +8,8 @@ import com.jokku.aggregate.data.remote.HttpRouts.PAGE_SIZE
 import com.jokku.aggregate.data.remote.HttpRouts.QUERY
 import com.jokku.aggregate.data.remote.HttpRouts.SOURCES
 import com.jokku.aggregate.data.remote.model.RemoteNewsResponse
+import com.jokku.aggregate.data.remote.model.RemoteSourcesResponse
+import com.jokku.aggregate.domain.SourcesRequest
 import com.jokku.aggregate.domain.TopHeadlinesRequest
 import io.ktor.client.HttpClient
 import io.ktor.client.call.body
@@ -19,6 +21,7 @@ import javax.inject.Inject
 interface RemoteDataSource {
 
     suspend fun getTopHeadlineArticles(request: TopHeadlinesRequest): RemoteNewsResponse
+    suspend fun getTopHeadlineSources(request: SourcesRequest): RemoteSourcesResponse
 }
 
 class NewsRemoteDataSource @Inject constructor(
@@ -57,5 +60,9 @@ class NewsRemoteDataSource @Inject constructor(
         } catch (e: Exception) {
             throw e
         }
+    }
+
+    override suspend fun getTopHeadlineSources(request: SourcesRequest): RemoteSourcesResponse {
+        TODO("Not yet implemented")
     }
 }

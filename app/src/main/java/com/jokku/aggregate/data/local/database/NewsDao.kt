@@ -1,9 +1,9 @@
-package com.jokku.aggregate.data.local
+package com.jokku.aggregate.data.local.database
 
 import androidx.room.Dao
 import androidx.room.Query
 import androidx.room.Upsert
-import com.jokku.aggregate.data.local.entity.LocalNewsResponse
+import com.jokku.aggregate.data.local.database.entity.LocalNewsResponse
 import kotlinx.coroutines.flow.Flow
 
 @Dao

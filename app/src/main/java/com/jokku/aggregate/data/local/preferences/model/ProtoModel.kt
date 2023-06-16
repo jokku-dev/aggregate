@@ -1,4 +1,4 @@
-package com.jokku.aggregate.data.store
+package com.jokku.aggregate.data.local.preferences.model
 
 import com.jokku.aggregate.data.UrlParameterValue
 import com.jokku.aggregate.presentation.model.UiCategory
