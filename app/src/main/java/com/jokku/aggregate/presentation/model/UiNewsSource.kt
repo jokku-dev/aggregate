@@ -1,5 +1,7 @@
 package com.jokku.aggregate.presentation.model
 
+import kotlin.String
+
 data class UiNewsSource(
     val name: String = "",
     val description: String = "",

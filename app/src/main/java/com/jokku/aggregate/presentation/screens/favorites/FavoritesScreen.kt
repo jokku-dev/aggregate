@@ -50,10 +50,10 @@ fun FavoritesScreen(
     navController: NavHostController,
     viewModel: FavoritesViewModel = hiltViewModel<DefaultFavoritesViewModel>()
 ) {
-    val state by viewModel.favoritesState.collectAsStateWithLifecycle()
+    val state by viewModel.favoritesUiState.collectAsStateWithLifecycle()
 
     FavoritesScreenContent(
-        categorisedArticles = (state as? FavoritesState.HasArticles)?.categorisedArticles ?: emptyList()
+        categorisedArticles = (state as? FavoritesUiState.HasArticles)?.categorisedArticles ?: emptyList()
     )
 }
 

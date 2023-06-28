@@ -44,7 +44,7 @@ fun OnBoardingScreen(
     navController: NavHostController,
     viewModel: MainWelcomeViewModel = hiltViewModel()
 ) {
-    val state by viewModel.onBoardingState.collectAsStateWithLifecycle()
+    val state by viewModel.onBoardingUiState.collectAsStateWithLifecycle()
     val pagerState = rememberPagerState()
     val scope = rememberCoroutineScope()
 

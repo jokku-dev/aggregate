@@ -9,8 +9,8 @@ import androidx.datastore.preferences.core.PreferenceDataStoreFactory
 import androidx.datastore.preferences.core.Preferences
 import androidx.datastore.preferences.core.emptyPreferences
 import androidx.datastore.preferences.preferencesDataStoreFile
-import com.jokku.aggregate.data.local.preferences.model.ProtoModel
-import com.jokku.aggregate.data.local.preferences.CategoryPreferencesSerializer
+import com.jokku.aggregate.data.local.preferences.model.UserData
+import com.jokku.aggregate.data.local.preferences.PreferencesSerializer
 import com.jokku.aggregate.data.remote.NewsRemoteDataSource
 import com.jokku.aggregate.data.remote.RemoteDataSource
 import com.jokku.aggregate.data.local.preferences.PreferencesDataSource
@@ -58,9 +58,9 @@ abstract class RepositoryModule {
         @Singleton
         fun provideProtoDataStore(
             @ApplicationContext applicationContext: Context
-        ) : DataStore<ProtoModel> = DataStoreFactory.create(
-            serializer = CategoryPreferencesSerializer,
-            corruptionHandler = ReplaceFileCorruptionHandler { ProtoModel() },
+        ) : DataStore<UserData> = DataStoreFactory.create(
+            serializer = PreferencesSerializer,
+            corruptionHandler = ReplaceFileCorruptionHandler { UserData() },
             produceFile = { applicationContext.dataStoreFile(USER_TYPED_PREFERENCES) }
         )
     }

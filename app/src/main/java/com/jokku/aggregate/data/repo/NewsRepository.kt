@@ -1,9 +1,8 @@
 package com.jokku.aggregate.data.repo
 
 import com.jokku.aggregate.R
-import com.jokku.aggregate.data.local.database.LocalDataSource
 import com.jokku.aggregate.data.local.database.NewsDao
-import com.jokku.aggregate.data.local.preferences.PreferencesDataSource
+import com.jokku.aggregate.data.local.preferences.model.UserData
 import com.jokku.aggregate.data.remote.RemoteDataSource
 import com.jokku.aggregate.data.remote.model.RemoteNewsResponse
 import com.jokku.aggregate.data.repo.model.NewsResponse
@@ -16,18 +15,21 @@ import kotlinx.coroutines.flow.Flow
 import javax.inject.Inject
 
 interface NewsRepository {
-    suspend fun getFavoriteCategoryArticles(request: TopHeadlinesRequest): Result<NewsResponse>
+
+    val userData: Flow<UserData>
+
+    suspend fun getTopHeadlines(request: TopHeadlinesRequest): Result<NewsResponse>
     fun observeRandomArticles(): Flow<Set<String>>
 }
 
 class DefaultNewsRepository @Inject constructor(
     private val remote: RemoteDataSource,
-    private val local: LocalDataSource,
-    private val preferences: PreferencesDataSource
+    private val local: NewsDao
 ) : NewsRepository {
+
     private var latestNews: List<NewsResponse> = emptyList()
 
-    override suspend fun getFavoriteCategoryArticles(
+    override suspend fun getTopHeadlines(
         request: TopHeadlinesRequest
     ): Result<NewsResponse> {
         return try {

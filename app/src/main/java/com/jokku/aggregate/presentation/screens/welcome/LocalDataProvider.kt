@@ -1,7 +1,10 @@
 package com.jokku.aggregate.presentation.screens.welcome
 
 import com.jokku.aggregate.R
-import com.jokku.aggregate.data.UrlParameterValue
+import com.jokku.aggregate.data.CategoryCode
+import com.jokku.aggregate.data.CountryCode
+import com.jokku.aggregate.data.LanguageCode
+import com.jokku.aggregate.data.UrlParameter
 import com.jokku.aggregate.presentation.model.UiOnBoardingPage
 import com.jokku.aggregate.presentation.model.UiCategory
 import com.jokku.aggregate.presentation.model.UiText
@@ -22,67 +25,67 @@ class LocalDataProviderFactory : LocalDataProvider {
             CategoryType.LANGUAGE -> listOf(
                 UiCategory(
                     name = UiText.StringResource(R.string.arabic),
-                    code = UrlParameterValue.LanguageCode.AR,
+                    code = LanguageCode.AR,
                     selected = false
                 ),
                 UiCategory(
                     name = UiText.StringResource(R.string.german),
-                    code = UrlParameterValue.LanguageCode.DE,
+                    code = LanguageCode.DE,
                     selected = false
                 ),
                 UiCategory(
                     name = UiText.StringResource(R.string.english),
-                    code = UrlParameterValue.LanguageCode.EN,
+                    code = LanguageCode.EN,
                     selected = false
                 ),
                 UiCategory(
                     name = UiText.StringResource(R.string.spanish),
-                    code = UrlParameterValue.LanguageCode.ES,
+                    code = LanguageCode.ES,
                     selected = false
                 ),
                 UiCategory(
                     name = UiText.StringResource(R.string.french),
-                    code = UrlParameterValue.LanguageCode.FR,
+                    code = LanguageCode.FR,
                     selected = false
                 ),
                 UiCategory(
                     name = UiText.StringResource(R.string.hebrew),
-                    code = UrlParameterValue.LanguageCode.HE,
+                    code = LanguageCode.HE,
                     selected = false
                 ),
                 UiCategory(
                     name = UiText.StringResource(R.string.italian),
-                    code = UrlParameterValue.LanguageCode.IT,
+                    code = LanguageCode.IT,
                     selected = false
                 ),
                 UiCategory(
                     name = UiText.StringResource(R.string.dutch),
-                    code = UrlParameterValue.LanguageCode.NL,
+                    code = LanguageCode.NL,
                     selected = false
                 ),
                 UiCategory(
                     name = UiText.StringResource(R.string.norwegian),
-                    code = UrlParameterValue.LanguageCode.NO,
+                    code = LanguageCode.NO,
                     selected = false
                 ),
                 UiCategory(
                     name = UiText.StringResource(R.string.portuguese),
-                    code = UrlParameterValue.LanguageCode.PT,
+                    code = LanguageCode.PT,
                     selected = false
                 ),
                 UiCategory(
                     name = UiText.StringResource(R.string.russian),
-                    code = UrlParameterValue.LanguageCode.RU,
+                    code = LanguageCode.RU,
                     selected = false
                 ),
                 UiCategory(
                     name = UiText.StringResource(R.string.swedish),
-                    code = UrlParameterValue.LanguageCode.SV,
+                    code = LanguageCode.SV,
                     selected = false
                 ),
                 UiCategory(
                     name = UiText.StringResource(R.string.chinese),
-                    code = UrlParameterValue.LanguageCode.ZH,
+                    code = LanguageCode.ZH,
                     selected = false
                 ),
             )
@@ -90,37 +93,37 @@ class LocalDataProviderFactory : LocalDataProvider {
             CategoryType.CATEGORY -> listOf(
                 UiCategory(
                     name = UiText.StringResource(R.string.business),
-                    code = UrlParameterValue.Category.BUSINESS,
+                    code = CategoryCode.BUSINESS,
                     selected = false
                 ),
                 UiCategory(
                     name = UiText.StringResource(R.string.entertainment),
-                    code = UrlParameterValue.Category.ENTERTAINMENT,
+                    code = CategoryCode.ENTERTAINMENT,
                     selected = false
                 ),
                 UiCategory(
                     name = UiText.StringResource(R.string.general),
-                    code = UrlParameterValue.Category.GENERAL,
+                    code = CategoryCode.GENERAL,
                     selected = false
                 ),
                 UiCategory(
                     name = UiText.StringResource(R.string.health),
-                    code = UrlParameterValue.Category.HEALTH,
+                    code = CategoryCode.HEALTH,
                     selected = false
                 ),
                 UiCategory(
                     name = UiText.StringResource(R.string.science),
-                    code = UrlParameterValue.Category.SCIENCE,
+                    code = CategoryCode.SCIENCE,
                     selected = false
                 ),
                 UiCategory(
                     name = UiText.StringResource(R.string.sports),
-                    code = UrlParameterValue.Category.SPORTS,
+                    code = CategoryCode.SPORTS,
                     selected = false
                 ),
                 UiCategory(
                     name = UiText.StringResource(R.string.technology),
-                    code = UrlParameterValue.Category.TECHNOLOGY,
+                    code = CategoryCode.TECHNOLOGY,
                     selected = false
                 ),
             )
@@ -128,272 +131,272 @@ class LocalDataProviderFactory : LocalDataProvider {
             CategoryType.COUNTRY -> listOf(
                 UiCategory(
                     name = UiText.StringResource(R.string.united_arab_emirates),
-                    code = UrlParameterValue.CountryCode.AE,
+                    code = CountryCode.AE,
                     selected = false
                 ),
                 UiCategory(
                     name = UiText.StringResource(R.string.argentina),
-                    code = UrlParameterValue.CountryCode.AR,
+                    code = CountryCode.AR,
                     selected = false
                 ),
                 UiCategory(
                     name = UiText.StringResource(R.string.austria),
-                    code = UrlParameterValue.CountryCode.AT,
+                    code = CountryCode.AT,
                     selected = false
                 ),
                 UiCategory(
                     name = UiText.StringResource(R.string.australia),
-                    code = UrlParameterValue.CountryCode.AU,
+                    code = CountryCode.AU,
                     selected = false
                 ),
                 UiCategory(
                     name = UiText.StringResource(R.string.belgium),
-                    code = UrlParameterValue.CountryCode.BE,
+                    code = CountryCode.BE,
                     selected = false
                 ),
                 UiCategory(
                     name = UiText.StringResource(R.string.bulgaria),
-                    code = UrlParameterValue.CountryCode.BG,
+                    code = CountryCode.BG,
                     selected = false
                 ),
                 UiCategory(
                     name = UiText.StringResource(R.string.brazil),
-                    code = UrlParameterValue.CountryCode.BR,
+                    code = CountryCode.BR,
                     selected = false
                 ),
                 UiCategory(
                     name = UiText.StringResource(R.string.canada),
-                    code = UrlParameterValue.CountryCode.CA,
+                    code = CountryCode.CA,
                     selected = false
                 ),
                 UiCategory(
                     name = UiText.StringResource(R.string.switzerland),
-                    code = UrlParameterValue.CountryCode.CH,
+                    code = CountryCode.CH,
                     selected = false
                 ),
                 UiCategory(
                     name = UiText.StringResource(R.string.china),
-                    code = UrlParameterValue.CountryCode.CN,
+                    code = CountryCode.CN,
                     selected = false
                 ),
                 UiCategory(
                     name = UiText.StringResource(R.string.colombia),
-                    code = UrlParameterValue.CountryCode.CO,
+                    code = CountryCode.CO,
                     selected = false
                 ),
                 UiCategory(
                     name = UiText.StringResource(R.string.cuba),
-                    code = UrlParameterValue.CountryCode.CU,
+                    code = CountryCode.CU,
                     selected = false
                 ),
                 UiCategory(
                     name = UiText.StringResource(R.string.czechia),
-                    code = UrlParameterValue.CountryCode.CZ,
+                    code = CountryCode.CZ,
                     selected = false
                 ),
                 UiCategory(
                     name = UiText.StringResource(R.string.germany),
-                    code = UrlParameterValue.CountryCode.DE,
+                    code = CountryCode.DE,
                     selected = false
                 ),
                 UiCategory(
                     name = UiText.StringResource(R.string.egypt),
-                    code = UrlParameterValue.CountryCode.EG,
+                    code = CountryCode.EG,
                     selected = false
                 ),
                 UiCategory(
                     name = UiText.StringResource(R.string.france),
-                    code = UrlParameterValue.CountryCode.FR,
+                    code = CountryCode.FR,
                     selected = false
                 ),
                 UiCategory(
                     name = UiText.StringResource(R.string.united_kingdom),
-                    code = UrlParameterValue.CountryCode.GB,
+                    code = CountryCode.GB,
                     selected = false
                 ),
                 UiCategory(
                     name = UiText.StringResource(R.string.greece),
-                    code = UrlParameterValue.CountryCode.GR,
+                    code = CountryCode.GR,
                     selected = false
                 ),
                 UiCategory(
                     name = UiText.StringResource(R.string.hong_kong),
-                    code = UrlParameterValue.CountryCode.HK,
+                    code = CountryCode.HK,
                     selected = false
                 ),
                 UiCategory(
                     name = UiText.StringResource(R.string.hungary),
-                    code = UrlParameterValue.CountryCode.HU,
+                    code = CountryCode.HU,
                     selected = false
                 ),
                 UiCategory(
                     name = UiText.StringResource(R.string.indonesia),
-                    code = UrlParameterValue.CountryCode.ID,
+                    code = CountryCode.ID,
                     selected = false
                 ),
                 UiCategory(
                     name = UiText.StringResource(R.string.ireland),
-                    code = UrlParameterValue.CountryCode.IE,
+                    code = CountryCode.IE,
                     selected = false
                 ),
                 UiCategory(
                     name = UiText.StringResource(R.string.israel),
-                    code = UrlParameterValue.CountryCode.IL,
+                    code = CountryCode.IL,
                     selected = false
                 ),
                 UiCategory(
                     name = UiText.StringResource(R.string.india),
-                    code = UrlParameterValue.CountryCode.IN,
+                    code = CountryCode.IN,
                     selected = false
                 ),
                 UiCategory(
                     name = UiText.StringResource(R.string.italy),
-                    code = UrlParameterValue.CountryCode.IT,
+                    code = CountryCode.IT,
                     selected = false
                 ),
                 UiCategory(
                     name = UiText.StringResource(R.string.japan),
-                    code = UrlParameterValue.CountryCode.JP,
+                    code = CountryCode.JP,
                     selected = false
                 ),
                 UiCategory(
                     name = UiText.StringResource(R.string.republic_of_korea),
-                    code = UrlParameterValue.CountryCode.KR,
+                    code = CountryCode.KR,
                     selected = false
                 ),
                 UiCategory(
                     name = UiText.StringResource(R.string.lithuania),
-                    code = UrlParameterValue.CountryCode.LT,
+                    code = CountryCode.LT,
                     selected = false
                 ),
                 UiCategory(
                     name = UiText.StringResource(R.string.latvia),
-                    code = UrlParameterValue.CountryCode.LV,
+                    code = CountryCode.LV,
                     selected = false
                 ),
                 UiCategory(
                     name = UiText.StringResource(R.string.morocco),
-                    code = UrlParameterValue.CountryCode.MA,
+                    code = CountryCode.MA,
                     selected = false
                 ),
                 UiCategory(
                     name = UiText.StringResource(R.string.mexico),
-                    code = UrlParameterValue.CountryCode.MX,
+                    code = CountryCode.MX,
                     selected = false
                 ),
                 UiCategory(
                     name = UiText.StringResource(R.string.malaysia),
-                    code = UrlParameterValue.CountryCode.MY,
+                    code = CountryCode.MY,
                     selected = false
                 ),
                 UiCategory(
                     name = UiText.StringResource(R.string.nigeria),
-                    code = UrlParameterValue.CountryCode.NG,
+                    code = CountryCode.NG,
                     selected = false
                 ),
                 UiCategory(
                     name = UiText.StringResource(R.string.netherlands),
-                    code = UrlParameterValue.CountryCode.NL,
+                    code = CountryCode.NL,
                     selected = false
                 ),
                 UiCategory(
                     name = UiText.StringResource(R.string.norway),
-                    code = UrlParameterValue.CountryCode.NO,
+                    code = CountryCode.NO,
                     selected = false
                 ),
                 UiCategory(
                     name = UiText.StringResource(R.string.new_zealand),
-                    code = UrlParameterValue.CountryCode.NZ,
+                    code = CountryCode.NZ,
                     selected = false
                 ),
                 UiCategory(
                     name = UiText.StringResource(R.string.philippines),
-                    code = UrlParameterValue.CountryCode.PH,
+                    code = CountryCode.PH,
                     selected = false
                 ),
                 UiCategory(
                     name = UiText.StringResource(R.string.poland),
-                    code = UrlParameterValue.CountryCode.PL,
+                    code = CountryCode.PL,
                     selected = false
                 ),
                 UiCategory(
                     name = UiText.StringResource(R.string.portugal),
-                    code = UrlParameterValue.CountryCode.PT,
+                    code = CountryCode.PT,
                     selected = false
                 ),
                 UiCategory(
                     name = UiText.StringResource(R.string.romania),
-                    code = UrlParameterValue.CountryCode.RO,
+                    code = CountryCode.RO,
                     selected = false
                 ),
                 UiCategory(
                     name = UiText.StringResource(R.string.serbia),
-                    code = UrlParameterValue.CountryCode.RS,
+                    code = CountryCode.RS,
                     selected = false
                 ),
                 UiCategory(
                     name = UiText.StringResource(R.string.russian_federation),
-                    code = UrlParameterValue.CountryCode.RU,
+                    code = CountryCode.RU,
                     selected = false
                 ),
                 UiCategory(
                     name = UiText.StringResource(R.string.saudi_arabia),
-                    code = UrlParameterValue.CountryCode.SA,
+                    code = CountryCode.SA,
                     selected = false
                 ),
                 UiCategory(
                     name = UiText.StringResource(R.string.sweden),
-                    code = UrlParameterValue.CountryCode.SE,
+                    code = CountryCode.SE,
                     selected = false
                 ),
                 UiCategory(
                     name = UiText.StringResource(R.string.singapore),
-                    code = UrlParameterValue.CountryCode.SG,
+                    code = CountryCode.SG,
                     selected = false
                 ),
                 UiCategory(
                     name = UiText.StringResource(R.string.slovenia),
-                    code = UrlParameterValue.CountryCode.SI,
+                    code = CountryCode.SI,
                     selected = false
                 ),
                 UiCategory(
                     name = UiText.StringResource(R.string.slovakia),
-                    code = UrlParameterValue.CountryCode.SK,
+                    code = CountryCode.SK,
                     selected = false
                 ),
                 UiCategory(
                     name = UiText.StringResource(R.string.thailand),
-                    code = UrlParameterValue.CountryCode.TH,
+                    code = CountryCode.TH,
                     selected = false
                 ),
                 UiCategory(
                     name = UiText.StringResource(R.string.turkey),
-                    code = UrlParameterValue.CountryCode.TR,
+                    code = CountryCode.TR,
                     selected = false
                 ),
                 UiCategory(
                     name = UiText.StringResource(R.string.taiwan),
-                    code = UrlParameterValue.CountryCode.TW,
+                    code = CountryCode.TW,
                     selected = false
                 ),
                 UiCategory(
                     name = UiText.StringResource(R.string.ukraine),
-                    code = UrlParameterValue.CountryCode.UA,
+                    code = CountryCode.UA,
                     selected = false
                 ),
                 UiCategory(
                     name = UiText.StringResource(R.string.united_states_of_america),
-                    code = UrlParameterValue.CountryCode.US,
+                    code = CountryCode.US,
                     selected = false
                 ),
                 UiCategory(
                     name = UiText.StringResource(R.string.venezuela),
-                    code = UrlParameterValue.CountryCode.VE,
+                    code = CountryCode.VE,
                     selected = false
                 ),
                 UiCategory(
                     name = UiText.StringResource(R.string.south_africa),
-                    code = UrlParameterValue.CountryCode.ZA,
+                    code = CountryCode.ZA,
                     selected = false
                 )
             )

@@ -2,12 +2,14 @@ package com.jokku.aggregate.presentation.screens.welcome
 
 import androidx.lifecycle.viewModelScope
 import com.jokku.aggregate.data.local.preferences.PreferencesDataSource
+import com.jokku.aggregate.data.repo.NewsRepository
 import com.jokku.aggregate.presentation.screens.BaseNewsViewModel
 import com.jokku.aggregate.presentation.model.UiOnBoardingPage
 import com.jokku.aggregate.presentation.model.UiCategory
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
@@ -24,29 +26,32 @@ interface WelcomeViewModel {
 
 @HiltViewModel
 class MainWelcomeViewModel @Inject constructor(
-    private val preferencesDataSource: PreferencesDataSource,
+    private val newsRepository: NewsRepository,
     private val dispatcher: CoroutineDispatcher = Dispatchers.Main
 ) : BaseNewsViewModel(), WelcomeViewModel {
 
-    private val _onBoardingState = MutableStateFlow(OnBoardingState())
-    val onBoardingState = _onBoardingState.asStateFlow()
+    private val launchScreen: Flow<String> =
+        newsRepository.
+
+    private val onBoardingState = MutableStateFlow(OnBoardingState())
+    val onBoardingUiState = onBoardingState.asStateFlow()
 
     private val _favoriteCategoriesState = MutableStateFlow(FavoriteCategoriesState())
     val favoriteCategoriesState = _favoriteCategoriesState.asStateFlow()
 
-    override fun setLaunchScreen(screen: String) {
+    override fun setLaunchScreen(screen: UiCategory) {
         viewModelScope.launch(dispatcher) {
-            preferencesDataSource.setLaunchScreen(screen = screen)
+            newsRepository.setLaunchScreen(screen = screen)
         }
     }
 
     override fun checkNextPageIsLast(nextPage: UiOnBoardingPage) {
-        val isLastPage = _onBoardingState.value.pages.last() == nextPage
-        _onBoardingState.update { state -> state.copy(isLastPage = isLastPage) }
+        val isLastPage = onBoardingState.value.pages.last() == nextPage
+        onBoardingState.update { state -> state.copy(isLastPage = isLastPage) }
     }
 
     override fun loadCategoryState(type: CategoryType) {
-        preferencesDataSource
+        newsRepository
     }
 
     override fun switchIsTopicFavorite(changedCategory: UiCategory) {
@@ -59,7 +64,7 @@ class MainWelcomeViewModel @Inject constructor(
 
     override fun setFavoriteTopics(categories: List<UiCategory>, type: CategoryType) {
         viewModelScope.launch(dispatcher) {
-            preferencesDataSource.setFavoriteCategories(categories = categories, type = type)
+            newsRepository.setFavoriteCategories(categories = categories, type = type)
         }
     }
 }
