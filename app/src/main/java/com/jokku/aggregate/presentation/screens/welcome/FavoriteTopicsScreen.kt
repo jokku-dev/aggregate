@@ -28,7 +28,7 @@ fun SelectFavoriteTopicsScreen(
     navController: NavHostController,
     viewModel: MainWelcomeViewModel = hiltViewModel()
 ) {
-    val state by viewModel.favoriteCategoriesState.collectAsStateWithLifecycle()
+    val state by viewModel.favoriteCategoriesUiState.collectAsStateWithLifecycle()
 
     SelectFavoriteTopicsScreenContent(
         categories = state.categories,

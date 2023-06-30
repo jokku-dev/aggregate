@@ -6,6 +6,7 @@ import com.jokku.aggregate.data.local.preferences.PreferencesDataSource
 import com.jokku.aggregate.data.local.preferences.model.DarkThemeConfig
 import com.jokku.aggregate.data.local.preferences.model.UserData
 import com.jokku.aggregate.presentation.model.UiArticle
+import com.jokku.aggregate.presentation.screens.welcome.LocalDataProvider
 import kotlinx.coroutines.flow.Flow
 import javax.inject.Inject
 

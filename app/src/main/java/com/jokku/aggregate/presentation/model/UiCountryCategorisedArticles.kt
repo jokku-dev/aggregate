@@ -1,6 +1,6 @@
 package com.jokku.aggregate.presentation.model
 
-data class CountryCategorisedArticles(
+data class UiCountryCategorisedArticles(
     val country: UiText,
     val articles: List<UiSubcategoryArticles>
 )

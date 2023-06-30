@@ -7,7 +7,7 @@ import com.jokku.aggregate.data.repo.PreferencesRepository
 import com.jokku.aggregate.domain.TopHeadlinesRequest
 import com.jokku.aggregate.presentation.screens.BaseNewsViewModel
 import com.jokku.aggregate.presentation.model.UiCategory
-import com.jokku.aggregate.presentation.model.CountryCategorisedArticles
+import com.jokku.aggregate.presentation.model.UiCountryCategorisedArticles
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Dispatchers
@@ -29,7 +29,7 @@ interface FavoritesViewModel {
     fun getArticlesOfFavoriteCategory(
         countries: List<UiCategory>,
         categories: List<UiCategory>
-    ): Flow<List<CountryCategorisedArticles>>
+    ): Flow<List<UiCountryCategorisedArticles>>
 }
 
 @HiltViewModel
@@ -65,7 +65,7 @@ class DefaultFavoritesViewModel @Inject constructor(
     override fun getArticlesOfFavoriteCategory(
         countries: List<UiCategory>,
         categories: List<UiCategory>
-    ): Flow<List<CountryCategorisedArticles>> {
+    ): Flow<List<UiCountryCategorisedArticles>> {
         viewModelScope.launch(dispatcher) {
             countries.forEach { country ->
                 categories.forEach { category ->
@@ -86,10 +86,10 @@ sealed interface FavoritesUiState {
     object Loading : FavoritesUiState
 
     data class Success(
-        val categorisedArticles: List<CountryCategorisedArticles>
+        val categorisedArticles: List<UiCountryCategorisedArticles>
     ) : FavoritesUiState
 }
 
-private fun Flow<List<CountryCategorisedArticles>>.mapToFavoritesState(): Flow<FavoritesUiState> =
-    map<List<CountryCategorisedArticles>, FavoritesUiState>(FavoritesUiState::Success)
+private fun Flow<List<UiCountryCategorisedArticles>>.mapToFavoritesState(): Flow<FavoritesUiState> =
+    map<List<UiCountryCategorisedArticles>, FavoritesUiState>(FavoritesUiState::Success)
         .onStart { emit(FavoritesUiState.Loading) }

@@ -50,13 +50,11 @@ fun OnBoardingScreen(
 
     OnBoardingScreenContent(
         pages = state.pages,
-        isLastPage = state.isLastPage,
         pagerState = pagerState,
         onButtonClick = {
             // scrollToPage is suspend and therefore requires scope
             scope.launch {
-                if (!state.isLastPage) {
-                    viewModel.checkNextPageIsLast(state.pages[pagerState.currentPage + 1])
+                if (pagerState.currentPage < state.pages.size) {
                     pagerState.scrollToPage(pagerState.currentPage + 1)
                 } else {
                     viewModel.setLaunchScreen(Screen.SelectFavoriteTopics.route)
@@ -66,16 +64,12 @@ fun OnBoardingScreen(
             }
         }
     )
-    LaunchedEffect(key1 = pagerState.isScrollInProgress) {
-        viewModel.checkNextPageIsLast(state.pages[pagerState.currentPage])
-    }
 }
 
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun OnBoardingScreenContent(
     pages: List<UiOnBoardingPage>,
-    isLastPage: Boolean,
     pagerState: PagerState,
     onButtonClick: () -> Unit
 ) {
@@ -112,7 +106,7 @@ fun OnBoardingScreenContent(
                 modifier = Modifier
                     .padding(bottom = 16.dp)
                     .padding(horizontal = 16.dp),
-                text = if (!isLastPage) stringResource(id = R.string.next)
+                text = if (pagerState.currentPage < pages.size) stringResource(id = R.string.next)
                 else stringResource(id = R.string.get_started),
                 onClick = onButtonClick
             )
@@ -182,7 +176,6 @@ fun OnBoardingScreenPreview() {
                     R.string.on_board_third_description
                 )
             ),
-            isLastPage = false,
             pagerState = rememberPagerState(),
             onButtonClick = {}
         )
