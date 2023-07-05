@@ -7,7 +7,6 @@ data class LocalArticleSource(
     val id: String,
     val name: String
 ) : DataModelMapper<ArticleSource> {
-
     override fun map() = ArticleSource(
         id = id,
         name = name

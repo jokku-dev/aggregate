@@ -61,7 +61,7 @@ class MainTopHeadlinesViewModel @Inject constructor(
     override fun refreshArticles() {
         topHeadlinesViewModelState.update { it.copy(isLoading = true) }
         viewModelScope.launch {
-            val result = newsRepository.getTopHeadlines()
+            val result = newsRepository.getFavoriteTopHeadlines()
             topHeadlinesViewModelState.update {
                 when (result) {
                     is com.jokku.aggregate.domain.ResultState.Result.Success -> {

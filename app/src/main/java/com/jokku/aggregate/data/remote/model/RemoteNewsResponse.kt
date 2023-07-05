@@ -2,7 +2,6 @@ package com.jokku.aggregate.data.remote.model
 import com.jokku.aggregate.data.local.database.entity.LocalNewsResponse
 import com.jokku.aggregate.data.mapper.DataModelMapper
 import com.jokku.aggregate.data.mapper.mapList
-import com.jokku.aggregate.data.repo.model.NewsResponse
 import kotlinx.serialization.Serializable
 
 import kotlinx.serialization.SerialName

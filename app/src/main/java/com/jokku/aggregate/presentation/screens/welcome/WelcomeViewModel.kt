@@ -73,7 +73,7 @@ class MainWelcomeViewModel @Inject constructor(
     ) { userData, categories ->
         FavoriteCategoriesState(
             categories = categories.map { category ->
-                if (userData.categoryCodes.any { code -> category.code.equals(code.value) })
+                if (userData.categoryCodes.any { code -> category.code == code })
                     category.copy(selected = true)
                 else
                     category.copy(selected = false)

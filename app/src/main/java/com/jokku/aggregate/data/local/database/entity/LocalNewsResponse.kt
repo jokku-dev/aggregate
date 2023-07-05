@@ -3,13 +3,10 @@ package com.jokku.aggregate.data.local.database.entity
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 import androidx.room.Relation
-import androidx.room.TypeConverters
 import com.jokku.aggregate.data.local.database.DatabaseConstants.NEWS_RESPONSES
-import com.jokku.aggregate.data.local.database.ListConverter
 import com.jokku.aggregate.data.mapper.DataModelMapper
 import com.jokku.aggregate.data.mapper.mapList
 import com.jokku.aggregate.data.repo.model.NewsResponse
-import com.jokku.aggregate.data.repo.model.NewsResponse.OkNewsResponse
 
 @Entity(tableName = NEWS_RESPONSES)
 data class LocalNewsResponse(
@@ -21,11 +18,23 @@ data class LocalNewsResponse(
     )
     val articles: List<LocalArticle>,
     val totalResults: Int,
-    val category: String = ""
+    val currentTime: Long,
+    val isFavorite: Boolean,
+    val countryId: String = "",
+    val categoryId: String = "",
+    val sourceId: String = "",
+    val query: String = ""
 ) : DataModelMapper<NewsResponse> {
 
-    override fun map() = OkNewsResponse(
+    override fun map() = NewsResponse(
+        id = id,
         articles = articles.mapList(),
-        totalResults = totalResults
+        totalResults = totalResults,
+        currentTime = currentTime,
+        isFavorite = isFavorite,
+        countryId = countryId,
+        categoryId = categoryId,
+        sourceId = sourceId,
+        query = query
     )
 }

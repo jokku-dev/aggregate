@@ -53,7 +53,7 @@ fun FavoritesScreen(
     val state by viewModel.favoritesUiState.collectAsStateWithLifecycle()
 
     FavoritesScreenContent(
-        categorisedArticles = (state as? FavoritesUiState.HasArticles)?.categorisedArticles ?: emptyList()
+        categorisedArticles = (state as? FavoritesState.HasArticles)?.categorisedArticles ?: emptyList()
     )
 }
 

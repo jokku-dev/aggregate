@@ -1,8 +1,10 @@
 package com.jokku.aggregate.data.repo
 
 import com.jokku.aggregate.R
+import com.jokku.aggregate.data.CategoryCode
+import com.jokku.aggregate.data.CountryCode
 import com.jokku.aggregate.data.local.database.NewsDao
-import com.jokku.aggregate.data.local.preferences.model.UserData
+import com.jokku.aggregate.data.local.database.entity.LocalNewsResponse
 import com.jokku.aggregate.data.remote.RemoteDataSource
 import com.jokku.aggregate.data.remote.model.RemoteNewsResponse
 import com.jokku.aggregate.data.repo.model.NewsResponse
@@ -15,10 +17,12 @@ import kotlinx.coroutines.flow.Flow
 import javax.inject.Inject
 
 interface NewsRepository {
+    fun getTopHeadlines(): Flow<List<LocalNewsResponse>>
+    fun getFavoriteTopHeadlines(
+        countries: Set<CountryCode>,
+        categories: Set<CategoryCode>
+    ): Flow<List<LocalNewsResponse>>
 
-    val userData: Flow<UserData>
-
-    suspend fun getTopHeadlines(request: TopHeadlinesRequest): Result<NewsResponse>
     fun observeRandomArticles(): Flow<Set<String>>
 }
 
@@ -29,15 +33,19 @@ class DefaultNewsRepository @Inject constructor(
 
     private var latestNews: List<NewsResponse> = emptyList()
 
-    override suspend fun getTopHeadlines(
-        request: TopHeadlinesRequest
-    ): Result<NewsResponse> {
+    override fun getTopHeadlines(): Flow<List<LocalNewsResponse>> {
+        local.observeTopHeadlines()
+    }
+
+    override fun getFavoriteTopHeadlines(
+        countries: Set<CountryCode>,
+        categories: Set<CategoryCode>
+    ): Flow<List<LocalNewsResponse>> {
         return try {
             val response = remote.getTopHeadlineArticles(request)
             if (response.isSuccess) {
                 Result.Success(actualData = response)
-            }
-            else { // We have error type of response here, it means that the database can't have this data either
+            } else { // We have error type of response here, it means that the database can't have this data either
                 Result.Failure(
                     message = UiErrorMessage(
                         text = if (response.errorMessage != null) {

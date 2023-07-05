@@ -16,9 +16,17 @@ enum class CategoryType {
 interface LocalDataProvider {
     fun provideNewsCategoriesPreferences(type: CategoryType): List<UiCategory>
     fun provideOnBoardingPages(): List<UiOnBoardingPage>
+    fun provideCategoryNameByCode(type: CategoryType, code: UrlParameter): UiText
 }
 
 class LocalDataProviderFactory : LocalDataProvider {
+
+    override fun provideCategoryNameByCode(type: CategoryType, code: UrlParameter): UiText {
+        return provideNewsCategoriesPreferences(type)
+            .find { uiCategory ->
+                uiCategory.code == code
+            }?.name ?: UiText.StringResource(R.string.unknown_category)
+    }
 
     override fun provideNewsCategoriesPreferences(type: CategoryType): List<UiCategory> {
         return when (type) {

@@ -25,6 +25,7 @@ data class LocalArticle(
 ) : DataModelMapper<Article> {
 
     override fun map() = Article(
+        id = id,
         author = author,
         content = content,
         description = description,

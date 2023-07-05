@@ -7,7 +7,6 @@ import com.jokku.aggregate.data.CountryCode
 import com.jokku.aggregate.data.local.preferences.model.DarkThemeConfig
 import com.jokku.aggregate.data.local.preferences.model.UserData
 import com.jokku.aggregate.presentation.model.UiArticle
-import com.jokku.aggregate.presentation.screens.welcome.LocalDataProvider
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.catch
 import java.io.IOException
@@ -27,7 +26,7 @@ interface PreferencesDataSource {
     suspend fun togglePreferredCountries(countryCode: CountryCode, preferred: Boolean)
     suspend fun setPreferredCategories(categories: Set<CategoryCode>)
     suspend fun togglePreferredCategories(categoryCode: CategoryCode, preferred: Boolean)
-    suspend fun updateBookmarkedArticles(article: UiArticle, bookmarked: Boolean)
+    suspend fun updateBookmarkedArticles(articleId: String, bookmarked: Boolean)
     suspend fun setDarkThemeConfig(darkThemeConfig: DarkThemeConfig)
     suspend fun setLaunchScreen(screen: String)
     suspend fun setUserLoggedIn(loggedIn: Boolean)
@@ -40,7 +39,7 @@ class NewsPreferencesDataSource @Inject constructor(
 
     override val userData = preferences.data.catch { exception ->
         if (exception is IOException)
-        Log.e(USER_PREFERENCES, FAILED_TO_READ_USER_PREFERENCES, exception)
+            Log.e(USER_PREFERENCES, FAILED_TO_READ_USER_PREFERENCES, exception)
     }
 
     override suspend fun setPreferredCountries(countryCodes: Set<CountryCode>) {
@@ -87,13 +86,13 @@ class NewsPreferencesDataSource @Inject constructor(
         }
     }
 
-    override suspend fun updateBookmarkedArticles(article: UiArticle, bookmarked: Boolean) {
+    override suspend fun updateBookmarkedArticles(articleId: String, bookmarked: Boolean) {
         try {
             preferences.updateData { data ->
                 data.copy(
-                    bookmarkedArticles =
-                    if (bookmarked) data.bookmarkedArticles.plusElement(article)
-                    else data.bookmarkedArticles.minusElement(article)
+                    bookmarkedArticleIds =
+                    if (bookmarked) data.bookmarkedArticleIds.plusElement(articleId)
+                    else data.bookmarkedArticleIds.minusElement(articleId)
                 )
             }
         } catch (exception: Exception) {

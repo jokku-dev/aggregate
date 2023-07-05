@@ -187,4 +187,6 @@
 
     <string name="data_fetch_error">Data fetch error</string>
     <string name="unknown_error">Unknown error</string>
+
+    <string name="unknown_category">Unknown category</string>
 </resources>

@@ -9,8 +9,12 @@ import kotlinx.coroutines.flow.Flow
 @Dao
 interface NewsDao {
 
-    @Query("SELECT * FROM news_response WHERE category = :category LIMIT 1")
-    fun observeNewsResponse(category: String): Flow<LocalNewsResponse>
+    @Query(value = """SELECT * FROM news_response
+            WHERE category = :category LIMIT 1""")
+    fun observeTopHeadlines(country: String, category: String, query: String = ""): Flow<LocalNewsResponse>
+
+    @Query(value = """""")
+    fun observeTopHeadlines(source: String, query: String = ""): Flow<LocalNewsResponse>
 
     @Upsert
     suspend fun upsertNewsResponse(newsResponse: LocalNewsResponse)
