@@ -4,24 +4,22 @@ import com.jokku.aggregate.R
 import com.jokku.aggregate.data.CategoryCode
 import com.jokku.aggregate.data.CountryCode
 import com.jokku.aggregate.data.local.database.NewsDao
-import com.jokku.aggregate.data.local.database.entity.LocalNewsResponse
 import com.jokku.aggregate.data.remote.RemoteDataSource
 import com.jokku.aggregate.data.remote.model.RemoteNewsResponse
 import com.jokku.aggregate.data.repo.model.NewsResponse
 import com.jokku.aggregate.presentation.model.UiErrorMessage
 import com.jokku.aggregate.domain.Result
-import com.jokku.aggregate.domain.TopHeadlinesRequest
 import com.jokku.aggregate.presentation.model.UiText
 import io.ktor.client.plugins.ResponseException
 import kotlinx.coroutines.flow.Flow
 import javax.inject.Inject
 
 interface NewsRepository {
-    fun getTopHeadlines(): Flow<List<LocalNewsResponse>>
+    fun getLocalTopHeadlines(country: CountryCode): Flow<NewsResponse>
     fun getFavoriteTopHeadlines(
         countries: Set<CountryCode>,
         categories: Set<CategoryCode>
-    ): Flow<List<LocalNewsResponse>>
+    ): Flow<List<NewsResponse>>
 
     fun observeRandomArticles(): Flow<Set<String>>
 }
@@ -31,16 +29,14 @@ class DefaultNewsRepository @Inject constructor(
     private val local: NewsDao
 ) : NewsRepository {
 
-    private var latestNews: List<NewsResponse> = emptyList()
-
-    override fun getTopHeadlines(): Flow<List<LocalNewsResponse>> {
+    override fun getLocalTopHeadlines(country: CountryCode): Flow<NewsResponse> {
         local.observeTopHeadlines()
     }
 
     override fun getFavoriteTopHeadlines(
         countries: Set<CountryCode>,
         categories: Set<CategoryCode>
-    ): Flow<List<LocalNewsResponse>> {
+    ): Flow<List<NewsResponse>> {
         return try {
             val response = remote.getTopHeadlineArticles(request)
             if (response.isSuccess) {

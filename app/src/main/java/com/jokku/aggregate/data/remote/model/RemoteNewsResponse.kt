@@ -1,5 +1,5 @@
 package com.jokku.aggregate.data.remote.model
-import com.jokku.aggregate.data.local.database.entity.LocalNewsResponse
+import com.jokku.aggregate.data.local.database.entity.LocalFavoriteTopHeadlinesResponse
 import com.jokku.aggregate.data.mapper.DataModelMapper
 import com.jokku.aggregate.data.mapper.mapList
 import kotlinx.serialization.Serializable
@@ -35,9 +35,9 @@ data class RemoteNewsResponse(
      */
     @SerialName("message")
     val errorMessage: String
-) : DataModelMapper<LocalNewsResponse> {
+) : DataModelMapper<LocalFavoriteTopHeadlinesResponse> {
 
-    override fun map() = LocalNewsResponse(
+    override fun map() = LocalFavoriteTopHeadlinesResponse(
         articles = articles.mapList(),
         totalResults = totalResults
     )

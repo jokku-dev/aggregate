@@ -5,7 +5,6 @@ import kotlinx.serialization.Serializable
 import kotlin.String
 
 data class UiArticle(
-    val id: Int = 0,
     val author: String = "",
     val content: String = "",
     val description: String = "",

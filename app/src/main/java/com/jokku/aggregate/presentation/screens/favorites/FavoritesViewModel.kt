@@ -3,7 +3,8 @@ package com.jokku.aggregate.presentation.screens.favorites
 import androidx.lifecycle.viewModelScope
 import com.jokku.aggregate.data.CategoryCode
 import com.jokku.aggregate.data.CountryCode
-import com.jokku.aggregate.data.local.database.entity.LocalNewsResponse
+import com.jokku.aggregate.data.local.preferences.model.TopCategoryType
+import com.jokku.aggregate.data.mapper.mapList
 import com.jokku.aggregate.data.repo.NewsRepository
 import com.jokku.aggregate.data.repo.PreferencesRepository
 import com.jokku.aggregate.data.repo.model.NewsResponse
@@ -19,6 +20,7 @@ import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.filterNot
+import kotlinx.coroutines.flow.filterNotNull
 import kotlinx.coroutines.flow.flatMapLatest
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.onStart
@@ -29,9 +31,10 @@ interface FavoritesViewModel {
     val favoritesUiState: StateFlow<FavoritesState>
 
     fun getFavoriteCategoryArticles(
-        countries: Set<CountryCode> = emptySet(),
-        categories: Set<CategoryCode> = emptySet()
-    ): Flow<List<UiCategorisedArticles>>
+        countries: Set<CountryCode>,
+        categories: Set<CategoryCode>,
+        topCategoryType: TopCategoryType
+    ): Flow<UiCategorisedArticles>
 }
 
 @HiltViewModel
@@ -51,7 +54,8 @@ class DefaultFavoritesViewModel @Inject constructor(
         .map { userData ->
             getFavoriteCategoryArticles(
                 userData.countryCodes,
-                userData.categoryCodes
+                userData.categoryCodes,
+                userData.topCategoryType
             ).mapToFavoritesState()
         }
         .flatMapLatest { it }
@@ -63,38 +67,53 @@ class DefaultFavoritesViewModel @Inject constructor(
 
     override fun getFavoriteCategoryArticles(
         countries: Set<CountryCode>,
-        categories: Set<CategoryCode>
-    ): Flow<List<UiCategorisedArticles>> =
+        categories: Set<CategoryCode>,
+        topCategoryType: TopCategoryType
+    ): Flow<UiCategorisedArticles> =
         if (countries.isEmpty() && categories.isEmpty()) {
-            newsRepository.getTopHeadlines()
+            // Need to add location or at least system language request
+            newsRepository.getLocalTopHeadlines(country = CountryCode.RU)
+                .mapToUiCategorisedArticles(bookmarkedArticles, localDataProvider)
         } else {
-            newsRepository.getFavoriteTopHeadlines(countries, categories)
-        }.mapToUiCategorisedArticles(bookmarkedArticles, localDataProvider, countries, categories)
+            newsRepository.getFavoriteTopHeadlines(countries = countries, categories = categories)
+                .mapToUiCategorisedArticles(bookmarkedArticles, localDataProvider, topCategoryType)
+        }
 }
 
 sealed interface FavoritesState {
     object Loading : FavoritesState
-    data class Success(val categorisedArticles: List<UiCategorisedArticles>) : FavoritesState
+    data class Success(val categorisedArticles: UiCategorisedArticles) : FavoritesState
 }
 
-private fun Flow<List<LocalNewsResponse>>.mapToUiCategorisedArticles(
+private fun Flow<List<NewsResponse>>.mapToUiCategorisedArticles(
     bookmarkedArticleIds: Flow<Set<String>>,
     localDataProvider: LocalDataProvider,
-    countries: Set<CountryCode>,
-    categories: Set<CategoryCode>
-): Flow<List<UiCategorisedArticles>> {
+    topCategoryType: TopCategoryType
+): Flow<UiCategorisedArticles> {
     val categorisedArticles = mutableListOf<UiCategorisedArticles>()
+
     filterNot { it.isEmpty() }
         .combine(bookmarkedArticleIds) { newsResponses, bookmarkedArticles ->
-            countries.forEach { code ->
+            countries.forEach { countryCode ->
                 val byCountryResponses = newsResponses.filter { response ->
-                    response.countryId == code.value
+                    response.countryId == countryCode.value
                 }
 
             }
         }
 }
 
-private fun Flow<List<UiCategorisedArticles>>.mapToFavoritesState(): Flow<FavoritesState> =
-    map<List<UiCategorisedArticles>, FavoritesState>(FavoritesState::Success)
+private fun Flow<NewsResponse>.mapToUiCategorisedArticles(
+    bookmarkedArticleIds: Flow<Set<String>>,
+    localDataProvider: LocalDataProvider
+): Flow<UiCategorisedArticles> {
+    return filterNotNull().map { response ->
+        UiCategorisedArticles(
+            localTopHeadlines = response.articles.mapList()
+        )
+    }
+}
+
+private fun Flow<UiCategorisedArticles>.mapToFavoritesState(): Flow<FavoritesState> =
+    map<UiCategorisedArticles, FavoritesState>(FavoritesState::Success)
         .onStart { emit(FavoritesState.Loading) }

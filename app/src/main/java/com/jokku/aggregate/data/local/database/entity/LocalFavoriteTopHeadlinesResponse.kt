@@ -1,5 +1,6 @@
 package com.jokku.aggregate.data.local.database.entity
 
+import androidx.room.Embedded
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 import androidx.room.Relation
@@ -9,14 +10,15 @@ import com.jokku.aggregate.data.mapper.mapList
 import com.jokku.aggregate.data.repo.model.NewsResponse
 
 @Entity(tableName = NEWS_RESPONSES)
-data class LocalNewsResponse(
-    @PrimaryKey(autoGenerate = true)
+data class LocalFavoriteTopHeadlinesResponse(
+    @PrimaryKey
+    @Embedded
     val id: Int = 0,
     @Relation(
         parentColumn = "id",
         entityColumn = "article_id"
     )
-    val articles: List<LocalArticle>,
+    val articles: List<LocalTopHeadlinesArticle>,
     val totalResults: Int,
     val currentTime: Long,
     val isFavorite: Boolean,
