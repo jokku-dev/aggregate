@@ -3,7 +3,7 @@ package com.jokku.aggregate.data.repo
 import com.jokku.aggregate.R
 import com.jokku.aggregate.data.CategoryCode
 import com.jokku.aggregate.data.CountryCode
-import com.jokku.aggregate.data.local.database.NewsDao
+import com.jokku.aggregate.data.local.database.FavoriteNewsResponseDao
 import com.jokku.aggregate.data.remote.RemoteDataSource
 import com.jokku.aggregate.data.remote.model.RemoteNewsResponse
 import com.jokku.aggregate.data.repo.model.NewsResponse
@@ -26,11 +26,11 @@ interface NewsRepository {
 
 class DefaultNewsRepository @Inject constructor(
     private val remote: RemoteDataSource,
-    private val local: NewsDao
+    private val local: FavoriteNewsResponseDao
 ) : NewsRepository {
 
     override fun getLocalTopHeadlines(country: CountryCode): Flow<NewsResponse> {
-        local.observeTopHeadlines()
+        local.observeFavoriteTopHeadlines()
     }
 
     override fun getFavoriteTopHeadlines(

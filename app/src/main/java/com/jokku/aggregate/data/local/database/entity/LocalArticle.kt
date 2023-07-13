@@ -3,13 +3,14 @@ package com.jokku.aggregate.data.local.database.entity
 import androidx.room.Embedded
 import androidx.room.Entity
 import androidx.room.PrimaryKey
-import com.jokku.aggregate.data.local.database.DatabaseConstants.FAVORITE_TOP_HEADLINE_ARTICLES
+import com.jokku.aggregate.data.local.database.DatabaseConstants.ARTICLES
 import com.jokku.aggregate.data.local.database.DatabaseConstants.ARTICLE_SOURCE_
 import com.jokku.aggregate.data.mapper.DataModelMapper
 import com.jokku.aggregate.data.repo.model.Article
 
-@Entity(tableName = FAVORITE_TOP_HEADLINE_ARTICLES)
-data class LocalTopHeadlinesArticle(
+@Entity(tableName = ARTICLES)
+data class LocalArticle(
+    val articlesResponseId: Long,
     val author: String,
     val content: String,
     val description: String,
