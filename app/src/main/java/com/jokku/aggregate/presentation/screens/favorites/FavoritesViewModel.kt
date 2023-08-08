@@ -7,7 +7,8 @@ import com.jokku.aggregate.data.local.preferences.model.TopCategoryType
 import com.jokku.aggregate.data.mapper.mapList
 import com.jokku.aggregate.data.repo.NewsRepository
 import com.jokku.aggregate.data.repo.PreferencesRepository
-import com.jokku.aggregate.data.repo.model.NewsResponse
+import com.jokku.aggregate.data.repo.model.ArticlesResponse
+import com.jokku.aggregate.data.sync.SyncStatusMonitor
 import com.jokku.aggregate.presentation.model.UiCategorisedArticles
 import com.jokku.aggregate.presentation.screens.BaseNewsViewModel
 import com.jokku.aggregate.presentation.screens.welcome.LocalDataProvider
@@ -37,8 +38,10 @@ interface FavoritesViewModel {
     ): Flow<UiCategorisedArticles>
 }
 
+// Exceptions from offline first repo is rare but still shall be caught by .catch or .retry
 @HiltViewModel
 class DefaultFavoritesViewModel @Inject constructor(
+    syncStatusMonitor: SyncStatusMonitor,
     private val newsRepository: NewsRepository,
     private val preferencesRepository: PreferencesRepository,
     private val localDataProvider: LocalDataProvider,
@@ -48,6 +51,13 @@ class DefaultFavoritesViewModel @Inject constructor(
     private val bookmarkedArticles = preferencesRepository.userData.map { data ->
         data.bookmarkedArticleIds
     }
+
+    val isSyncing = syncStatusMonitor.isSyncing
+        .stateIn(
+            scope = viewModelScope,
+            started = SharingStarted.WhileSubscribed(5_000),
+            initialValue = false
+        )
 
     @OptIn(ExperimentalCoroutinesApi::class)
     override val favoritesUiState: StateFlow<FavoritesState> = preferencesRepository.userData
@@ -81,11 +91,11 @@ class DefaultFavoritesViewModel @Inject constructor(
 }
 
 sealed interface FavoritesState {
-    object Loading : FavoritesState
+    data object Loading : FavoritesState
     data class Success(val categorisedArticles: UiCategorisedArticles) : FavoritesState
 }
 
-private fun Flow<List<NewsResponse>>.mapToUiCategorisedArticles(
+private fun Flow<List<ArticlesResponse>>.mapToUiCategorisedArticles(
     bookmarkedArticleIds: Flow<Set<String>>,
     localDataProvider: LocalDataProvider,
     topCategoryType: TopCategoryType
@@ -103,7 +113,7 @@ private fun Flow<List<NewsResponse>>.mapToUiCategorisedArticles(
         }
 }
 
-private fun Flow<NewsResponse>.mapToUiCategorisedArticles(
+private fun Flow<ArticlesResponse>.mapToUiCategorisedArticles(
     bookmarkedArticleIds: Flow<Set<String>>,
     localDataProvider: LocalDataProvider
 ): Flow<UiCategorisedArticles> {

@@ -2,7 +2,7 @@ package com.jokku.aggregate.di
 
 import android.content.Context
 import androidx.room.Room
-import com.jokku.aggregate.data.local.database.FavoriteNewsResponseDao
+import com.jokku.aggregate.data.local.database.NewsDao
 import com.jokku.aggregate.data.local.database.NewsDatabase
 import dagger.Module
 import dagger.Provides
@@ -16,7 +16,7 @@ import javax.inject.Singleton
 object DatabaseModule {
 
     @Provides
-    fun provideNewsDao(database: NewsDatabase): FavoriteNewsResponseDao = database.newsDao()
+    fun provideNewsDao(database: NewsDatabase): NewsDao = database.newsDao()
 
     @Singleton
     @Provides

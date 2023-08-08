@@ -1,14 +1,13 @@
 package com.jokku.aggregate.data.remote.model
 
 
-import com.jokku.aggregate.data.local.database.entity.LocalSource
-import com.jokku.aggregate.data.mapper.DataModelMapper
-import com.jokku.aggregate.data.repo.model.Source
+import com.jokku.aggregate.data.local.database.entity.SourceEntity
+import com.jokku.aggregate.data.mapper.FromRemoteMapper
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
 @Serializable
-data class RemoteSource(
+data class NetworkSource(
     /**
      * The type of news to expect from this news source.
      */
@@ -44,13 +43,11 @@ data class RemoteSource(
      */
     @SerialName("url")
     val url: String
-) : DataModelMapper<LocalSource> {
-
-    override fun map() = LocalSource(
+) : FromRemoteMapper<SourceEntity> {
+    override fun asEntity() = SourceEntity(
         category = category,
         country = country,
         description = description,
-        id = id,
         language = language,
         name = name,
         url = url

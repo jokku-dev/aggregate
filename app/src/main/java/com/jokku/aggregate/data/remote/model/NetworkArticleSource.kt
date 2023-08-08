@@ -1,13 +1,12 @@
 package com.jokku.aggregate.data.remote.model
 
-import com.jokku.aggregate.data.local.database.entity.LocalArticleSource
-import com.jokku.aggregate.data.mapper.DataModelMapper
-import com.jokku.aggregate.data.repo.model.ArticleSource
+import com.jokku.aggregate.data.local.database.entity.ArticleEntitySource
+import com.jokku.aggregate.data.mapper.FromRemoteMapper
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
 @Serializable
-data class RemoteArticleSource(
+data class NetworkArticleSource(
     /**
      * Source identifier
      */
@@ -18,9 +17,8 @@ data class RemoteArticleSource(
      */
     @SerialName("name")
     val name: String
-) : DataModelMapper<LocalArticleSource> {
-
-    override fun map() = LocalArticleSource(
+) : FromRemoteMapper<ArticleEntitySource> {
+    override fun asEntity() = ArticleEntitySource(
         id = id,
         name = name
     )

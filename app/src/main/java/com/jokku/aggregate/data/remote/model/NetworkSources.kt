@@ -1,15 +1,16 @@
 package com.jokku.aggregate.data.remote.model
 
-import com.jokku.aggregate.data.ResponseStatus
-import com.jokku.aggregate.data.local.database.entity.LocalSourcesResponse
-import com.jokku.aggregate.data.mapper.DataModelMapper
+import com.jokku.aggregate.data.local.database.entity.SourcesResponseEntity
+import com.jokku.aggregate.data.local.database.entity.intermediate.ResponseWithSources
+import com.jokku.aggregate.data.mapper.FromRemoteMapper
 import com.jokku.aggregate.data.mapper.mapList
-import com.jokku.aggregate.data.repo.model.SourcesResponse
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
+import java.time.LocalDateTime
+import java.time.ZoneOffset
 
 @Serializable
-data class RemoteSourcesResponse(
+data class NetworkSources(
     /**
      * Populated in the case of error status
      */
@@ -24,16 +25,18 @@ data class RemoteSourcesResponse(
      * The results of the request.
      */
     @SerialName("sources")
-    val sources: List<RemoteSource>,
+    val sources: List<NetworkSource>,
     /**
      * If the request was successful or not. Options: ok, error. In the case of error a code and
      * message property will be populated.
      */
     @SerialName("status")
     val status: String
-) : DataModelMapper<LocalSourcesResponse> {
-
-    override fun map() = LocalSourcesResponse(
+) : FromRemoteMapper<ResponseWithSources> {
+    override fun asEntity() = ResponseWithSources(
+        response = SourcesResponseEntity(
+            date = LocalDateTime.now().toEpochSecond(ZoneOffset.UTC)
+        ),
         sources = sources.mapList()
     )
 }

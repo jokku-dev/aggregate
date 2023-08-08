@@ -1,7 +1,8 @@
 package com.jokku.aggregate.data.repo.model
 
-import com.jokku.aggregate.data.mapper.DataModelMapper
+import com.jokku.aggregate.data.mapper.ModelMapper
 import com.jokku.aggregate.presentation.model.UiArticle
+import com.jokku.aggregate.presentation.model.UiArticleSource
 
 data class Article(
     val author: String,
@@ -12,15 +13,25 @@ data class Article(
     val title: String,
     val url: String,
     val urlToImage: String
-): DataModelMapper<UiArticle> {
-    override fun map() = UiArticle(
+): ModelMapper<UiArticle> {
+    override fun asEntity() = UiArticle(
         author = author,
         content = content,
         description = description,
         publishedAt = publishedAt,
-        source = source.map(),
+        source = source.asEntity(),
         title = title,
         url = url,
         urlToImage = urlToImage
+    )
+}
+
+data class ArticleSource(
+    val id: String,
+    val name: String
+) : ModelMapper<UiArticleSource> {
+    override fun asEntity() = UiArticleSource(
+        id = id,
+        name = name
     )
 }

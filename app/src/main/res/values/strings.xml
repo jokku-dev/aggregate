@@ -189,4 +189,8 @@
     <string name="unknown_error">Unknown error</string>
 
     <string name="unknown_category">Unknown category</string>
+
+    <!--Tray notification-->
+    <string name="sync_notification">Sync notification</string>
+    <string name="foreground_task_for_syncing_news">Foreground task for syncing news</string>
 </resources>
