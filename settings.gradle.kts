@@ -14,3 +14,4 @@ dependencyResolutionManagement {
 }
 rootProject.name = "Aggregate"
 include(":app")
+include(":newsapi")

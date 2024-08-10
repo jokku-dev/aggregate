@@ -54,6 +54,7 @@ data class ArticleEntity(
     )
 }
 
+@Entity
 data class ArticleEntitySource(
     val id: String,
     val name: String

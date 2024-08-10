@@ -1,15 +1,15 @@
-buildscript {
-    repositories {
-        google()
-        mavenCentral()
-    }
-}
-
 plugins {
-    id("com.android.application") version ("8.1.0") apply (false)
-    id("com.android.library") version ("8.1.0") apply (false)
-    id("com.google.dagger.hilt.android") version("2.47") apply(false)
-    id("com.google.devtools.ksp") version("1.9.0-1.0.12") apply(false)
-    kotlin("android") version("1.9.0") apply(false)
-    kotlin("plugin.serialization") version("1.9.0") apply(false)
+    alias(libs.plugins.androidApplication) apply false
+    alias(libs.plugins.jetbrainsKotlinAndroid) apply false
+    alias(libs.plugins.jetbrainsKotlinJvm) apply false
+    alias(libs.plugins.kotlinSerialization) apply false
+    alias(libs.plugins.androidLibrary) apply false
+    alias(libs.plugins.ksp) apply false
+    alias(libs.plugins.dagger.hilt.android) apply false
+    alias(libs.plugins.kapt) apply false
+    alias(libs.plugins.androidx.room) apply false
+    alias(libs.plugins.detekt) apply false
+    alias(libs.plugins.android.test) apply false
+    alias(libs.plugins.baselineprofile) apply false
+    alias(libs.plugins.compose.compiler) apply false
 }

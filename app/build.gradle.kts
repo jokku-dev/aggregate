@@ -1,23 +1,24 @@
 import java.util.Properties
 
 plugins {
-    id("com.android.application")
-    id("com.google.dagger.hilt.android")
-    id("com.google.devtools.ksp")
-    id("kotlin-parcelize")
-    kotlin("android")
-    kotlin("plugin.serialization")
-    kotlin("kapt")
+    alias(libs.plugins.androidApplication)
+    alias(libs.plugins.jetbrainsKotlinAndroid)
+    alias(libs.plugins.dagger.hilt.android)
+    alias(libs.plugins.kapt)
+    alias(libs.plugins.baselineprofile)
+    alias(libs.plugins.compose.compiler)
+    alias(libs.plugins.ksp)
+    alias(libs.plugins.androidx.room)
 }
 
 android {
     namespace = "com.jokku.aggregate"
-    compileSdk = 34
+    compileSdk = libs.versions.androidSdk.compile.get().toInt()
 
     defaultConfig {
         applicationId = "com.jokku.aggregate"
-        minSdk = 24
-        targetSdk = 34
+        minSdkVersion(libs.versions.androidSdk.min.get().toInt())
+        targetSdkVersion(libs.versions.androidSdk.target.get().toInt())
         versionCode = 1
         versionName = "1.0"
 
@@ -50,7 +51,7 @@ android {
         buildConfig = true
     }
     composeOptions {
-        kotlinCompilerExtensionVersion = "1.5.1"
+        kotlinCompilerExtensionVersion = "1.5.14"
     }
     packaging {
         resources {
@@ -59,9 +60,13 @@ android {
     }
 }
 
+room {
+    schemaDirectory("${rootProject.projectDir}/schemas")
+}
+
 dependencies {
     implementation("androidx.activity:activity-compose:1.7.2")
-    implementation("androidx.core:core-ktx:1.10.1")
+    implementation(libs.androidx.core.ktx)
     implementation("androidx.lifecycle:lifecycle-runtime-compose:2.6.1")
     implementation("androidx.lifecycle:lifecycle-viewmodel-compose:2.6.1")
     implementation("androidx.lifecycle:lifecycle-livedata-ktx:2.6.1")
@@ -95,9 +100,8 @@ dependencies {
     kapt("com.google.dagger:hilt-compiler:2.47")
     kapt("androidx.hilt:hilt-compiler:1.0.0")
     // Room
-    implementation("androidx.room:room-runtime:2.5.2")
-    implementation("androidx.room:room-ktx:2.5.2")
-    ksp("androidx.room:room-compiler:2.5.2")
+    ksp(libs.androidx.room.compiler)
+    implementation(libs.androidx.room.ktx)
     // Google Play Services
     implementation("com.google.android.gms:play-services-auth:20.6.0")
     // Coil
