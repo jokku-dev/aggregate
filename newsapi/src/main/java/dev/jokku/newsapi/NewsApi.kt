@@ -2,7 +2,7 @@ package dev.jokku.newsapi
 
 import androidx.annotation.IntRange
 import com.skydoves.retrofit.adapters.result.ResultCallAdapterFactory
-import dev.jokku.newsapi.model.Article
+import dev.jokku.newsapi.model.ArticleNetwork
 import dev.jokku.newsapi.model.Language
 import dev.jokku.newsapi.model.Response
 import dev.jokku.newsapi.model.SortBy
@@ -36,8 +36,8 @@ interface NewsApi {
         @Query("sortBy") sortBy: SortBy,
         @Query("pageSize") @IntRange(from = 0, to = 100) int: Int = 100,
         @Query("page") @IntRange(from = 1) page: Int = 1,
-        // Using Result adapter lets to avoid crashes, so no need in try catch blocks
-    ): Result<Response<Article>>
+        // Using Result adapter allows us to avoid crashes, so no need in try catch blocks
+    ): Result<Response<ArticleNetwork>>
 }
 
 // Constructor default impl only for public fun

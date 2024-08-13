@@ -10,7 +10,11 @@
           <set>
             <option value="$PROJECT_DIR$" />
             <option value="$PROJECT_DIR$/app" />
+            <option value="$PROJECT_DIR$/features" />
+            <option value="$PROJECT_DIR$/features/ui" />
             <option value="$PROJECT_DIR$/newsapi" />
+            <option value="$PROJECT_DIR$/newsdata" />
+            <option value="$PROJECT_DIR$/newsdb" />
           </set>
         </option>
         <option name="resolveExternalAnnotations" value="false" />
