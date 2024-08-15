@@ -5,20 +5,20 @@ import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
 import androidx.room.TypeConverters
-import dev.jokku.newsdb.dao.ArticleDao
+import dev.jokku.newsdb.dao.ArticlesDao
 import dev.jokku.newsdb.model.ArticleEntity
 import dev.jokku.newsdb.utils.Converters
 
 class NewsDatabase internal constructor(private val database: NewsRoomDatabase) {
 
-    val articleDao: ArticleDao
+    val articlesDao: ArticlesDao
         get() = database.articleDao()
 }
 
 @Database(entities = [ArticleEntity::class], version = 1)
 @TypeConverters(Converters::class)
 internal abstract class NewsRoomDatabase : RoomDatabase() {
-    abstract fun articleDao(): ArticleDao
+    abstract fun articleDao(): ArticlesDao
 }
 
 fun NewsDatabase(applicationContext: Context): NewsDatabase {

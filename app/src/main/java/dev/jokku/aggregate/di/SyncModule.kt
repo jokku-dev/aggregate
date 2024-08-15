@@ -1,0 +1,17 @@
+package dev.jokku.aggregate.di
+
+import dev.jokku.aggregate.data.sync.SyncStatusMonitor
+import dev.jokku.aggregate.data.sync.WorkManagerSyncStatusMonitor
+import dagger.Binds
+import dagger.Module
+import dagger.hilt.InstallIn
+import dagger.hilt.components.SingletonComponent
+
+@Module
+@InstallIn(SingletonComponent::class)
+interface SyncModule {
+    @Binds
+    fun bindsSyncStatusMonitor(
+        syncStatusMonitor: WorkManagerSyncStatusMonitor
+    ): SyncStatusMonitor
+}

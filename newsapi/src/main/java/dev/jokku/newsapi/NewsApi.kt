@@ -2,9 +2,9 @@ package dev.jokku.newsapi
 
 import androidx.annotation.IntRange
 import com.skydoves.retrofit.adapters.result.ResultCallAdapterFactory
-import dev.jokku.newsapi.model.ArticleNetwork
+import dev.jokku.newsapi.model.NetworkArticle
 import dev.jokku.newsapi.model.Language
-import dev.jokku.newsapi.model.Response
+import dev.jokku.newsapi.model.NetworkResponse
 import dev.jokku.newsapi.model.SortBy
 import dev.jokku.newsapi.util.NewsApiKeyInterceptor
 import kotlinx.serialization.json.Json
@@ -33,11 +33,11 @@ interface NewsApi {
         @Query("from") from: Date? = null,
         @Query("to") to: Date? = null,
         @Query("language") language: List<Language>? = null,
-        @Query("sortBy") sortBy: SortBy,
+        @Query("sortBy") sortBy: SortBy? = null,
         @Query("pageSize") @IntRange(from = 0, to = 100) int: Int = 100,
         @Query("page") @IntRange(from = 1) page: Int = 1,
         // Using Result adapter allows us to avoid crashes, so no need in try catch blocks
-    ): Result<Response<ArticleNetwork>>
+    ): Result<NetworkResponse<NetworkArticle>>
 }
 
 // Constructor default impl only for public fun
