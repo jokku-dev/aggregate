@@ -1,30 +1,28 @@
 package dev.jokku.aggregate.di
 
-import android.util.Log
-import dev.jokku.aggregate.data.remote.HttpRouts.API_KEY_VALUE
-import dev.jokku.aggregate.data.remote.HttpRouts.API_KEY
-import dev.jokku.aggregate.data.remote.NewsRemoteDataSource
-import dev.jokku.aggregate.data.remote.RemoteDataSource
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
-import io.ktor.client.HttpClient
-import io.ktor.client.engine.android.Android
-import io.ktor.client.plugins.DefaultRequest
-import io.ktor.client.plugins.contentnegotiation.ContentNegotiation
-import io.ktor.client.plugins.logging.LogLevel
-import io.ktor.client.plugins.logging.Logger
-import io.ktor.client.plugins.logging.Logging
-import io.ktor.client.plugins.observer.ResponseObserver
-import io.ktor.client.request.header
-import io.ktor.http.ContentType
-import io.ktor.http.HttpHeaders
-import io.ktor.http.parametersOf
-import io.ktor.serialization.kotlinx.json.json
-import kotlinx.serialization.json.Json
-import javax.inject.Singleton
+import dev.jokku.aggregate.BuildConfig
+import dev.jokku.newsapi.NewsApi
+import okhttp3.OkHttpClient
 
+@Module
+@InstallIn(SingletonComponent::class)
+object RemoteDataSourceModule {
+
+    @Provides
+    fun newsApi(okHttpClient: OkHttpClient?): NewsApi {
+        return NewsApi(
+            baseUrl = BuildConfig.API_BASE_URL,
+            apiKey = BuildConfig.API_KEY,
+            okHttpClient = okHttpClient,
+        )
+    }
+}
+
+/*
 @Module
 @InstallIn(SingletonComponent::class)
 object RemoteDataSourceModule {
@@ -69,4 +67,4 @@ object RemoteDataSourceModule {
             }
         }
     )
-}
+}*/

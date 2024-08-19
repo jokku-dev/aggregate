@@ -14,7 +14,7 @@ dependencyResolutionManagement {
 }
 rootProject.name = "Aggregate"
 include(":app")
-include(":newsapi")
-include(":newsdb")
-include("features:ui")
-include(":newsdata")
+include(":core:newsapi")
+include(":core:newsdb")
+include(":core:newsdata")
+include(":features:topheadlines")
