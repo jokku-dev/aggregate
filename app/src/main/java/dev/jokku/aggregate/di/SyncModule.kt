@@ -1,7 +1,7 @@
 package dev.jokku.aggregate.di
 
-import dev.jokku.aggregate.data.sync.SyncStatusMonitor
-import dev.jokku.aggregate.data.sync.WorkManagerSyncStatusMonitor
+import dev.jokku.newsdata.sync.SyncStatusMonitor
+import dev.jokku.newsdata.sync.WorkManagerSyncStatusMonitor
 import dagger.Binds
 import dagger.Module
 import dagger.hilt.InstallIn

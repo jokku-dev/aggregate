@@ -8,6 +8,7 @@ import androidx.room.TypeConverters
 import dev.jokku.newsdb.dao.ArticlesDao
 import dev.jokku.newsdb.model.ArticleEntity
 import dev.jokku.newsdb.utils.Converters
+import kotlin.jvm.java
 
 class NewsDatabase internal constructor(private val database: NewsRoomDatabase) {
 

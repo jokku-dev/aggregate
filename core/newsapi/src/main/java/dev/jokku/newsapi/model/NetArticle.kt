@@ -7,7 +7,7 @@ import java.util.Date
 
 @Serializable
 data class NetArticle(
-    @SerialName("source") val source: NetworkSource,
+    @SerialName("source") val source: NetSource,
     @SerialName("author") val author: String,
     @SerialName("title") val title: String,
     @SerialName("description") val description: String,
