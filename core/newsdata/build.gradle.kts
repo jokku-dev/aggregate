@@ -1,6 +1,6 @@
 plugins {
-    alias(libs.plugins.androidLibrary)
-    alias(libs.plugins.jetbrainsKotlinAndroid)
+    alias(libs.plugins.android.library)
+    alias(libs.plugins.kotlin.android)
 }
 
 android {
@@ -35,6 +35,8 @@ android {
 dependencies {
 
     implementation(libs.androidx.core.ktx)
+    implementation(libs.androidx.startup.runtime)
+    implementation(libs.androidx.work.ktx)
     implementation(libs.kotlinx.coroutines.android)
 
     implementation(project(":core:newsdb"))
