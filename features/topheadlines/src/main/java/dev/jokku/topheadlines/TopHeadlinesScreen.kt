@@ -1,5 +1,7 @@
 package dev.jokku.topheadlines
 
+//noinspection SuspiciousImport
+import android.R
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
@@ -19,16 +21,16 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.hilt.navigation.compose.hiltViewModel
-import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavHostController
-import dev.jokku.aggregate.presentation.model.UiArticle
 import dev.jokku.designsystem.theme.AggregateTheme
+import dev.jokku.ui.HeadlineAndDescriptionText
+import dev.jokku.ui.SearchTextField
+import dev.jokku.ui.UiArticle
 
 @Composable
 fun TopHeadlinesScreen(
     navController: NavHostController,
-    viewModel: dev.jokku.aggregate.presentation.screens.topheadlines.TopHeadlinesViewModel = hiltViewModel<dev.jokku.aggregate.presentation.screens.topheadlines.MainTopHeadlinesViewModel>()
+    viewModel: TopHeadlinesViewModel = hiltViewModel<MainTopHeadlinesViewModel>()
 ) { 
     val state by viewModel.topHeadlinesState.collectAsStateWithLifecycle()
 
@@ -50,7 +52,7 @@ fun TopHeadlinesScreen(
 @Composable
 fun TopHeadlinesScreenContent(
     categories: List<UiSelectableCategory>,
-    uiArticles: List<dev.jokku.aggregate.presentation.model.UiArticle>,
+    uiArticles: List<UiArticle>,
     search: String,
     onSearchChanged: (String) -> Unit,
     selectCategory: (UiSelectableCategory) -> Unit,
@@ -65,12 +67,12 @@ fun TopHeadlinesScreenContent(
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.Top
     ) {
-        dev.jokku.ui.HeadlineAndDescriptionText(
-            headline = stringResource(id = dev.jokku.aggregate.R.string.browse),
-            description = stringResource(id = dev.jokku.aggregate.R.string.discover_things),
+        HeadlineAndDescriptionText(
+            headline = stringResource(id = R.string.browse),
+            description = stringResource(id = R.string.discover_things),
             modifier = Modifier.padding(horizontal = 16.dp)
         )
-        dev.jokku.ui.SearchTextField(
+        SearchTextField(
             search = search,
             onSearchChange = { newSearch -> onSearchChanged(newSearch) },
             keyboardAction = keyboardAction,
@@ -115,25 +117,25 @@ fun TopHeadlinesScreenContent(
 @Preview(showBackground = true)
 @Composable
 fun TopHeadlinesScreenPreview() {
-    dev.jokku.designsystem.theme.AggregateTheme {
+    AggregateTheme {
         TopHeadlinesScreenContent(
             categories = listOf(
                 UiSelectableCategory(
-                    text = dev.jokku.aggregate.R.string.sports,
+                    text = R.string.sports,
                     selected = false
                 ),
                 UiSelectableCategory(
-                    text = dev.jokku.aggregate.R.string.sports,
+                    text = R.string.sports,
                     selected = true
                 ),
                 UiSelectableCategory(
-                    text = dev.jokku.aggregate.R.string.sports,
+                    text = R.string.sports,
                     selected = false
                 ),
             ),
             uiArticles = listOf(
-                dev.jokku.aggregate.presentation.model.UiArticle(),
-                dev.jokku.aggregate.presentation.model.UiArticle()
+                UiArticle(),
+                UiArticle()
             ),
             search = "",
             onSearchChanged = {},

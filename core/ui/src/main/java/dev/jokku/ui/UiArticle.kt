@@ -7,7 +7,7 @@ data class UiArticle(
     val content: String = "",
     val description: String = "",
     val publishedAt: String = "",
-    val source: dev.jokku.aggregate.presentation.model.UiArticleSource = dev.jokku.aggregate.presentation.model.UiArticleSource(),
+    val source: UiArticleSource = UiArticleSource(),
     val title: String = "",
     val url: String = "",
     val urlToImage: String = "",

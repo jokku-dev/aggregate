@@ -1,7 +1,7 @@
 package dev.jokku.welcome
 
 import dev.jokku.aggregate.R
-import dev.jokku.newsdata.CountryCode
+import dev.jokku.data.CountryCode
 import dev.jokku.aggregate.presentation.model.UiOnBoardingPage
 import dev.jokku.aggregate.presentation.model.UiCategory
 import dev.jokku.aggregate.presentation.model.UiText
@@ -14,12 +14,12 @@ enum class CategoryType {
 interface LocalDataProvider {
     fun provideNewsCategoriesPreferences(type: CategoryType): List<dev.jokku.aggregate.presentation.model.UiCategory>
     fun provideOnBoardingPages(): List<dev.jokku.aggregate.presentation.model.UiOnBoardingPage>
-    fun provideCategoryNameByCode(type: CategoryType, code: dev.jokku.newsdata.UrlParameter): dev.jokku.aggregate.presentation.model.UiText
+    fun provideCategoryNameByCode(type: CategoryType, code: dev.jokku.data.UrlParameter): dev.jokku.aggregate.presentation.model.UiText
 }
 
 class LocalDataProviderFactory : LocalDataProvider {
 
-    override fun provideCategoryNameByCode(type: CategoryType, code: dev.jokku.newsdata.UrlParameter): dev.jokku.aggregate.presentation.model.UiText {
+    override fun provideCategoryNameByCode(type: CategoryType, code: dev.jokku.data.UrlParameter): dev.jokku.aggregate.presentation.model.UiText {
         return provideNewsCategoriesPreferences(type)
             .find { uiCategory ->
                 uiCategory.code == code
@@ -31,67 +31,67 @@ class LocalDataProviderFactory : LocalDataProvider {
             CategoryType.LANGUAGE -> listOf(
                 dev.jokku.aggregate.presentation.model.UiCategory(
                     name = dev.jokku.aggregate.presentation.model.UiText.StringResource(dev.jokku.aggregate.R.string.arabic),
-                    code = dev.jokku.newsdata.LanguageCode.AR,
+                    code = dev.jokku.data.LanguageCode.AR,
                     selected = false
                 ),
                 dev.jokku.aggregate.presentation.model.UiCategory(
                     name = dev.jokku.aggregate.presentation.model.UiText.StringResource(dev.jokku.aggregate.R.string.german),
-                    code = dev.jokku.newsdata.LanguageCode.DE,
+                    code = dev.jokku.data.LanguageCode.DE,
                     selected = false
                 ),
                 dev.jokku.aggregate.presentation.model.UiCategory(
                     name = dev.jokku.aggregate.presentation.model.UiText.StringResource(dev.jokku.aggregate.R.string.english),
-                    code = dev.jokku.newsdata.LanguageCode.EN,
+                    code = dev.jokku.data.LanguageCode.EN,
                     selected = false
                 ),
                 dev.jokku.aggregate.presentation.model.UiCategory(
                     name = dev.jokku.aggregate.presentation.model.UiText.StringResource(dev.jokku.aggregate.R.string.spanish),
-                    code = dev.jokku.newsdata.LanguageCode.ES,
+                    code = dev.jokku.data.LanguageCode.ES,
                     selected = false
                 ),
                 dev.jokku.aggregate.presentation.model.UiCategory(
                     name = dev.jokku.aggregate.presentation.model.UiText.StringResource(dev.jokku.aggregate.R.string.french),
-                    code = dev.jokku.newsdata.LanguageCode.FR,
+                    code = dev.jokku.data.LanguageCode.FR,
                     selected = false
                 ),
                 dev.jokku.aggregate.presentation.model.UiCategory(
                     name = dev.jokku.aggregate.presentation.model.UiText.StringResource(dev.jokku.aggregate.R.string.hebrew),
-                    code = dev.jokku.newsdata.LanguageCode.HE,
+                    code = dev.jokku.data.LanguageCode.HE,
                     selected = false
                 ),
                 dev.jokku.aggregate.presentation.model.UiCategory(
                     name = dev.jokku.aggregate.presentation.model.UiText.StringResource(dev.jokku.aggregate.R.string.italian),
-                    code = dev.jokku.newsdata.LanguageCode.IT,
+                    code = dev.jokku.data.LanguageCode.IT,
                     selected = false
                 ),
                 dev.jokku.aggregate.presentation.model.UiCategory(
                     name = dev.jokku.aggregate.presentation.model.UiText.StringResource(dev.jokku.aggregate.R.string.dutch),
-                    code = dev.jokku.newsdata.LanguageCode.NL,
+                    code = dev.jokku.data.LanguageCode.NL,
                     selected = false
                 ),
                 dev.jokku.aggregate.presentation.model.UiCategory(
                     name = dev.jokku.aggregate.presentation.model.UiText.StringResource(dev.jokku.aggregate.R.string.norwegian),
-                    code = dev.jokku.newsdata.LanguageCode.NO,
+                    code = dev.jokku.data.LanguageCode.NO,
                     selected = false
                 ),
                 dev.jokku.aggregate.presentation.model.UiCategory(
                     name = dev.jokku.aggregate.presentation.model.UiText.StringResource(dev.jokku.aggregate.R.string.portuguese),
-                    code = dev.jokku.newsdata.LanguageCode.PT,
+                    code = dev.jokku.data.LanguageCode.PT,
                     selected = false
                 ),
                 dev.jokku.aggregate.presentation.model.UiCategory(
                     name = dev.jokku.aggregate.presentation.model.UiText.StringResource(dev.jokku.aggregate.R.string.russian),
-                    code = dev.jokku.newsdata.LanguageCode.RU,
+                    code = dev.jokku.data.LanguageCode.RU,
                     selected = false
                 ),
                 dev.jokku.aggregate.presentation.model.UiCategory(
                     name = dev.jokku.aggregate.presentation.model.UiText.StringResource(dev.jokku.aggregate.R.string.swedish),
-                    code = dev.jokku.newsdata.LanguageCode.SV,
+                    code = dev.jokku.data.LanguageCode.SV,
                     selected = false
                 ),
                 dev.jokku.aggregate.presentation.model.UiCategory(
                     name = dev.jokku.aggregate.presentation.model.UiText.StringResource(dev.jokku.aggregate.R.string.chinese),
-                    code = dev.jokku.newsdata.LanguageCode.ZH,
+                    code = dev.jokku.data.LanguageCode.ZH,
                     selected = false
                 ),
             )
@@ -99,37 +99,37 @@ class LocalDataProviderFactory : LocalDataProvider {
             CategoryType.CATEGORY -> listOf(
                 dev.jokku.aggregate.presentation.model.UiCategory(
                     name = dev.jokku.aggregate.presentation.model.UiText.StringResource(dev.jokku.aggregate.R.string.business),
-                    code = dev.jokku.newsdata.CategoryCode.BUSINESS,
+                    code = dev.jokku.data.CategoryCode.BUSINESS,
                     selected = false
                 ),
                 dev.jokku.aggregate.presentation.model.UiCategory(
                     name = dev.jokku.aggregate.presentation.model.UiText.StringResource(dev.jokku.aggregate.R.string.entertainment),
-                    code = dev.jokku.newsdata.CategoryCode.ENTERTAINMENT,
+                    code = dev.jokku.data.CategoryCode.ENTERTAINMENT,
                     selected = false
                 ),
                 dev.jokku.aggregate.presentation.model.UiCategory(
                     name = dev.jokku.aggregate.presentation.model.UiText.StringResource(dev.jokku.aggregate.R.string.general),
-                    code = dev.jokku.newsdata.CategoryCode.GENERAL,
+                    code = dev.jokku.data.CategoryCode.GENERAL,
                     selected = false
                 ),
                 dev.jokku.aggregate.presentation.model.UiCategory(
                     name = dev.jokku.aggregate.presentation.model.UiText.StringResource(dev.jokku.aggregate.R.string.health),
-                    code = dev.jokku.newsdata.CategoryCode.HEALTH,
+                    code = dev.jokku.data.CategoryCode.HEALTH,
                     selected = false
                 ),
                 dev.jokku.aggregate.presentation.model.UiCategory(
                     name = dev.jokku.aggregate.presentation.model.UiText.StringResource(dev.jokku.aggregate.R.string.science),
-                    code = dev.jokku.newsdata.CategoryCode.SCIENCE,
+                    code = dev.jokku.data.CategoryCode.SCIENCE,
                     selected = false
                 ),
                 dev.jokku.aggregate.presentation.model.UiCategory(
                     name = dev.jokku.aggregate.presentation.model.UiText.StringResource(dev.jokku.aggregate.R.string.sports),
-                    code = dev.jokku.newsdata.CategoryCode.SPORTS,
+                    code = dev.jokku.data.CategoryCode.SPORTS,
                     selected = false
                 ),
                 dev.jokku.aggregate.presentation.model.UiCategory(
                     name = dev.jokku.aggregate.presentation.model.UiText.StringResource(dev.jokku.aggregate.R.string.technology),
-                    code = dev.jokku.newsdata.CategoryCode.TECHNOLOGY,
+                    code = dev.jokku.data.CategoryCode.TECHNOLOGY,
                     selected = false
                 ),
             )
@@ -137,257 +137,257 @@ class LocalDataProviderFactory : LocalDataProvider {
             CategoryType.COUNTRY -> listOf(
                 dev.jokku.aggregate.presentation.model.UiCategory(
                     name = dev.jokku.aggregate.presentation.model.UiText.StringResource(dev.jokku.aggregate.R.string.united_arab_emirates),
-                    code = dev.jokku.newsdata.CountryCode.AE,
+                    code = dev.jokku.data.CountryCode.AE,
                     selected = false
                 ),
                 dev.jokku.aggregate.presentation.model.UiCategory(
                     name = dev.jokku.aggregate.presentation.model.UiText.StringResource(dev.jokku.aggregate.R.string.argentina),
-                    code = dev.jokku.newsdata.CountryCode.AR,
+                    code = dev.jokku.data.CountryCode.AR,
                     selected = false
                 ),
                 dev.jokku.aggregate.presentation.model.UiCategory(
                     name = dev.jokku.aggregate.presentation.model.UiText.StringResource(dev.jokku.aggregate.R.string.austria),
-                    code = dev.jokku.newsdata.CountryCode.AT,
+                    code = dev.jokku.data.CountryCode.AT,
                     selected = false
                 ),
                 dev.jokku.aggregate.presentation.model.UiCategory(
                     name = dev.jokku.aggregate.presentation.model.UiText.StringResource(dev.jokku.aggregate.R.string.australia),
-                    code = dev.jokku.newsdata.CountryCode.AU,
+                    code = dev.jokku.data.CountryCode.AU,
                     selected = false
                 ),
                 dev.jokku.aggregate.presentation.model.UiCategory(
                     name = dev.jokku.aggregate.presentation.model.UiText.StringResource(dev.jokku.aggregate.R.string.belgium),
-                    code = dev.jokku.newsdata.CountryCode.BE,
+                    code = dev.jokku.data.CountryCode.BE,
                     selected = false
                 ),
                 dev.jokku.aggregate.presentation.model.UiCategory(
                     name = dev.jokku.aggregate.presentation.model.UiText.StringResource(dev.jokku.aggregate.R.string.bulgaria),
-                    code = dev.jokku.newsdata.CountryCode.BG,
+                    code = dev.jokku.data.CountryCode.BG,
                     selected = false
                 ),
                 dev.jokku.aggregate.presentation.model.UiCategory(
                     name = dev.jokku.aggregate.presentation.model.UiText.StringResource(dev.jokku.aggregate.R.string.brazil),
-                    code = dev.jokku.newsdata.CountryCode.BR,
+                    code = dev.jokku.data.CountryCode.BR,
                     selected = false
                 ),
                 dev.jokku.aggregate.presentation.model.UiCategory(
                     name = dev.jokku.aggregate.presentation.model.UiText.StringResource(dev.jokku.aggregate.R.string.canada),
-                    code = dev.jokku.newsdata.CountryCode.CA,
+                    code = dev.jokku.data.CountryCode.CA,
                     selected = false
                 ),
                 dev.jokku.aggregate.presentation.model.UiCategory(
                     name = dev.jokku.aggregate.presentation.model.UiText.StringResource(dev.jokku.aggregate.R.string.switzerland),
-                    code = dev.jokku.newsdata.CountryCode.CH,
+                    code = dev.jokku.data.CountryCode.CH,
                     selected = false
                 ),
                 dev.jokku.aggregate.presentation.model.UiCategory(
                     name = dev.jokku.aggregate.presentation.model.UiText.StringResource(dev.jokku.aggregate.R.string.china),
-                    code = dev.jokku.newsdata.CountryCode.CN,
+                    code = dev.jokku.data.CountryCode.CN,
                     selected = false
                 ),
                 dev.jokku.aggregate.presentation.model.UiCategory(
                     name = dev.jokku.aggregate.presentation.model.UiText.StringResource(dev.jokku.aggregate.R.string.colombia),
-                    code = dev.jokku.newsdata.CountryCode.CO,
+                    code = dev.jokku.data.CountryCode.CO,
                     selected = false
                 ),
                 dev.jokku.aggregate.presentation.model.UiCategory(
                     name = dev.jokku.aggregate.presentation.model.UiText.StringResource(dev.jokku.aggregate.R.string.cuba),
-                    code = dev.jokku.newsdata.CountryCode.CU,
+                    code = dev.jokku.data.CountryCode.CU,
                     selected = false
                 ),
                 dev.jokku.aggregate.presentation.model.UiCategory(
                     name = dev.jokku.aggregate.presentation.model.UiText.StringResource(dev.jokku.aggregate.R.string.czechia),
-                    code = dev.jokku.newsdata.CountryCode.CZ,
+                    code = dev.jokku.data.CountryCode.CZ,
                     selected = false
                 ),
                 dev.jokku.aggregate.presentation.model.UiCategory(
                     name = dev.jokku.aggregate.presentation.model.UiText.StringResource(dev.jokku.aggregate.R.string.germany),
-                    code = dev.jokku.newsdata.CountryCode.DE,
+                    code = dev.jokku.data.CountryCode.DE,
                     selected = false
                 ),
                 dev.jokku.aggregate.presentation.model.UiCategory(
                     name = dev.jokku.aggregate.presentation.model.UiText.StringResource(dev.jokku.aggregate.R.string.egypt),
-                    code = dev.jokku.newsdata.CountryCode.EG,
+                    code = dev.jokku.data.CountryCode.EG,
                     selected = false
                 ),
                 dev.jokku.aggregate.presentation.model.UiCategory(
                     name = dev.jokku.aggregate.presentation.model.UiText.StringResource(dev.jokku.aggregate.R.string.france),
-                    code = dev.jokku.newsdata.CountryCode.FR,
+                    code = dev.jokku.data.CountryCode.FR,
                     selected = false
                 ),
                 dev.jokku.aggregate.presentation.model.UiCategory(
                     name = dev.jokku.aggregate.presentation.model.UiText.StringResource(dev.jokku.aggregate.R.string.united_kingdom),
-                    code = dev.jokku.newsdata.CountryCode.GB,
+                    code = dev.jokku.data.CountryCode.GB,
                     selected = false
                 ),
                 dev.jokku.aggregate.presentation.model.UiCategory(
                     name = dev.jokku.aggregate.presentation.model.UiText.StringResource(dev.jokku.aggregate.R.string.greece),
-                    code = dev.jokku.newsdata.CountryCode.GR,
+                    code = dev.jokku.data.CountryCode.GR,
                     selected = false
                 ),
                 dev.jokku.aggregate.presentation.model.UiCategory(
                     name = dev.jokku.aggregate.presentation.model.UiText.StringResource(dev.jokku.aggregate.R.string.hong_kong),
-                    code = dev.jokku.newsdata.CountryCode.HK,
+                    code = dev.jokku.data.CountryCode.HK,
                     selected = false
                 ),
                 dev.jokku.aggregate.presentation.model.UiCategory(
                     name = dev.jokku.aggregate.presentation.model.UiText.StringResource(dev.jokku.aggregate.R.string.hungary),
-                    code = dev.jokku.newsdata.CountryCode.HU,
+                    code = dev.jokku.data.CountryCode.HU,
                     selected = false
                 ),
                 dev.jokku.aggregate.presentation.model.UiCategory(
                     name = dev.jokku.aggregate.presentation.model.UiText.StringResource(dev.jokku.aggregate.R.string.indonesia),
-                    code = dev.jokku.newsdata.CountryCode.ID,
+                    code = dev.jokku.data.CountryCode.ID,
                     selected = false
                 ),
                 dev.jokku.aggregate.presentation.model.UiCategory(
                     name = dev.jokku.aggregate.presentation.model.UiText.StringResource(dev.jokku.aggregate.R.string.ireland),
-                    code = dev.jokku.newsdata.CountryCode.IE,
+                    code = dev.jokku.data.CountryCode.IE,
                     selected = false
                 ),
                 dev.jokku.aggregate.presentation.model.UiCategory(
                     name = dev.jokku.aggregate.presentation.model.UiText.StringResource(dev.jokku.aggregate.R.string.israel),
-                    code = dev.jokku.newsdata.CountryCode.IL,
+                    code = dev.jokku.data.CountryCode.IL,
                     selected = false
                 ),
                 dev.jokku.aggregate.presentation.model.UiCategory(
                     name = dev.jokku.aggregate.presentation.model.UiText.StringResource(dev.jokku.aggregate.R.string.india),
-                    code = dev.jokku.newsdata.CountryCode.IN,
+                    code = dev.jokku.data.CountryCode.IN,
                     selected = false
                 ),
                 dev.jokku.aggregate.presentation.model.UiCategory(
                     name = dev.jokku.aggregate.presentation.model.UiText.StringResource(dev.jokku.aggregate.R.string.italy),
-                    code = dev.jokku.newsdata.CountryCode.IT,
+                    code = dev.jokku.data.CountryCode.IT,
                     selected = false
                 ),
                 dev.jokku.aggregate.presentation.model.UiCategory(
                     name = dev.jokku.aggregate.presentation.model.UiText.StringResource(dev.jokku.aggregate.R.string.japan),
-                    code = dev.jokku.newsdata.CountryCode.JP,
+                    code = dev.jokku.data.CountryCode.JP,
                     selected = false
                 ),
                 dev.jokku.aggregate.presentation.model.UiCategory(
                     name = dev.jokku.aggregate.presentation.model.UiText.StringResource(dev.jokku.aggregate.R.string.republic_of_korea),
-                    code = dev.jokku.newsdata.CountryCode.KR,
+                    code = dev.jokku.data.CountryCode.KR,
                     selected = false
                 ),
                 dev.jokku.aggregate.presentation.model.UiCategory(
                     name = dev.jokku.aggregate.presentation.model.UiText.StringResource(dev.jokku.aggregate.R.string.lithuania),
-                    code = dev.jokku.newsdata.CountryCode.LT,
+                    code = dev.jokku.data.CountryCode.LT,
                     selected = false
                 ),
                 dev.jokku.aggregate.presentation.model.UiCategory(
                     name = dev.jokku.aggregate.presentation.model.UiText.StringResource(dev.jokku.aggregate.R.string.latvia),
-                    code = dev.jokku.newsdata.CountryCode.LV,
+                    code = dev.jokku.data.CountryCode.LV,
                     selected = false
                 ),
                 dev.jokku.aggregate.presentation.model.UiCategory(
                     name = dev.jokku.aggregate.presentation.model.UiText.StringResource(dev.jokku.aggregate.R.string.morocco),
-                    code = dev.jokku.newsdata.CountryCode.MA,
+                    code = dev.jokku.data.CountryCode.MA,
                     selected = false
                 ),
                 dev.jokku.aggregate.presentation.model.UiCategory(
                     name = dev.jokku.aggregate.presentation.model.UiText.StringResource(dev.jokku.aggregate.R.string.mexico),
-                    code = dev.jokku.newsdata.CountryCode.MX,
+                    code = dev.jokku.data.CountryCode.MX,
                     selected = false
                 ),
                 dev.jokku.aggregate.presentation.model.UiCategory(
                     name = dev.jokku.aggregate.presentation.model.UiText.StringResource(dev.jokku.aggregate.R.string.malaysia),
-                    code = dev.jokku.newsdata.CountryCode.MY,
+                    code = dev.jokku.data.CountryCode.MY,
                     selected = false
                 ),
                 dev.jokku.aggregate.presentation.model.UiCategory(
                     name = dev.jokku.aggregate.presentation.model.UiText.StringResource(dev.jokku.aggregate.R.string.nigeria),
-                    code = dev.jokku.newsdata.CountryCode.NG,
+                    code = dev.jokku.data.CountryCode.NG,
                     selected = false
                 ),
                 dev.jokku.aggregate.presentation.model.UiCategory(
                     name = dev.jokku.aggregate.presentation.model.UiText.StringResource(dev.jokku.aggregate.R.string.netherlands),
-                    code = dev.jokku.newsdata.CountryCode.NL,
+                    code = dev.jokku.data.CountryCode.NL,
                     selected = false
                 ),
                 dev.jokku.aggregate.presentation.model.UiCategory(
                     name = dev.jokku.aggregate.presentation.model.UiText.StringResource(dev.jokku.aggregate.R.string.norway),
-                    code = dev.jokku.newsdata.CountryCode.NO,
+                    code = dev.jokku.data.CountryCode.NO,
                     selected = false
                 ),
                 dev.jokku.aggregate.presentation.model.UiCategory(
                     name = dev.jokku.aggregate.presentation.model.UiText.StringResource(dev.jokku.aggregate.R.string.new_zealand),
-                    code = dev.jokku.newsdata.CountryCode.NZ,
+                    code = dev.jokku.data.CountryCode.NZ,
                     selected = false
                 ),
                 dev.jokku.aggregate.presentation.model.UiCategory(
                     name = dev.jokku.aggregate.presentation.model.UiText.StringResource(dev.jokku.aggregate.R.string.philippines),
-                    code = dev.jokku.newsdata.CountryCode.PH,
+                    code = dev.jokku.data.CountryCode.PH,
                     selected = false
                 ),
                 dev.jokku.aggregate.presentation.model.UiCategory(
                     name = dev.jokku.aggregate.presentation.model.UiText.StringResource(dev.jokku.aggregate.R.string.poland),
-                    code = dev.jokku.newsdata.CountryCode.PL,
+                    code = dev.jokku.data.CountryCode.PL,
                     selected = false
                 ),
                 dev.jokku.aggregate.presentation.model.UiCategory(
                     name = dev.jokku.aggregate.presentation.model.UiText.StringResource(dev.jokku.aggregate.R.string.portugal),
-                    code = dev.jokku.newsdata.CountryCode.PT,
+                    code = dev.jokku.data.CountryCode.PT,
                     selected = false
                 ),
                 dev.jokku.aggregate.presentation.model.UiCategory(
                     name = dev.jokku.aggregate.presentation.model.UiText.StringResource(dev.jokku.aggregate.R.string.romania),
-                    code = dev.jokku.newsdata.CountryCode.RO,
+                    code = dev.jokku.data.CountryCode.RO,
                     selected = false
                 ),
                 dev.jokku.aggregate.presentation.model.UiCategory(
                     name = dev.jokku.aggregate.presentation.model.UiText.StringResource(dev.jokku.aggregate.R.string.serbia),
-                    code = dev.jokku.newsdata.CountryCode.RS,
+                    code = dev.jokku.data.CountryCode.RS,
                     selected = false
                 ),
                 dev.jokku.aggregate.presentation.model.UiCategory(
                     name = dev.jokku.aggregate.presentation.model.UiText.StringResource(dev.jokku.aggregate.R.string.russian_federation),
-                    code = dev.jokku.newsdata.CountryCode.RU,
+                    code = dev.jokku.data.CountryCode.RU,
                     selected = false
                 ),
                 dev.jokku.aggregate.presentation.model.UiCategory(
                     name = dev.jokku.aggregate.presentation.model.UiText.StringResource(dev.jokku.aggregate.R.string.saudi_arabia),
-                    code = dev.jokku.newsdata.CountryCode.SA,
+                    code = dev.jokku.data.CountryCode.SA,
                     selected = false
                 ),
                 dev.jokku.aggregate.presentation.model.UiCategory(
                     name = dev.jokku.aggregate.presentation.model.UiText.StringResource(dev.jokku.aggregate.R.string.sweden),
-                    code = dev.jokku.newsdata.CountryCode.SE,
+                    code = dev.jokku.data.CountryCode.SE,
                     selected = false
                 ),
                 dev.jokku.aggregate.presentation.model.UiCategory(
                     name = dev.jokku.aggregate.presentation.model.UiText.StringResource(dev.jokku.aggregate.R.string.singapore),
-                    code = dev.jokku.newsdata.CountryCode.SG,
+                    code = dev.jokku.data.CountryCode.SG,
                     selected = false
                 ),
                 dev.jokku.aggregate.presentation.model.UiCategory(
                     name = dev.jokku.aggregate.presentation.model.UiText.StringResource(dev.jokku.aggregate.R.string.slovenia),
-                    code = dev.jokku.newsdata.CountryCode.SI,
+                    code = dev.jokku.data.CountryCode.SI,
                     selected = false
                 ),
                 dev.jokku.aggregate.presentation.model.UiCategory(
                     name = dev.jokku.aggregate.presentation.model.UiText.StringResource(dev.jokku.aggregate.R.string.slovakia),
-                    code = dev.jokku.newsdata.CountryCode.SK,
+                    code = dev.jokku.data.CountryCode.SK,
                     selected = false
                 ),
                 dev.jokku.aggregate.presentation.model.UiCategory(
                     name = dev.jokku.aggregate.presentation.model.UiText.StringResource(dev.jokku.aggregate.R.string.thailand),
-                    code = dev.jokku.newsdata.CountryCode.TH,
+                    code = dev.jokku.data.CountryCode.TH,
                     selected = false
                 ),
                 dev.jokku.aggregate.presentation.model.UiCategory(
                     name = dev.jokku.aggregate.presentation.model.UiText.StringResource(dev.jokku.aggregate.R.string.turkey),
-                    code = dev.jokku.newsdata.CountryCode.TR,
+                    code = dev.jokku.data.CountryCode.TR,
                     selected = false
                 ),
                 dev.jokku.aggregate.presentation.model.UiCategory(
                     name = dev.jokku.aggregate.presentation.model.UiText.StringResource(dev.jokku.aggregate.R.string.taiwan),
-                    code = dev.jokku.newsdata.CountryCode.TW,
+                    code = dev.jokku.data.CountryCode.TW,
                     selected = false
                 ),
                 dev.jokku.aggregate.presentation.model.UiCategory(
                     name = dev.jokku.aggregate.presentation.model.UiText.StringResource(dev.jokku.aggregate.R.string.ukraine),
-                    code = dev.jokku.newsdata.CountryCode.UA,
+                    code = dev.jokku.data.CountryCode.UA,
                     selected = false
                 ),
                 UiCategory(

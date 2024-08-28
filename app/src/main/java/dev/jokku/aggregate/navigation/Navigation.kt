@@ -29,16 +29,16 @@ import kotlin.let
 fun Navigation(navController: NavHostController, startDestination: String) {
     NavHost(navController = navController, startDestination = startDestination) {
         composable(route = Screen.OnBoarding.route) {
-            dev.jokku.welcome.OnBoardingScreen(navController = navController)
+            OnBoardingScreen(navController = navController)
         }
         composable(route = Screen.SelectFavoriteTopics.route) {
-            dev.jokku.welcome.SelectFavoriteTopicsScreen(navController = navController)
+            SelectFavoriteTopicsScreen(navController = navController)
         }
         composable(route = Screen.SignIn.route) {
-            dev.jokku.account.SignInScreen(navController = navController)
+            SignInScreen(navController = navController)
         }
         composable(route = Screen.ForgotPassword.route) {
-            dev.jokku.account.ForgotPasswordScreen(navController = navController)
+            ForgotPasswordScreen(navController = navController)
         }
         composable(
             route = Screen.Verification.route + "/{email}",
@@ -56,10 +56,10 @@ fun Navigation(navController: NavHostController, startDestination: String) {
             }
         }
         composable(route = Screen.CreateNewPassword.route) {
-            dev.jokku.account.CreateNewPasswordScreen(navController = navController)
+            CreateNewPasswordScreen(navController = navController)
         }
         composable(route = Screen.SignUp.route) {
-            dev.jokku.account.SignUpScreen(navController = navController)
+            SignUpScreen(navController = navController)
         }
 
 
@@ -67,33 +67,33 @@ fun Navigation(navController: NavHostController, startDestination: String) {
             TopHeadlinesScreen(navController = navController)
         }
         composable(route = Screen.Favorites.route) {
-            dev.jokku.favorites.FavoritesScreen(navController = navController)
+            FavoritesScreen(navController = navController)
         }
         composable(route = Screen.Sources.route) {
-            dev.jokku.sources.SourcesScreen(navController = navController)
+            SourcesScreen(navController = navController)
         }
         composable(route = Screen.Bookmarks.route) {
-            dev.jokku.bookmarks.BookmarksScreen(navController = navController)
+            BookmarksScreen(navController = navController)
         }
         composable(route = Screen.Profile.route) {
-            dev.jokku.profile.ProfileScreen(navController = navController)
+            ProfileScreen(navController = navController)
         }
 
         composable(route = Screen.ArticleScreen.route) {
-            dev.jokku.article.ArticleScreen(navController = navController)
+            ArticleScreen(navController = navController)
         }
 
         composable(route = Screen.Language.route) {
-            dev.jokku.profile.AppLanguageScreen(navController = navController)
+            AppLanguageScreen(navController = navController)
         }
         composable(route = Screen.ChangePassword.route) {
-            dev.jokku.profile.ChangePasswordScreen(navController = navController)
+            ChangePasswordScreen(navController = navController)
         }
         composable(route = Screen.Privacy.route) {
-            dev.jokku.profile.PrivacyScreen(navController = navController)
+            PrivacyScreen(navController = navController)
         }
         composable(route = Screen.TermsAndConditions.route) {
-            dev.jokku.profile.TermsAndConditionsScreen(navController = navController)
+            TermsAndConditionsScreen(navController = navController)
         }
     }
 }

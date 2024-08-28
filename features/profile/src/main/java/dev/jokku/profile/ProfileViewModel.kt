@@ -20,7 +20,7 @@ interface ProfileViewModel {
 
 @dagger.hilt.android.lifecycle.HiltViewModel
 class MainProfileViewModel @javax.inject.Inject constructor(
-    private val newsRepository: dev.jokku.newsdata.NewsRepository,
+    private val newsRepository: dev.jokku.data.NewsRepository,
     private val dispatcher: CoroutineDispatcher = Dispatchers.Main
 ) : ViewModel(), ProfileViewModel {
 

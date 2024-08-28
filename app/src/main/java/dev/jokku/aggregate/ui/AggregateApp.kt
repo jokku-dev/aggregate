@@ -31,7 +31,7 @@ fun AggregateApp(
 ) {
     var bottomBarState by rememberSaveable { mutableStateOf(true) }
 
-    dev.jokku.designsystem.theme.AggregateTheme {
+    AggregateTheme {
         val navBackStackEntry by navController.currentBackStackEntryAsState()
 
         bottomBarState = when (navBackStackEntry?.destination?.route) {
@@ -42,7 +42,7 @@ fun AggregateApp(
         Scaffold(
             modifier = Modifier.fillMaxSize(),
             bottomBar = {
-                dev.jokku.ui.BottomBar(
+                BottomBar(
                     navController = navController,
                     visible = bottomBarState
                 )

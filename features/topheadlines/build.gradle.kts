@@ -52,7 +52,9 @@ dependencies {
     implementation(libs.androidx.lifecycle.viewmodel.compose)
     implementation(libs.kotlinx.coroutines.android)
     implementation(libs.dagger.hilt.android)
+    implementation(project(":core:ui"))
+    implementation(libs.androidx.navigation.runtime)
+    implementation(project(":core:designsystem"))
     kapt(libs.dagger.hilt.compiler)
-
-    implementation(project(":core:newsdata"))
+    implementation(project(":core:data"))
 }

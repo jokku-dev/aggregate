@@ -15,17 +15,17 @@ import kotlin.collections.any
 
 interface WelcomeViewModel {
     fun setLaunchScreen(screen: String)
-    fun switchIsCategoryFavorite(categoryCode: dev.jokku.newsdata.UrlParameter, preferred: Boolean)
+    fun switchIsCategoryFavorite(categoryCode: dev.jokku.data.UrlParameter, preferred: Boolean)
 }
 
 @dagger.hilt.android.lifecycle.HiltViewModel
 class MainWelcomeViewModel @javax.inject.Inject constructor(
-    private val preferencesRepository: dev.jokku.newsdata.PreferencesRepository,
+    private val preferencesRepository: dev.jokku.data.PreferencesRepository,
     localDataProvider: LocalDataProvider,
     private val dispatcher: CoroutineDispatcher = Dispatchers.Main
 ) : dev.jokku.aggregate.BaseNewsViewModel(), WelcomeViewModel {
 
-    private val userData: Flow<dev.jokku.newsdb.preferences.model.UserData> =
+    private val userData: Flow<dev.jokku.database.preferences.model.UserData> =
         preferencesRepository.userData
 
     val onBoardingUiState: StateFlow<OnBoardingState> = flowOf(
@@ -82,15 +82,15 @@ class MainWelcomeViewModel @javax.inject.Inject constructor(
         }
     }
 
-    override fun switchIsCategoryFavorite(categoryCode: dev.jokku.newsdata.UrlParameter, preferred: Boolean) {
+    override fun switchIsCategoryFavorite(categoryCode: dev.jokku.data.UrlParameter, preferred: Boolean) {
         viewModelScope.launch(dispatcher) {
             when (categoryCode) {
-                is dev.jokku.newsdata.CountryCode -> preferencesRepository.togglePreferredCountries(
+                is dev.jokku.data.CountryCode -> preferencesRepository.togglePreferredCountries(
                     categoryCode,
                     preferred
                 )
 
-                is dev.jokku.newsdata.CategoryCode -> preferencesRepository.togglePreferredCategories(
+                is dev.jokku.data.CategoryCode -> preferencesRepository.togglePreferredCategories(
                     categoryCode,
                     preferred
                 )

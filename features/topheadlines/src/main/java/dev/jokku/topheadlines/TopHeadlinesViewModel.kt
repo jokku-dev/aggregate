@@ -1,10 +1,13 @@
 package dev.jokku.topheadlines
 
+import android.R
 import androidx.lifecycle.viewModelScope
-import dev.jokku.aggregate.presentation.model.UiErrorMessage
-import dev.jokku.newsdata.NewsRepository
-import dev.jokku.aggregate.presentation.model.UiText
 import dagger.hilt.android.lifecycle.HiltViewModel
+import dev.jokku.data.repository.NewsRepository
+import dev.jokku.ui.UiArticle
+import dev.jokku.ui.UiCategory
+import dev.jokku.ui.UiErrorMessage
+import dev.jokku.ui.UiText
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
@@ -24,15 +27,15 @@ interface TopHeadlinesViewModel {
 
     fun refreshArticles()
     fun getSignInStatus(): Job
-    fun selectCategory(selected: dev.jokku.aggregate.presentation.model.UiCategory): Job
+    fun selectCategory(selected: UiCategory): Job
 }
 
 @HiltViewModel
 class MainTopHeadlinesViewModel @Inject constructor(
     private val newsRepository: NewsRepository,
-    private val preferencesDataSource: dev.jokku.aggregate.data.local.preferences.PreferencesDataSource,
+    private val preferencesDataSource: PreferencesDataSource,
     private val dispatcher: CoroutineDispatcher = Dispatchers.Main
-) : dev.jokku.aggregate.BaseNewsViewModel(), TopHeadlinesViewModel {
+) : BaseNewsViewModel(), TopHeadlinesViewModel {
 
     private val topHeadlinesViewModelState = MutableStateFlow(TopHeadlinesViewModelState(isLoading = true))
     override val topHeadlinesState = topHeadlinesViewModelState
@@ -59,13 +62,13 @@ class MainTopHeadlinesViewModel @Inject constructor(
             val result = newsRepository.getFavoriteTopHeadlines()
             topHeadlinesViewModelState.update {
                 when (result) {
-                    is dev.jokku.aggregate.domain.ResultState.Result.Success -> {
+                    is ResultState.Result.Success -> {
                         it.copy(articles = result.data, isLoading = false)
                     }
-                    is dev.jokku.aggregate.domain.ResultState.Result.Failure -> {
-                        val errorMessages = it.errorMessages + dev.jokku.aggregate.presentation.model.UiErrorMessage(
+                    is ResultState.Result.Failure -> {
+                        val errorMessages = it.errorMessages + UiErrorMessage(
                             id = UUID.randomUUID().mostSignificantBits,
-                            text = dev.jokku.aggregate.presentation.model.UiText.StringResource(dev.jokku.aggregate.R.string.can_not_update_latest_news)
+                            text = UiText.StringResource(R.string.can_not_update_latest_news)
                         )
                         it.copy(errorMessages = errorMessages, isLoading = false)
                     }
@@ -80,7 +83,7 @@ class MainTopHeadlinesViewModel @Inject constructor(
         }
     }
 
-    override fun selectCategory(selected: dev.jokku.aggregate.presentation.model.UiCategory) = viewModelScope.launch(dispatcher) {
+    override fun selectCategory(selected: UiCategory) = viewModelScope.launch(dispatcher) {
         val categories = topHeadlinesViewModelState.value.categories.map { category ->
             category.copy(selected = category == selected)
         }
@@ -91,10 +94,10 @@ class MainTopHeadlinesViewModel @Inject constructor(
 }
 
 data class TopHeadlinesState(
-    val articles: List<dev.jokku.aggregate.presentation.model.UiArticle>,
-    val selectedArticle: dev.jokku.aggregate.presentation.model.UiArticle,
+    val articles: List<UiArticle>,
+    val selectedArticle: UiArticle,
     val isArticleOpen: Boolean,
     val favorites: Set<String>,
     val searchInput: String,
-    val categories: List<dev.jokku.aggregate.presentation.model.UiCategory>
+    val categories: List<UiCategory>
 )

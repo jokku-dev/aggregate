@@ -21,18 +21,18 @@ interface FavoritesViewModel {
     val favoritesUiState: StateFlow<FavoritesState>
 
     fun getFavoriteCategoryArticles(
-        countries: Set<dev.jokku.newsdata.CountryCode>,
-        categories: Set<dev.jokku.newsdata.CategoryCode>,
-        topCategoryType: dev.jokku.newsdb.preferences.model.TopCategoryType
+        countries: Set<dev.jokku.data.CountryCode>,
+        categories: Set<dev.jokku.data.CategoryCode>,
+        topCategoryType: dev.jokku.database.preferences.model.TopCategoryType
     ): Flow<dev.jokku.aggregate.presentation.model.UiCategorisedArticles>
 }
 
 // Exceptions from offline first repo is rare but still shall be caught by .catch or .retry
 @dagger.hilt.android.lifecycle.HiltViewModel
 class DefaultFavoritesViewModel @javax.inject.Inject constructor(
-    syncStatusMonitor: dev.jokku.newsdata.sync.SyncStatusMonitor,
-    private val newsRepository: dev.jokku.newsdata.NewsRepository,
-    private val preferencesRepository: dev.jokku.newsdata.PreferencesRepository,
+    syncStatusMonitor: dev.jokku.data.sync.SyncStatusMonitor,
+    private val newsRepository: dev.jokku.data.NewsRepository,
+    private val preferencesRepository: dev.jokku.data.PreferencesRepository,
     private val localDataProvider: dev.jokku.aggregate.presentation.screens.welcome.LocalDataProvider,
     private val dispatcher: CoroutineDispatcher = Dispatchers.Main
 ) : dev.jokku.aggregate.BaseNewsViewModel(), FavoritesViewModel {
@@ -65,13 +65,13 @@ class DefaultFavoritesViewModel @javax.inject.Inject constructor(
         )
 
     override fun getFavoriteCategoryArticles(
-        countries: Set<dev.jokku.newsdata.CountryCode>,
-        categories: Set<dev.jokku.newsdata.CategoryCode>,
-        topCategoryType: dev.jokku.newsdb.preferences.model.TopCategoryType
+        countries: Set<dev.jokku.data.CountryCode>,
+        categories: Set<dev.jokku.data.CategoryCode>,
+        topCategoryType: dev.jokku.database.preferences.model.TopCategoryType
     ): Flow<dev.jokku.aggregate.presentation.model.UiCategorisedArticles> =
         if (countries.isEmpty() && categories.isEmpty()) {
             // Need to add location or at least system language request
-            newsRepository.getLocalTopHeadlines(country = dev.jokku.newsdata.CountryCode.RU)
+            newsRepository.getLocalTopHeadlines(country = dev.jokku.data.CountryCode.RU)
                 .mapToUiCategorisedArticles(bookmarkedArticles, localDataProvider)
         } else {
             newsRepository.getFavoriteTopHeadlines(countries = countries, categories = categories)
@@ -84,10 +84,10 @@ sealed interface FavoritesState {
     data class Success(val categorisedArticles: dev.jokku.aggregate.presentation.model.UiCategorisedArticles) : FavoritesState
 }
 
-private fun Flow<List<dev.jokku.newsdata.model.ArticlesResponse>>.mapToUiCategorisedArticles(
+private fun Flow<List<dev.jokku.data.model.ArticlesResponse>>.mapToUiCategorisedArticles(
     bookmarkedArticleIds: Flow<Set<String>>,
     localDataProvider: dev.jokku.aggregate.presentation.screens.welcome.LocalDataProvider,
-    topCategoryType: dev.jokku.newsdb.preferences.model.TopCategoryType
+    topCategoryType: dev.jokku.database.preferences.model.TopCategoryType
 ): Flow<dev.jokku.aggregate.presentation.model.UiCategorisedArticles> {
     val categorisedArticles = mutableListOf<dev.jokku.aggregate.presentation.model.UiCategorisedArticles>()
 
@@ -102,13 +102,13 @@ private fun Flow<List<dev.jokku.newsdata.model.ArticlesResponse>>.mapToUiCategor
         }
 }
 
-private fun Flow<dev.jokku.newsdata.model.ArticlesResponse>.mapToUiCategorisedArticles(
+private fun Flow<dev.jokku.data.model.ArticlesResponse>.mapToUiCategorisedArticles(
     bookmarkedArticleIds: Flow<Set<String>>,
     localDataProvider: dev.jokku.aggregate.presentation.screens.welcome.LocalDataProvider
 ): Flow<dev.jokku.aggregate.presentation.model.UiCategorisedArticles> {
     return filterNotNull().map { response ->
         dev.jokku.aggregate.presentation.model.UiCategorisedArticles(
-            localTopHeadlines = dev.jokku.newsdata.mapList()
+            localTopHeadlines = dev.jokku.data.mapList()
         )
     }
 }

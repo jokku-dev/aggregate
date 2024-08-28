@@ -1,8 +1,8 @@
 package dev.jokku.aggregate
 
 import android.app.Application
-import dev.jokku.newsdata.sync.Sync
 import dagger.hilt.android.HiltAndroidApp
+import dev.jokku.sync.initializers.Sync
 
 @HiltAndroidApp
 class AggregateApplication : Application() {
