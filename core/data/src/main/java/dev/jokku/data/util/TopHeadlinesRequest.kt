@@ -10,15 +10,15 @@ sealed interface TopHeadlinesRequest {
 }
 
 data class ByCountryAndCategoryRequest(
-    val country: Country,
-    val category: Category,
+    val country: Country = Country.AE,
+    val category: Category = Category.ENTERTAINMENT,
     override val query: String = "",
     override val pageSize: Int = 100,
     override val page: Int = 1
 ) : TopHeadlinesRequest
 
 data class BySourceRequest(
-    val sources: List<String>,
+    val sources: List<String> = emptyList<String>(),
     override val query: String = "",
     override val pageSize: Int = 100,
     override val page: Int = 1

@@ -4,6 +4,7 @@ import androidx.room.Embedded
 import androidx.room.Relation
 import dev.jokku.aggregate.data.local.database.entity.ArticleEntity
 import dev.jokku.aggregate.data.local.database.entity.ArticlesResponseEntity
+import dev.jokku.model.ArticlesResponse
 
 data class ResponseWithArticles(
     @Embedded
@@ -14,3 +15,7 @@ data class ResponseWithArticles(
     )
     val articles: List<ArticleEntity>,
 )
+
+fun ResponseWithArticles.toArticlesResponse() : ArticlesResponse {
+    TODO()
+}

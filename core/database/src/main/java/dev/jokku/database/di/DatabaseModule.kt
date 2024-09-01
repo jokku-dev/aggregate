@@ -2,25 +2,27 @@ package dev.jokku.database.di
 
 import android.content.Context
 import androidx.room.Room
+import dagger.Module
+import dagger.Provides
+import dagger.hilt.InstallIn
+import dagger.hilt.android.qualifiers.ApplicationContext
+import dagger.hilt.components.SingletonComponent
+import dev.jokku.aggregate.data.local.database.NewsDatabase
 import dev.jokku.aggregate.data.local.database.TopHeadlinesDao
 import dev.jokku.aggregate.data.local.database.NewsRoomDatabase
-import dagger.hilt.components.SingletonComponent
+import javax.inject.Singleton
 import kotlin.jvm.java
 
-@dagger.Module
-@dagger.hilt.InstallIn(dagger.hilt.components.SingletonComponent::class)
+@Module
+@InstallIn(SingletonComponent::class)
 object DatabaseModule {
 
-    @dagger.Provides
+    @Provides
     fun provideNewsDao(database: NewsRoomDatabase): TopHeadlinesDao = database.topHeadlinesDao()
 
-    @javax.inject.Singleton
-    @dagger.Provides
-    fun provideDatabase(@dagger.hilt.android.qualifiers.ApplicationContext context: Context): NewsRoomDatabase {
-        return Room.databaseBuilder(
-            context.applicationContext,
-            NewsRoomDatabase::class.java,
-            "News.db"
-        ).build()
+    @Singleton
+    @Provides
+    fun provideDatabase(@ApplicationContext context: Context): NewsDatabase {
+        return NewsDatabase(context)
     }
 }

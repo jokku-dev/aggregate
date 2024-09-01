@@ -1,5 +1,3 @@
-import java.util.Properties
-
 plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.androidx.baselineprofile)
@@ -24,12 +22,6 @@ android {
         vectorDrawables {
             useSupportLibrary = true
         }
-
-        // setting field for generated BuildConfig class
-        val properties = Properties()
-        properties.load(project.rootProject.file("local.properties").inputStream())
-        buildConfigField("String", "API_KEY", "\"${properties.getProperty("API_KEY")}\"")
-        buildConfigField("String", "API_BASE_URL", "\"${properties.getProperty("API_BASE_URL")}\"")
     }
 
     buildTypes {
@@ -50,7 +42,6 @@ android {
     }
     buildFeatures {
         compose = true
-        buildConfig = true
     }
     packaging {
         resources {
@@ -76,7 +67,6 @@ dependencies {
     kapt(libs.dagger.hilt.compiler)
 
     implementation(project(":core:data"))
-    implementation(project(":core:database"))
     implementation(project(":core:designsystem"))
     implementation(project(":core:network"))
     implementation(project(":core:sync"))

@@ -1,9 +1,11 @@
-package dev.jokku.ui
+package dev.jokku.model
 
-data class UiNewsResponse(
-    val articles: List<dev.jokku.ui.UiArticle>,
+import java.util.Date
+
+data class ArticlesResponse(
+    val articles: List<Article>,
     val totalResults: Int,
-    val currentTime: Long,
+    val currentTime: Date,
     val countryId: String = "",
     val categoryId: String = "",
     val sourceId: String = "",

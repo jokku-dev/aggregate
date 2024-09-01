@@ -1,4 +1,4 @@
-package dev.jokku.data.model
+package dev.jokku.model
 
 data class Source(
     val category: String,

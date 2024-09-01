@@ -8,6 +8,7 @@ import androidx.room.ForeignKey.Companion.CASCADE
 import androidx.room.PrimaryKey
 import dev.jokku.database.utils.DatabaseConstants.ARTICLES
 import dev.jokku.database.utils.DatabaseConstants.ARTICLE_SOURCE_
+import dev.jokku.model.Article
 
 @Entity(
     tableName = ARTICLES,
@@ -39,3 +40,7 @@ data class ArticleEntitySource(
     @ColumnInfo(name = "id") val id: String,
     @ColumnInfo(name = "name") val name: String,
 )
+
+fun ArticleEntity.toArticle() : Article {
+    TODO()
+}

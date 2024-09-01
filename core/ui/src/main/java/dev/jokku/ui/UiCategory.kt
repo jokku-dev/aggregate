@@ -5,9 +5,9 @@ import kotlinx.serialization.Contextual
 @Serializable
 data class UiCategory(
     @Contextual
-    val name: dev.jokku.aggregate.presentation.model.UiText,
+    val name: UiText,
     @Contextual
-    val code: dev.jokku.data.UrlParameter,
+    val code: UrlParameter,
     val imageId: Int = 0,
     val selected: Boolean
 )

@@ -37,10 +37,6 @@ abstract class RepositoryModule {
     @Singleton
     abstract fun bindNewsRepository(impl: DefaultNewsRepository): NewsRepository
 
-    @Binds
-    @Singleton
-    abstract fun bindRemoteDataSource(impl: NewsRemoteDataSource): RemoteDataSource
-
     companion object {
         private const val USER_PREFERENCES = "user-preferences"
         private const val USER_TYPED_PREFERENCES = "user-typed-preferences"

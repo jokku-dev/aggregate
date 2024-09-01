@@ -1,19 +1,19 @@
 package dev.jokku.data.repository
 
 import dev.jokku.aggregate.data.local.database.TopHeadlinesDao
-import dev.jokku.aggregate.data.local.database.entity.ArticleEntity
-import dev.jokku.data.model.ArticlesResponse
 import dev.jokku.data.CategoryCode
 import dev.jokku.data.CountryCode
 import dev.jokku.data.RequestResult
 import dev.jokku.data.map
-import dev.jokku.data.model.Article
-import dev.jokku.data.model.MergeStrategy
-import dev.jokku.data.toArticle
-import dev.jokku.data.toArticleEntity
-import dev.jokku.data.toArticlesResponseEntity
+import dev.jokku.data.model.toArticleEntity
+import dev.jokku.data.model.toArticlesResponseEntity
+import dev.jokku.data.model.toArticlesResponse
+import dev.jokku.data.util.MergeStrategy
+import dev.jokku.data.util.RequestResponseMergeStrategy
 import dev.jokku.data.toRequestResult
 import dev.jokku.database.database.entity.intermediate.ResponseWithArticles
+import dev.jokku.database.database.entity.intermediate.toArticlesResponse
+import dev.jokku.model.ArticlesResponse
 import dev.jokku.network.NewsApi
 import dev.jokku.network.model.NetworkArticle
 import dev.jokku.network.model.NetworkArticlesResponse
@@ -37,12 +37,16 @@ interface NewsRepository {
     ): Flow<List<ArticlesResponse>>
 
     fun observeRandomArticles(): Flow<Set<String>>
+
+    fun getTopHeadlines(
+        searchQuery: String,
+        mergeStrategy: MergeStrategy<RequestResult<ArticlesResponse>> = RequestResponseMergeStrategy(),
+    ): Flow<RequestResult<ArticlesResponse>>
 }
 
 class DefaultNewsRepository @Inject constructor(
     private val network: NewsApi,
     private val topHeadlinesDao: TopHeadlinesDao,
-    private val mergeStrategy: MergeStrategy<List<Article>>,
 ) : NewsRepository {
 
 
@@ -61,28 +65,33 @@ class DefaultNewsRepository @Inject constructor(
         TODO("Not yet implemented")
     }
 
-    fun getAll(): Flow<RequestResult<List<Article>>> {
+    override fun getTopHeadlines(
+        searchQuery: String,
+        mergeStrategy: MergeStrategy<RequestResult<ArticlesResponse>> = RequestResponseMergeStrategy()
+    ): Flow<RequestResult<ArticlesResponse>> {
 
-        val cachedArticles: Flow<RequestResult<List<Article>>> = getTopHeadlinesFromDatabase()
-            .map { result ->
-                result.map { articleEntities ->
-                    articleEntities.map { it.toArticle() }
+        val cachedResponse: Flow<RequestResult<ArticlesResponse>> =
+            getTopHeadlinesFromDatabase()
+                .map { result ->
+                    result.map { response ->
+                        response.toArticlesResponse()
+                    }
                 }
-            }
 
-        val remoteArticles: Flow<RequestResult<List<Article>>> = getTopHeadlinesFromServer()
-            .map { result: RequestResult<NetworkArticlesResponse<NetworkArticle>> ->
-                result.map { response ->
-                    response.articles.map { it.toArticle() }
+        val remoteArticles: Flow<RequestResult<ArticlesResponse>> =
+            getTopHeadlinesFromServer(searchQuery)
+                .map { result: RequestResult<NetworkArticlesResponse<NetworkArticle>> ->
+                    result.map { response ->
+                        response.toArticlesResponse()
+                    }
                 }
-            }
-        return cachedArticles.combine(remoteArticles) { entities, netObj ->
+        return cachedResponse.combine(remoteArticles) { entities, netObj ->
             mergeStrategy.merge(entities, netObj)
         }
     }
 
     private fun getTopHeadlinesFromServer(
-        request: TopHeadlinesRequest
+        request: TopHeadlinesRequest,
     ): Flow<RequestResult<NetworkArticlesResponse<NetworkArticle>>> {
         val netRequest = flow {
             when (request) {
@@ -95,6 +104,7 @@ class DefaultNewsRepository @Inject constructor(
                         page = request.page
                     )
                 )
+
                 is BySourceRequest -> emit(
                     network.topHeadlinesBySource(
                         sources = request.sources,
@@ -116,7 +126,9 @@ class DefaultNewsRepository @Inject constructor(
         return merge(init, netRequest)
     }
 
-    private suspend fun saveNetResponseToCache(data: NetworkArticlesResponse<NetworkArticle>) {
+    private suspend fun saveNetResponseToCache(
+        data: NetworkArticlesResponse<NetworkArticle>,
+    ) {
         val responseEntity = data.toArticlesResponseEntity()
         val articleEntities = data.articles.map { netArticle -> netArticle.toArticleEntity() }
         topHeadlinesDao.upsertTopHeadlinesResponseWithArticles(responseEntity, articleEntities)
@@ -126,7 +138,7 @@ class DefaultNewsRepository @Inject constructor(
         val dbRequest = topHeadlinesDao
             .observeFavoriteTopHeadlines()
             .map { RequestResult.Success(it) }
-        val init = flowOf<RequestResult<List<ArticleEntity>>>(RequestResult.InProgress())
+        val init = flowOf<RequestResult<ResponseWithArticles>>(RequestResult.InProgress())
         return merge(init, dbRequest)
     }
 

@@ -4,6 +4,5 @@ plugins {
 }
 
 dependencies {
-    implementation(libs.dagger.hilt.android)
     implementation(libs.kotlinx.coroutines.core)
 }

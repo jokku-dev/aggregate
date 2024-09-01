@@ -37,16 +37,16 @@ class NewsDatabase internal constructor(private val database: NewsRoomDatabase) 
     exportSchema = false
 )
 @TypeConverters(Converters::class)
-internal abstract class NewsRoomDatabase : RoomDatabase() {
+abstract class NewsRoomDatabase : RoomDatabase() {
     abstract fun topHeadlinesDao(): TopHeadlinesDao
     abstract fun bookmarksDao(): BookmarksDao
+}
 
-    fun NewsDatabase(applicationContext: Context): NewsDatabase {
-        val newsRoomDatabase = Room.databaseBuilder(
-            applicationContext,
-            NewsRoomDatabase::class.java,
-            "news"
-        ).build()
-        return NewsDatabase(newsRoomDatabase)
-    }
+fun NewsDatabase(applicationContext: Context): NewsDatabase {
+    val newsRoomDatabase = Room.databaseBuilder(
+        applicationContext,
+        NewsRoomDatabase::class.java,
+        "news"
+    ).build()
+    return NewsDatabase(newsRoomDatabase)
 }
