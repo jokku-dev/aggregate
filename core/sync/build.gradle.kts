@@ -4,7 +4,7 @@ plugins {
 }
 
 android {
-    namespace = "dev.jokku.sync"
+    namespace = "dev.aggregate.app.sync"
     compileSdk = 34
 
     defaultConfig {

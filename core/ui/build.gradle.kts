@@ -4,7 +4,7 @@ plugins {
 }
 
 android {
-    namespace = "dev.jokku.ui"
+    namespace = "dev.aggregate.app.ui"
     compileSdk = 34
 
     defaultConfig {

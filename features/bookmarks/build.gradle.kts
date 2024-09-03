@@ -4,7 +4,7 @@ plugins {
 }
 
 android {
-    namespace = "dev.jokku.bookmarks"
+    namespace = "dev.aggregate.app.bookmarks"
     compileSdk = 34
 
     defaultConfig {

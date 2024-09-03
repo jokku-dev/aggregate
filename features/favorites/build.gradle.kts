@@ -4,7 +4,7 @@ plugins {
 }
 
 android {
-    namespace = "dev.jokku.favorites"
+    namespace = "dev.aggregate.app.favorites"
     compileSdk = 34
 
     defaultConfig {

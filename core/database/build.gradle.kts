@@ -7,8 +7,21 @@ plugins {
 }
 
 android {
-    namespace = "dev.jokku.database"
+    namespace = "dev.aggregate.database"
     compileSdk = libs.versions.androidSdk.compile.get().toInt()
+
+    defaultConfig {
+        minSdk = libs.versions.androidSdk.min.get().toInt()
+    }
+
+    compileOptions {
+        sourceCompatibility = JavaVersion.VERSION_17
+        targetCompatibility = JavaVersion.VERSION_17
+    }
+
+    kotlinOptions {
+        jvmTarget = "1.8"
+    }
 }
 
 dependencies {

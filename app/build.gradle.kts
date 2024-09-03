@@ -8,11 +8,11 @@ plugins {
 }
 
 android {
-    namespace = "dev.jokku.aggregate"
+    namespace = "dev.aggregate.app"
     compileSdk = libs.versions.androidSdk.compile.get().toInt()
 
     defaultConfig {
-        applicationId = "dev.jokku.aggregate"
+        applicationId = "dev.aggregate.app"
         minSdk = libs.versions.androidSdk.min.get().toInt()
         targetSdk = libs.versions.androidSdk.target.get().toInt()
         versionCode = 1

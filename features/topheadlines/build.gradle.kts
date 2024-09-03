@@ -7,7 +7,7 @@ plugins {
 }
 
 android {
-    namespace = "dev.jokku.ui"
+    namespace = "dev.aggregate.ui"
     compileSdk = 34
 
     defaultConfig {
@@ -48,16 +48,23 @@ dependencies {
     implementation(libs.androidx.compose.ui.graphics)
     implementation(libs.androidx.compose.ui.tooling.preview)
     implementation(libs.androidx.compose.material3)
+    implementation(libs.androidx.hilt.navigation.compose)
+    implementation(libs.androidx.lifecycle.runtime.compose)
     implementation(libs.androidx.lifecycle.viewmodel.ktx)
     implementation(libs.androidx.lifecycle.viewmodel.compose)
     implementation(libs.androidx.navigation.runtime)
     implementation(libs.dagger.hilt.android)
     implementation(libs.kotlinx.coroutines.android)
+    implementation(project(":app"))
     implementation(project(":core:ui"))
     implementation(project(":core:designsystem"))
-    implementation(project(":core:domain"))
     implementation(project(":core:model"))
     implementation(project(":core:datastore"))
     implementation(project(":core:data"))
     kapt(libs.dagger.hilt.compiler)
+}
+
+// Allow references to generated code
+kapt {
+    correctErrorTypes = true
 }

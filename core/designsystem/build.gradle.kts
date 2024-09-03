@@ -4,7 +4,7 @@ plugins {
 }
 
 android {
-    namespace = "dev.jokku.designsystem"
+    namespace = "dev.aggregate.app.designsystem"
     compileSdk = 34
 
     defaultConfig {
@@ -26,6 +26,10 @@ dependencies {
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.runtime.android)
     implementation(libs.material)
+    implementation(libs.androidx.material3.android)
+    implementation(libs.coil.compose)
+    implementation(libs.androidx.ui.tooling.preview.android)
+    implementation(project(":app"))
 
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)

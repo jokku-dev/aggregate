@@ -4,7 +4,7 @@ plugins {
 }
 
 android {
-    namespace = "dev.jokku.datastore"
+    namespace = "dev.aggregate.app.datastore"
     compileSdk = 34
 
     defaultConfig {

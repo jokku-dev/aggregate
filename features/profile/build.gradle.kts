@@ -4,7 +4,7 @@ plugins {
 }
 
 android {
-    namespace = "dev.jokku.profile"
+    namespace = "dev.aggregate.app.profile"
     compileSdk = 34
 
     defaultConfig {
