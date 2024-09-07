@@ -1,4 +1,4 @@
-package dev.aggregate.database.database.entity.intermediate
+package dev.aggregate.database.entity.intermediate
 
 import androidx.room.Embedded
 import androidx.room.Relation

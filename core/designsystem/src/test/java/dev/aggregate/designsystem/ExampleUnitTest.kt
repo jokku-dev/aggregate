@@ -1,4 +1,4 @@
-package dev.aggregate.ui
+package dev.aggregate.designsystem
 
 import org.junit.Assert.assertEquals
 import org.junit.Test

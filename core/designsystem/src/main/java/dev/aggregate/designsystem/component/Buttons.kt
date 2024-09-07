@@ -164,7 +164,9 @@ fun PreferencesButton(
             ButtonType.SELECT -> {
                 if (selected)
                     Icon(
-                        imageVector = androidx.compose.ui.graphics.vector.ImageVector.vectorResource(id = dev.aggregate.app.R.drawable.ic_round_check),
+                        imageVector = androidx.compose.ui.graphics.vector.ImageVector.vectorResource(
+                            id = dev.aggregate.app.R.drawable.ic_round_check
+                        ),
                         contentDescription = androidx.compose.ui.res.stringResource(id = dev.aggregate.app.R.string.selected),
                         tint = colorScheme.surface
                     )

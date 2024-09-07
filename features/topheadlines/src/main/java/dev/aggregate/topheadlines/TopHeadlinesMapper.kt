@@ -5,10 +5,10 @@ import dev.aggregate.model.Article
 import dev.aggregate.model.ArticlesResponse
 import dev.aggregate.ui.UiArticle
 
-internal fun RequestResult<ArticlesResponse>.toState(): TopHeadlinesState {
+internal fun RequestResult<UiTopHeadlines>.toState(): TopHeadlinesState {
     return when (this) {
-        is RequestResult.Error -> TopHeadlinesState.Failure(data as UiTopHeadlines?)
-        is RequestResult.InProgress -> TopHeadlinesState.Loading(data as UiTopHeadlines?)
+        is RequestResult.Error -> TopHeadlinesState.Failure(data)
+        is RequestResult.InProgress -> TopHeadlinesState.Loading(data)
         is RequestResult.Success -> TopHeadlinesState.Success(data)
     }
 }

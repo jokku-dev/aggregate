@@ -7,7 +7,7 @@ import androidx.room.Transaction
 import androidx.room.Upsert
 import dev.aggregate.database.entity.ArticleEntity
 import dev.aggregate.database.entity.ArticlesResponseEntity
-import dev.aggregate.database.database.entity.intermediate.ResponseWithArticles
+import dev.aggregate.database.entity.intermediate.ResponseWithArticles
 import kotlinx.coroutines.flow.Flow
 
 @Dao
@@ -16,7 +16,6 @@ interface TopHeadlinesDao : BookmarksDao {
     @Transaction
     @Query("SELECT * FROM ARTICLE_RESPONSES")
     fun observeFavoriteTopHeadlines(): Flow<ResponseWithArticles>
-
 
     @Upsert
     suspend fun upsertTopHeadlinesResponse(topHeadlinesResponse: ArticlesResponseEntity): Long
@@ -28,7 +27,7 @@ interface TopHeadlinesDao : BookmarksDao {
     suspend fun upsertTopHeadlinesResponseWithArticles(
         topHeadlinesResponse: ArticlesResponseEntity,
         topHeadlinesArticles: List<ArticleEntity>
-    ) : Long
+    ): Long
 
     @Delete(entity = ArticlesResponseEntity::class)
     suspend fun deleteTopHeadlinesResponse(topHeadlinesResponse: ArticlesResponseEntity)

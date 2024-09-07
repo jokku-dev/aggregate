@@ -21,9 +21,7 @@ interface NewsViewModel {
 }
 
 @HiltViewModel
-open class BaseNewsViewModel @Inject constructor(
-
-) : ViewModel(), NewsViewModel {
+open class BaseNewsViewModel @Inject constructor() : ViewModel(), NewsViewModel {
     private val _articleState = MutableStateFlow(ArticleState())
     override val articleState = _articleState.asStateFlow()
 
@@ -47,7 +45,6 @@ open class BaseNewsViewModel @Inject constructor(
         TODO("Not yet implemented")
     }
 }
-
 
 data class ArticleState(
     val article: UiArticle = UiArticle()

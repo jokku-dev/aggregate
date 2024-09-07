@@ -22,10 +22,10 @@ import dev.aggregate.database.utils.DatabaseConstants.SOURCES
 data class SourceEntity(
     @PrimaryKey val id: Long,
     @ColumnInfo(name = "sources_id") val sourcesId: Long,
-    @ColumnInfo(name = "category") val category: String,
-    @ColumnInfo(name = "country") val country: String,
-    @ColumnInfo(name = "description") val description: String,
-    @ColumnInfo(name = "language") val language: String,
-    @ColumnInfo(name = "name") val name: String,
-    @ColumnInfo(name = "url") val url: String,
+    @ColumnInfo(name = "category") val category: String?,
+    @ColumnInfo(name = "country") val country: String?,
+    @ColumnInfo(name = "description") val description: String?,
+    @ColumnInfo(name = "language") val language: String?,
+    @ColumnInfo(name = "name") val name: String?,
+    @ColumnInfo(name = "url") val url: String?,
 )

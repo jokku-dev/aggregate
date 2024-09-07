@@ -30,11 +30,11 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavHostController
 import dev.aggregate.app.R
+import dev.aggregate.designsystem.component.HeadlineAndDescriptionText
+import dev.aggregate.designsystem.component.SearchTextField
 import dev.aggregate.designsystem.theme.AggregateTheme
 import dev.aggregate.ui.ArticleItem
 import dev.aggregate.ui.CategoryItem
-import dev.aggregate.ui.HeadlineAndDescriptionText
-import dev.aggregate.ui.SearchTextField
 import dev.aggregate.ui.UiArticle
 import dev.aggregate.ui.UiCategory
 
@@ -42,7 +42,7 @@ import dev.aggregate.ui.UiCategory
 fun TopHeadlinesScreen(
     navController: NavHostController,
     viewModel: TopHeadlinesViewModel = hiltViewModel<MainTopHeadlinesViewModel>()
-) { 
+) {
     val state by viewModel.topHeadlinesState.collectAsStateWithLifecycle()
 
     var search by rememberSaveable { mutableStateOf("") }
@@ -55,7 +55,7 @@ fun TopHeadlinesScreen(
             categories = currentState.stateData.categories,
             uiArticles = currentState.stateData.articles,
             search = search,
-            onSearchChanged = { newSearch -> search = newSearch},
+            onSearchChanged = { newSearch -> search = newSearch },
             selectCategory = { category ->
                 viewModel.selectCategory(category)
             },
@@ -207,7 +207,10 @@ fun TopHeadlinesWithError(
                 .background(color = MaterialTheme.colorScheme.error),
             contentAlignment = Alignment.Center
         ) {
-            Text(text = stringResource(R.string.data_fetch_error), color = MaterialTheme.colorScheme.onError)
+            Text(
+                text = stringResource(R.string.data_fetch_error),
+                color = MaterialTheme.colorScheme.onError
+            )
         }
     }
 }

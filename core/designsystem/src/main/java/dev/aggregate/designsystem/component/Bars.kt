@@ -1,4 +1,4 @@
-package dev.aggregate.ui
+package dev.aggregate.designsystem.component
 
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.core.tween
@@ -25,10 +25,20 @@ import androidx.compose.material3.NavigationBarItem
 import androidx.compose.material3.NavigationBarItemDefaults
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBarDefaults
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableFloatStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment.Companion.CenterHorizontally
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.graphicsLayer
+import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.res.vectorResource
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavDestination.Companion.hierarchy
@@ -38,11 +48,12 @@ import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import com.google.accompanist.systemuicontroller.SystemUiController
 import com.google.accompanist.systemuicontroller.rememberSystemUiController
+import dev.aggregate.app.designsystem.R
 import dev.aggregate.app.navigation.Screen
-import dev.aggregate.presentation.theme.AggregateTheme
+import dev.aggregate.designsystem.theme.AggregateTheme
 
 @OptIn(ExperimentalMaterial3Api::class)
-@androidx.compose.runtime.Composable
+@Composable
 fun ArticleTopBar(
     sourceName: String,
     url: String,
@@ -53,22 +64,24 @@ fun ArticleTopBar(
     onBackClick: () -> Unit,
     onShareClick: () -> Unit,
     onBookmarkClick: () -> Unit,
-    modifier: androidx.compose.ui.Modifier = androidx.compose.ui.Modifier,
+    modifier: Modifier = Modifier,
     colorScheme: ColorScheme = MaterialTheme.colorScheme,
     systemUiController: SystemUiController = rememberSystemUiController()
 ) {
-    val topBarBottom by androidx.compose.runtime.remember {
-        androidx.compose.runtime.mutableStateOf(
-            headerHeightPx - topBarHeightPx
-        )
+    val topBarBottom by remember {
+        mutableFloatStateOf(headerHeightPx - topBarHeightPx)
     }
     // derived state triggers recomposition only if result changes and not if changes any inner state
     // so we use it to reduce unnecessary recompositions when some inner state changes
-    val showTopBar by androidx.compose.runtime.remember { androidx.compose.runtime.derivedStateOf { scrollState.value >= topBarBottom } }
+    val showTopBar by remember {
+        derivedStateOf {
+            scrollState.value >= topBarBottom
+        }
+    }
 
-    androidx.compose.runtime.LaunchedEffect(key1 = showTopBar) {
+    LaunchedEffect(key1 = showTopBar) {
         if (showTopBar) systemUiController.setStatusBarColor(color = colorScheme.surface)
-        else systemUiController.setStatusBarColor(color = androidx.compose.ui.graphics.Color.Transparent)
+        else systemUiController.setStatusBarColor(color = Color.Transparent)
     }
 
     AnimatedVisibility(
@@ -81,8 +94,10 @@ fun ArticleTopBar(
             navigationIcon = {
                 IconButton(onClick = onBackClick) {
                     Icon(
-                        imageVector = androidx.compose.ui.graphics.vector.ImageVector.vectorResource(id = dev.aggregate.app.R.drawable.ic_arrow_back),
-                        contentDescription = androidx.compose.ui.res.stringResource(id = dev.aggregate.app.R.string.navigate_back)
+                        imageVector = ImageVector.vectorResource(
+                            id = R.drawable.ic_arrow_back
+                        ),
+                        contentDescription = stringResource(id = dev.aggregate.app.R.string.navigate_back)
                     )
                 }
             },
@@ -91,25 +106,29 @@ fun ArticleTopBar(
                     text = sourceName,
                     style = typography.headlineMedium,
                     maxLines = 1,
-                    overflow = androidx.compose.ui.text.style.TextOverflow.Clip,
+                    overflow = TextOverflow.Clip,
                     softWrap = false
                 )
             },
             actions = {
                 IconButton(onClick = onShareClick) {
                     Icon(
-                        imageVector = androidx.compose.ui.graphics.vector.ImageVector.vectorResource(id = dev.aggregate.app.R.drawable.ic_share),
-                        contentDescription = androidx.compose.ui.res.stringResource(id = dev.aggregate.app.R.string.share)
+                        imageVector = ImageVector.vectorResource(
+                            id = R.drawable.ic_share
+                        ),
+                        contentDescription = stringResource(id = dev.aggregate.app.R.string.share)
                     )
                 }
                 IconButton(onClick = onBookmarkClick) {
                     Icon(
-                        imageVector = if (bookmarked) androidx.compose.ui.graphics.vector.ImageVector.vectorResource(id = dev.aggregate.app.R.drawable.ic_bookmark_selected)
-                        else androidx.compose.ui.graphics.vector.ImageVector.vectorResource(id = dev.aggregate.app.R.drawable.ic_bookmark),
-                        contentDescription = if (bookmarked) androidx.compose.ui.res.stringResource(
+                        imageVector = if (bookmarked) ImageVector.vectorResource(
+                            id = R.drawable.ic_bookmark_selected
+                        )
+                        else ImageVector.vectorResource(id = R.drawable.ic_bookmark),
+                        contentDescription = if (bookmarked) stringResource(
                             id = dev.aggregate.app.R.string.bookmarked
                         )
-                        else androidx.compose.ui.res.stringResource(id = dev.aggregate.app.R.string.not_bookmarked)
+                        else stringResource(id = dev.aggregate.app.R.string.not_bookmarked)
                     )
                 }
             },
@@ -123,8 +142,7 @@ fun ArticleTopBar(
     }
 }
 
-@OptIn(ExperimentalMaterial3Api::class)
-@androidx.compose.runtime.Composable
+@Composable
 fun BottomBar(
     navController: NavHostController,
     visible: Boolean
@@ -143,7 +161,7 @@ fun BottomBar(
         exit = slideOutVertically(targetOffsetY = { it }),
     ) {
         NavigationBar(
-            modifier = androidx.compose.ui.Modifier
+            modifier = Modifier
                 .graphicsLayer {
                     shape = RoundedCornerShape(topStart = 12.dp, topEnd = 12.dp)
                     clip = true
@@ -171,13 +189,17 @@ fun BottomBar(
                                     }
                                 ) {
                                     Icon(
-                                        imageVector = androidx.compose.ui.graphics.vector.ImageVector.vectorResource(id = item.icon),
+                                        imageVector = ImageVector.vectorResource(
+                                            id = item.icon
+                                        ),
                                         contentDescription = item.route
                                     )
                                 }
                             } else {
                                 Icon(
-                                    imageVector = androidx.compose.ui.graphics.vector.ImageVector.vectorResource(id = item.icon),
+                                    imageVector = ImageVector.vectorResource(
+                                        id = item.icon
+                                    ),
                                     contentDescription = item.route
                                 )
                             }
@@ -210,9 +232,9 @@ fun BottomBar(
 }
 
 @Preview
-@androidx.compose.runtime.Composable
+@Composable
 fun ArticleTopBarPreview() {
-    dev.aggregate.app.presentation.theme.AggregateTheme {
+    AggregateTheme {
         ArticleTopBar(
             sourceName = "Source Name",
             url = "",
@@ -228,9 +250,9 @@ fun ArticleTopBarPreview() {
 }
 
 @Preview
-@androidx.compose.runtime.Composable
+@Composable
 fun BottomBarPreview() {
-    dev.aggregate.app.presentation.theme.AggregateTheme {
+    AggregateTheme {
         BottomBar(
             navController = rememberNavController(),
             visible = true

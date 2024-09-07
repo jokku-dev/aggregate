@@ -5,8 +5,9 @@ import android.R
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
-import dev.aggregate.data.local.preferences.PreferencesDataSource
+import dev.aggregate.data.map
 import dev.aggregate.data.repository.NewsRepository
+import dev.aggregate.datastore.PreferencesDataSource
 import dev.aggregate.ui.UiCategory
 import dev.aggregate.ui.UiErrorMessage
 import dev.aggregate.ui.UiText
@@ -41,8 +42,8 @@ class MainTopHeadlinesViewModel @Inject internal constructor(
 ) : TopHeadlinesViewModel, ViewModel() {
 
     override val topHeadlinesState: StateFlow<TopHeadlinesState> =
-        getTopHeadlineArticlesUseCase.get().invoke()
-            .map { it.toState() }
+        getTopHeadlineArticlesUseCase.get().invoke(searchQuery = "")
+            .map { request -> request.toState() }
             .stateIn(viewModelScope, SharingStarted.Lazily, TopHeadlinesState.None)
 
     init {

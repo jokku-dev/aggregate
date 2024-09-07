@@ -1,92 +1,98 @@
 package dev.aggregate.designsystem.theme
 
+import androidx.compose.material3.Typography
+import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.text.font.Font
+import androidx.compose.ui.text.font.FontFamily
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.sp
+import dev.aggregate.app.R
 
-val SfProText = androidx.compose.ui.text.font.FontFamily(
-    androidx.compose.ui.text.font.Font(
-        dev.aggregate.app.R.font.sf_pro_text_regular,
-        androidx.compose.ui.text.font.FontWeight.Normal
+val SfProText = FontFamily(
+    Font(
+        R.font.sf_pro_text_regular,
+        FontWeight.Normal
     ),
-    androidx.compose.ui.text.font.Font(
-        dev.aggregate.app.R.font.sf_pro_text_medium,
-        androidx.compose.ui.text.font.FontWeight.Medium
+    Font(
+        R.font.sf_pro_text_medium,
+        FontWeight.Medium
     ),
-    androidx.compose.ui.text.font.Font(
-        dev.aggregate.app.R.font.sf_pro_text_semibold,
-        androidx.compose.ui.text.font.FontWeight.SemiBold
+    Font(
+        R.font.sf_pro_text_semibold,
+        FontWeight.SemiBold
     ),
-    androidx.compose.ui.text.font.Font(
-        dev.aggregate.app.R.font.sf_pro_text_bold,
-        androidx.compose.ui.text.font.FontWeight.Bold
+    Font(
+        R.font.sf_pro_text_bold,
+        FontWeight.Bold
     )
 )
 
 val Typography = Typography(
 
-    //Top bar headlines
-    headlineLarge = androidx.compose.ui.text.TextStyle(
+    // Top bar headlines
+    headlineLarge = TextStyle(
         fontFamily = SfProText,
-        fontWeight = androidx.compose.ui.text.font.FontWeight.SemiBold,
+        fontWeight = FontWeight.SemiBold,
         fontSize = 24.sp,
         lineHeight = 32.sp
     ),
-    //Article headlines
-    headlineMedium = androidx.compose.ui.text.TextStyle(
+    // Article headlines
+    headlineMedium = TextStyle(
         fontFamily = SfProText,
-        fontWeight = androidx.compose.ui.text.font.FontWeight.Bold,
+        fontWeight = FontWeight.Bold,
         fontSize = 20.sp,
         lineHeight = 28.sp
     ),
 
-    //Buttons/category tiles - big, author/user, digits
-    titleLarge = androidx.compose.ui.text.TextStyle(
+    // Buttons/category tiles - big, author/user, digits
+    titleLarge = TextStyle(
         fontFamily = SfProText,
-        fontWeight = androidx.compose.ui.text.font.FontWeight.SemiBold,
+        fontWeight = FontWeight.SemiBold,
         fontSize = 16.sp,
         lineHeight = 24.sp
     ),
-    //Category buttons/tiles - little
-    titleSmall = androidx.compose.ui.text.TextStyle(
+    // Category buttons/tiles - little
+    titleSmall = TextStyle(
         fontFamily = SfProText,
-        fontWeight = androidx.compose.ui.text.font.FontWeight.SemiBold,
+        fontWeight = FontWeight.SemiBold,
         fontSize = 12.sp,
         lineHeight = 16.sp
     ),
 
-    //Fields, clickable/help text
-    bodyLarge = androidx.compose.ui.text.TextStyle(
+    // Fields, clickable/help text
+    bodyLarge = TextStyle(
         fontFamily = SfProText,
-        fontWeight = androidx.compose.ui.text.font.FontWeight.Medium,
+        fontWeight = FontWeight.Medium,
         fontSize = 16.sp,
         lineHeight = 24.sp
     ),
-    //Articles body
-    bodyMedium = androidx.compose.ui.text.TextStyle(
+    // Articles body
+    bodyMedium = TextStyle(
         fontFamily = SfProText,
-        fontWeight = androidx.compose.ui.text.font.FontWeight.Normal,
+        fontWeight = FontWeight.Normal,
         fontSize = 16.sp,
         lineHeight = 24.sp
     ),
 
-    //Category over title, user/author info
-    labelMedium = androidx.compose.ui.text.TextStyle(
+    // Category over title, user/author info
+    labelMedium = TextStyle(
         fontFamily = SfProText,
-        fontWeight = androidx.compose.ui.text.font.FontWeight.Normal,
+        fontWeight = FontWeight.Normal,
         fontSize = 14.sp,
         lineHeight = 20.sp
     ),
-    //Category over title capitalized
-    labelSmall = androidx.compose.ui.text.TextStyle(
+    // Category over title capitalized
+    labelSmall = TextStyle(
         fontFamily = SfProText,
-        fontWeight = androidx.compose.ui.text.font.FontWeight.Normal,
+        fontWeight = FontWeight.Normal,
         fontSize = 12.sp,
         lineHeight = 16.sp
     ),
 
-    //Badge counter
-    displaySmall = androidx.compose.ui.text.TextStyle(
+    // Badge counter
+    displaySmall = TextStyle(
         fontFamily = SfProText,
-        fontWeight = androidx.compose.ui.text.font.FontWeight.Bold,
+        fontWeight = FontWeight.Bold,
         fontSize = 8.sp
     )
 )

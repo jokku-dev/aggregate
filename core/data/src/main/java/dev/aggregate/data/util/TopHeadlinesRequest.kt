@@ -1,4 +1,4 @@
-package dev.aggregate.ui.old
+package dev.aggregate.data.util
 
 import dev.aggregate.network.model.Category
 import dev.aggregate.network.model.Country

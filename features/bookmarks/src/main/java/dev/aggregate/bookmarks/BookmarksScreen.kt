@@ -109,7 +109,6 @@ fun BookmarksScreenContent(
 }
 
 
-
 @Preview(showBackground = true)
 @androidx.compose.runtime.Composable
 fun BookmarksScreenPreview() {

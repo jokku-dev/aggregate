@@ -25,6 +25,7 @@ import dev.aggregate.welcome.OnBoardingScreen
 import dev.aggregate.welcome.SelectFavoriteTopicsScreen
 
 @Composable
+@Suppress("LongMethod")
 fun Navigation(navController: NavHostController, startDestination: String) {
     NavHost(navController = navController, startDestination = startDestination) {
         composable(route = Screen.OnBoarding.route) {
@@ -60,7 +61,6 @@ fun Navigation(navController: NavHostController, startDestination: String) {
         composable(route = Screen.SignUp.route) {
             SignUpScreen(navController = navController)
         }
-
 
         composable(route = Screen.TopHeadlines.route) {
             TopHeadlinesScreen(navController = navController)

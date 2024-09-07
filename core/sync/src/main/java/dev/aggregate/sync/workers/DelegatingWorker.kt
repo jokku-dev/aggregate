@@ -4,16 +4,16 @@ import android.content.Context
 import dagger.hilt.components.SingletonComponent
 import kotlin.reflect.KClass
 
-@dagger.hilt.EntryPoint
-@dagger.hilt.InstallIn(dagger.hilt.components.SingletonComponent::class)
+@EntryPoint
+@InstallIn(SingletonComponent::class)
 interface HiltWorkerFactoryEntryPoint {
-    fun hiltWorkerFactory(): androidx.hilt.work.HiltWorkerFactory
+    fun hiltWorkerFactory(): HiltWorkerFactory
 }
 
 private const val WORKER_CLASS_NAME = "RouterWorkerDelegateClassName"
 
-internal fun KClass<out androidx.work.CoroutineWorker>.delegatedData() =
-    androidx.work.Data.Builder()
+internal fun KClass<out CoroutineWorker>.delegatedData() =
+    Data.Builder()
         .putString(WORKER_CLASS_NAME, qualifiedName)
         .build()
 
@@ -26,9 +26,15 @@ class DelegatingWorker(
         workerParams.inputData.getString(WORKER_CLASS_NAME) ?: ""
     private val delegateWorker =
         // Call a Hilt WorkerFactory from SingletonComponent and ask it to create our worker
-        dagger.hilt.android.EntryPointAccessors.fromApplication<HiltWorkerFactoryEntryPoint>(appContext)
+        dagger.hilt.android.EntryPointAccessors.fromApplication<HiltWorkerFactoryEntryPoint>(
+            appContext
+        )
             .hiltWorkerFactory()
-            .createWorker(appContext, workerClassName, workerParams) as? androidx.work.CoroutineWorker
+            .createWorker(
+                appContext,
+                workerClassName,
+                workerParams
+            ) as? androidx.work.CoroutineWorker
             ?: throw IllegalArgumentException("Unable to find appropriate worker")
 
     override suspend fun getForegroundInfo(): androidx.work.ForegroundInfo =

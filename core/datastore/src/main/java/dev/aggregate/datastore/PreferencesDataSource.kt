@@ -1,11 +1,11 @@
-package dev.aggregate.data.local.preferences
+package dev.aggregate.datastore
 
 import android.util.Log
 import androidx.datastore.core.DataStore
 import dev.aggregate.data.CategoryCode
 import dev.aggregate.data.CountryCode
-import dev.aggregate.data.local.preferences.model.DarkThemeConfig
-import dev.aggregate.data.local.preferences.model.UserData
+import dev.aggregate.datastore.model.DarkThemeConfig
+import dev.aggregate.datastore.model.UserData
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.catch
 import java.io.IOException
@@ -37,14 +37,15 @@ class NewsPreferencesDataSource @Inject constructor(
 ) : PreferencesDataSource {
 
     override val userData = preferences.data.catch { exception ->
-        if (exception is IOException)
+        if (exception is IOException) {
             Log.e(USER_PREFERENCES, FAILED_TO_READ_USER_PREFERENCES, exception)
+        }
     }
 
     override suspend fun setPreferredCountries(countryCodes: Set<CountryCode>) {
         try {
             preferences.updateData { data -> data.copy(countryCodes = countryCodes) }
-        } catch (exception: Exception) {
+        } catch (exception: IOException) {
             logException(exception)
         }
     }
@@ -54,19 +55,22 @@ class NewsPreferencesDataSource @Inject constructor(
             preferences.updateData { data ->
                 data.copy(
                     countryCodes =
-                    if (preferred) data.countryCodes.plusElement(countryCode)
-                    else data.countryCodes.minusElement(countryCode)
+                    if (preferred) {
+                        data.countryCodes.plusElement(countryCode)
+                    } else {
+                        data.countryCodes.minusElement(countryCode)
+                    }
                 )
             }
-        } catch (exception: Exception) {
+        } catch (exception: IOException) {
             logException(exception)
         }
     }
 
-    override suspend fun setPreferredCategories(categoryCodes: Set<CategoryCode>) {
+    override suspend fun setPreferredCategories(categories: Set<CategoryCode>) {
         try {
-            preferences.updateData { data -> data.copy(categoryCodes = categoryCodes) }
-        } catch (exception: Exception) {
+            preferences.updateData { data -> data.copy(categoryCodes = categories) }
+        } catch (exception: IOException) {
             logException(exception)
         }
     }
@@ -76,11 +80,14 @@ class NewsPreferencesDataSource @Inject constructor(
             preferences.updateData { data ->
                 data.copy(
                     categoryCodes =
-                    if (preferred) data.categoryCodes.plusElement(categoryCode)
-                    else data.categoryCodes.minusElement(categoryCode)
+                    if (preferred) {
+                        data.categoryCodes.plusElement(categoryCode)
+                    } else {
+                        data.categoryCodes.minusElement(categoryCode)
+                    }
                 )
             }
-        } catch (exception: Exception) {
+        } catch (exception: IOException) {
             logException(exception)
         }
     }
@@ -90,11 +97,14 @@ class NewsPreferencesDataSource @Inject constructor(
             preferences.updateData { data ->
                 data.copy(
                     bookmarkedArticleIds =
-                    if (bookmarked) data.bookmarkedArticleIds.plusElement(articleId)
-                    else data.bookmarkedArticleIds.minusElement(articleId)
+                    if (bookmarked) {
+                        data.bookmarkedArticleIds.plusElement(articleId)
+                    } else {
+                        data.bookmarkedArticleIds.minusElement(articleId)
+                    }
                 )
             }
-        } catch (exception: Exception) {
+        } catch (exception: IOException) {
             logException(exception)
         }
     }
@@ -102,7 +112,7 @@ class NewsPreferencesDataSource @Inject constructor(
     override suspend fun setDarkThemeConfig(darkThemeConfig: DarkThemeConfig) {
         try {
             preferences.updateData { data -> data.copy(darkThemeConfig = darkThemeConfig) }
-        } catch (exception: Exception) {
+        } catch (exception: IOException) {
             logException(exception)
         }
     }
@@ -110,7 +120,7 @@ class NewsPreferencesDataSource @Inject constructor(
     override suspend fun setLaunchScreen(screen: String) {
         try {
             preferences.updateData { data -> data.copy(launchScreen = screen) }
-        } catch (exception: Exception) {
+        } catch (exception: IOException) {
             logException(exception)
         }
     }
@@ -118,7 +128,7 @@ class NewsPreferencesDataSource @Inject constructor(
     override suspend fun setUserLoggedIn(loggedIn: Boolean) {
         try {
             preferences.updateData { data -> data.copy(userLoggedIn = loggedIn) }
-        } catch (exception: Exception) {
+        } catch (exception: IOException) {
             logException(exception)
         }
     }

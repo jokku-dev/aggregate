@@ -23,14 +23,17 @@ import retrofit2.http.Query
 import java.util.Date
 
 /**
- * @see <a href=https://newsapi.org/docs/get-started>API documentation https://newsapi.org/docs/get-started</a>
+ * @see <a href=https://newsapi.org/docs/get-started>
+ *     API documentation https://newsapi.org/docs/get-started
+ *     </a>
  */
-
 interface NewsApi {
-
     /**
-     * @see <a href="https://newsapi.org/docs/endpoints/everything">API Everything details https://newsapi.org/docs/endpoints/everything</a>
+     * @see <a href="https://newsapi.org/docs/endpoints/everything">
+     *     API Everything details https://newsapi.org/docs/endpoints/everything
+     *     </a>
      */
+    @Suppress("LongParameterList")
     @GET("everything")
     suspend fun everything(
         @Query("q") query: String? = null,
@@ -48,7 +51,9 @@ interface NewsApi {
     ): Result<NetworkArticlesResponse<NetworkArticle>>
 
     /**
-     * @see <a href="https://newsapi.org/docs/endpoints/everything">API Top headlines details https://newsapi.org/docs/endpoints/everything</a>
+     * @see <a href="https://newsapi.org/docs/endpoints/everything">
+     *     API Top headlines details https://newsapi.org/docs/endpoints/everything
+     *     </a>
      */
     @GET("top-headlines")
     suspend fun topHeadlinesByCountryAndCategory(
@@ -60,7 +65,9 @@ interface NewsApi {
     ): Result<NetworkArticlesResponse<NetworkArticle>>
 
     /**
-     * @see <a href="https://newsapi.org/docs/endpoints/everything">API Top headlines details https://newsapi.org/docs/endpoints/everything</a>
+     * @see <a href="https://newsapi.org/docs/endpoints/everything">
+     *     API Top headlines details https://newsapi.org/docs/endpoints/everything
+     *     </a>
      */
     @GET("top-headlines")
     suspend fun topHeadlinesBySource(
@@ -71,7 +78,9 @@ interface NewsApi {
     ): Result<NetworkArticlesResponse<NetworkArticle>>
 
     /**
-     * @see <a href="https://newsapi.org/docs/endpoints/everything">API Sources details https://newsapi.org/docs/endpoints/everything</a>
+     * @see <a href="https://newsapi.org/docs/endpoints/everything">
+     *     API Sources details https://newsapi.org/docs/endpoints/everything
+     *     </a>
      */
     @GET("top-headlines/sources")
     suspend fun sources(
@@ -87,23 +96,22 @@ fun NewsApi(
     apiKey: String,
     okHttpClient: OkHttpClient? = null,
     json: Json = Json,
-): NewsApi {
-    return retrofit(baseUrl, apiKey, okHttpClient, json).create()
-}
+): NewsApi = retrofit(baseUrl, apiKey, okHttpClient, json).create()
 
 private fun retrofit(
     baseUrl: String,
     apiKey: String,
     okHttpClient: OkHttpClient?,
     json: Json,
-) : Retrofit {
+): Retrofit {
     val jsonConverterFactory = json.asConverterFactory("application/json".toMediaType())
 
     val modifiedOkHttpClient: OkHttpClient = (okHttpClient?.newBuilder() ?: OkHttpClient.Builder())
         .addInterceptor(NewsApiKeyInterceptor(apiKey))
         .build()
 
-    return Retrofit.Builder()
+    return Retrofit
+        .Builder()
         .baseUrl(baseUrl)
         .addConverterFactory(jsonConverterFactory)
         .addCallAdapterFactory(ResultCallAdapterFactory.create())

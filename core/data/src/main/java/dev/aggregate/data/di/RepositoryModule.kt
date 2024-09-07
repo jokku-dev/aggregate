@@ -16,11 +16,11 @@ import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
-import dev.aggregate.data.local.preferences.NewsPreferencesDataSource
-import dev.aggregate.data.local.preferences.PreferencesDataSource
 import dev.aggregate.data.repository.DefaultNewsRepository
 import dev.aggregate.data.repository.NewsRepository
-import dev.aggregate.database.preferences.model.UserData
+import dev.aggregate.datastore.NewsPreferencesDataSource
+import dev.aggregate.datastore.PreferencesDataSource
+import dev.aggregate.datastore.model.UserData
 import javax.inject.Singleton
 
 @Module
@@ -43,7 +43,7 @@ abstract class RepositoryModule {
         @Singleton
         fun providePreferencesDataStore(
             @ApplicationContext applicationContext: Context
-        ) : DataStore<Preferences> = PreferenceDataStoreFactory.create(
+        ): DataStore<Preferences> = PreferenceDataStoreFactory.create(
             corruptionHandler = ReplaceFileCorruptionHandler { emptyPreferences() },
             produceFile = { applicationContext.preferencesDataStoreFile(USER_PREFERENCES) }
         )
@@ -52,7 +52,7 @@ abstract class RepositoryModule {
         @Singleton
         fun provideProtoDataStore(
             @ApplicationContext applicationContext: Context
-        ) : DataStore<UserData> = DataStoreFactory.create(
+        ): DataStore<UserData> = DataStoreFactory.create(
             serializer = PreferencesSerializer,
             corruptionHandler = ReplaceFileCorruptionHandler { UserData() },
             produceFile = { applicationContext.dataStoreFile(USER_TYPED_PREFERENCES) }

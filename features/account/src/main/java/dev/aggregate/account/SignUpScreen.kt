@@ -5,13 +5,13 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
+import dev.aggregate.app.account.R
 import dev.aggregate.designsystem.theme.AggregateTheme
 import dev.aggregate.presentation.navigation.Screen
 import dev.aggregate.ui.HelpBottomText
@@ -51,10 +51,16 @@ fun SignUpScreen(
         onPasswordChange = { newPassword -> password = newPassword },
         onPasswordRepeatChange = { newPasswordRepeat -> passwordRepeat = newPasswordRepeat },
         onButtonClick = {
-            navController.popBackStack(route = dev.aggregate.app.presentation.navigation.Screen.SignIn.route, inclusive = false)
+            navController.popBackStack(
+                route = dev.aggregate.app.presentation.navigation.Screen.SignIn.route,
+                inclusive = false
+            )
         },
         onBottomTextClick = {
-            navController.popBackStack(route = dev.aggregate.app.presentation.navigation.Screen.SignIn.route, inclusive = false)
+            navController.popBackStack(
+                route = dev.aggregate.app.presentation.navigation.Screen.SignIn.route,
+                inclusive = false
+            )
         }
     )
 }
@@ -76,8 +82,8 @@ fun SignUpScreenContent(
 
     dev.aggregate.app.ui.CommonColumn(modifier = androidx.compose.ui.Modifier.verticalScroll(state = scrollState)) {
         dev.aggregate.app.ui.HeadlineAndDescriptionText(
-            headline = androidx.compose.ui.res.stringResource(id = dev.aggregate.app.R.string.welcome_to_aggregate),
-            description = androidx.compose.ui.res.stringResource(id = dev.aggregate.app.R.string.i_guess_you_are_new_around)
+            headline = androidx.compose.ui.res.stringResource(id = R.string.welcome_to_aggregate),
+            description = androidx.compose.ui.res.stringResource(id = R.string.i_guess_you_are_new_around)
         )
         dev.aggregate.app.ui.UsernameTextField(
             modifier = androidx.compose.ui.Modifier.padding(top = 32.dp),
@@ -113,7 +119,7 @@ fun SignUpScreenContent(
         )
         Spacer(modifier = androidx.compose.ui.Modifier.weight(1f))
         dev.aggregate.app.ui.HelpBottomText(
-            questionText = androidx.compose.ui.res.stringResource(id = dev.aggregate.app.R.string.already_have_an_account),
+            questionText = androidx.compose.ui.res.stringResource(id = R.string.already_have_an_account),
             actionText = androidx.compose.ui.text.AnnotatedString(
                 text = androidx.compose.ui.res.stringResource(
                     id = dev.aggregate.app.R.string.sign_in

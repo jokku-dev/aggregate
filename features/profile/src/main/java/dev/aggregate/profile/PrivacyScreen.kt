@@ -19,7 +19,10 @@ fun PrivacyScreen(
 ) {
     PrivacyScreenContent(
         onBackButtonClick = {
-            navController.popBackStack(route = dev.aggregate.app.presentation.navigation.Screen.Profile.route, inclusive = false)
+            navController.popBackStack(
+                route = dev.aggregate.app.presentation.navigation.Screen.Profile.route,
+                inclusive = false
+            )
         }
     )
 }

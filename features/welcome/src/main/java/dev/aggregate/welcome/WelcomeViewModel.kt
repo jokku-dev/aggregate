@@ -15,7 +15,10 @@ import kotlin.collections.any
 
 interface WelcomeViewModel {
     fun setLaunchScreen(screen: String)
-    fun switchIsCategoryFavorite(categoryCode: dev.aggregate.app.data.UrlParameter, preferred: Boolean)
+    fun switchIsCategoryFavorite(
+        categoryCode: dev.aggregate.app.data.UrlParameter,
+        preferred: Boolean
+    )
 }
 
 @dagger.hilt.android.lifecycle.HiltViewModel
@@ -82,7 +85,10 @@ class MainWelcomeViewModel @javax.inject.Inject constructor(
         }
     }
 
-    override fun switchIsCategoryFavorite(categoryCode: dev.aggregate.app.data.UrlParameter, preferred: Boolean) {
+    override fun switchIsCategoryFavorite(
+        categoryCode: dev.aggregate.app.data.UrlParameter,
+        preferred: Boolean
+    ) {
         viewModelScope.launch(dispatcher) {
             when (categoryCode) {
                 is dev.aggregate.app.data.CountryCode -> preferencesRepository.togglePreferredCountries(

@@ -13,8 +13,8 @@ import androidx.compose.ui.Modifier
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.currentBackStackEntryAsState
 import dev.aggregate.app.navigation.Navigation
+import dev.aggregate.designsystem.component.BottomBar
 import dev.aggregate.designsystem.theme.AggregateTheme
-import dev.aggregate.ui.BottomBar
 
 private const val HOME = "home"
 private const val FAVORITES = "favorites"

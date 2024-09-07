@@ -44,10 +44,20 @@ fun ChangePasswordScreen(
         repeatedPassword = repeatedPassword,
         onCurrentPasswordChange = { newCurrentPassword -> currentPassword = newCurrentPassword },
         onNewPasswordChange = { newNewPassword -> newPassword = newNewPassword },
-        onRepeatedPasswordChange = { newRepeatedPassword -> repeatedPassword = newRepeatedPassword },
-        onBackButtonClick = { navController.popBackStack(route = dev.aggregate.app.presentation.navigation.Screen.Profile.route, inclusive = false) },
+        onRepeatedPasswordChange = { newRepeatedPassword ->
+            repeatedPassword = newRepeatedPassword
+        },
+        onBackButtonClick = {
+            navController.popBackStack(
+                route = dev.aggregate.app.presentation.navigation.Screen.Profile.route,
+                inclusive = false
+            )
+        },
         onButtonClick = {
-            navController.popBackStack(route = dev.aggregate.app.presentation.navigation.Screen.Profile.route, inclusive = false)
+            navController.popBackStack(
+                route = dev.aggregate.app.presentation.navigation.Screen.Profile.route,
+                inclusive = false
+            )
             navController.navigate(route = dev.aggregate.app.presentation.navigation.Screen.SignIn.route)
         }
     )

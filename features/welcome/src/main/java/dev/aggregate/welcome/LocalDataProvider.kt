@@ -13,16 +13,23 @@ enum class CategoryType {
 interface LocalDataProvider {
     fun provideNewsCategoriesPreferences(type: CategoryType): List<dev.aggregate.app.presentation.model.UiCategory>
     fun provideOnBoardingPages(): List<dev.aggregate.app.presentation.model.UiOnBoardingPage>
-    fun provideCategoryNameByCode(type: CategoryType, code: dev.aggregate.app.data.UrlParameter): dev.aggregate.app.presentation.model.UiText
+    fun provideCategoryNameByCode(
+        type: CategoryType,
+        code: dev.aggregate.app.data.UrlParameter
+    ): dev.aggregate.app.presentation.model.UiText
 }
 
 class LocalDataProviderFactory : LocalDataProvider {
 
-    override fun provideCategoryNameByCode(type: CategoryType, code: dev.aggregate.app.data.UrlParameter): dev.aggregate.app.presentation.model.UiText {
+    override fun provideCategoryNameByCode(
+        type: CategoryType,
+        code: dev.aggregate.app.data.UrlParameter
+    ): dev.aggregate.app.presentation.model.UiText {
         return provideNewsCategoriesPreferences(type)
             .find { uiCategory ->
                 uiCategory.code == code
-            }?.name ?: dev.aggregate.app.presentation.model.UiText.StringResource(dev.aggregate.app.R.string.unknown_category)
+            }?.name
+            ?: dev.aggregate.app.presentation.model.UiText.StringResource(dev.aggregate.app.R.string.unknown_category)
     }
 
     override fun provideNewsCategoriesPreferences(type: CategoryType): List<dev.aggregate.app.presentation.model.UiCategory> {

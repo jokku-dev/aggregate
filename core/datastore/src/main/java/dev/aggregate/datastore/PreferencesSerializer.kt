@@ -1,7 +1,8 @@
-package dev.aggregate.data.local.preferences
+package dev.aggregate.datastore
 
+import android.util.Log
 import androidx.datastore.core.Serializer
-import dev.aggregate.data.local.preferences.model.UserData
+import dev.aggregate.datastore.model.UserData
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import kotlinx.serialization.SerializationException
@@ -20,7 +21,7 @@ object PreferencesSerializer : Serializer<UserData> {
                 string = input.readBytes().decodeToString()
             )
         } catch (e: SerializationException) {
-            e.printStackTrace()
+            Log.e(null, null.toString(), e)
             defaultValue
         }
     }

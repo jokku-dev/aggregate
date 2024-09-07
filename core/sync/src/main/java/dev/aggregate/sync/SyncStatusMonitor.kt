@@ -20,7 +20,8 @@ class WorkManagerSyncStatusMonitor @Inject constructor(
     @ApplicationContext context: Context
 ) : SyncStatusMonitor {
     override val isSyncing: Flow<Boolean> =
-        WorkManager.getInstance(context).getWorkInfosForUniqueWorkLiveData(dev.aggregate.sync.initializers.SyncFavoriteTopHeadlines)
+        WorkManager.getInstance(context)
+            .getWorkInfosForUniqueWorkLiveData(dev.aggregate.sync.initializers.SYNC_FAVORITE_TOP_HEADLINES)
             .map { it.anyRunning }
             .asFlow()
             // let to get the latest emitted value dropping intermediary

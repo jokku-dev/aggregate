@@ -30,6 +30,7 @@ dependencies {
     implementation(libs.coil.compose)
     implementation(libs.androidx.ui.tooling.preview.android)
     implementation(project(":app"))
+    implementation(libs.androidx.navigation.runtime.ktx)
 
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)

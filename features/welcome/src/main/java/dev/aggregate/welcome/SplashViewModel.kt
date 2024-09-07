@@ -12,7 +12,7 @@ import javax.inject.Inject
 
 class SplashViewModel @Inject constructor(
     private val repository: PreferencesDataSource
-): ViewModel() {
+) : ViewModel() {
     private val _isLoading: MutableState<Boolean> = mutableStateOf(true)
     val isLoading: State<Boolean> = _isLoading
 

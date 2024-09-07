@@ -3,14 +3,14 @@ package dev.aggregate.data.repository
 import dev.aggregate.data.CategoryCode
 import dev.aggregate.data.CountryCode
 import dev.aggregate.data.RequestResult
-import dev.aggregate.database.dao.TopHeadlinesDao
 import dev.aggregate.data.map
-import dev.aggregate.data.model.toArticleEntity
-import dev.aggregate.data.model.toArticlesResponse
-import dev.aggregate.data.model.toArticlesResponseEntity
+import dev.aggregate.data.toArticleEntity
+import dev.aggregate.data.toArticlesResponse
+import dev.aggregate.data.toArticlesResponseEntity
 import dev.aggregate.data.toRequestResult
 import dev.aggregate.data.util.MergeStrategy
 import dev.aggregate.data.util.RequestResponseMergeStrategy
+import dev.aggregate.database.dao.TopHeadlinesDao
 import dev.aggregate.database.database.entity.intermediate.ResponseWithArticles
 import dev.aggregate.database.database.entity.intermediate.toArticlesResponse
 import dev.aggregate.model.ArticlesResponse
@@ -48,8 +48,6 @@ class DefaultNewsRepository @Inject constructor(
     private val network: NewsApi,
     private val topHeadlinesDao: TopHeadlinesDao,
 ) : NewsRepository {
-
-
     override fun getLocalTopHeadlines(country: CountryCode): Flow<ArticlesResponse> {
         TODO()
     }
@@ -69,7 +67,6 @@ class DefaultNewsRepository @Inject constructor(
         searchQuery: String,
         mergeStrategy: MergeStrategy<RequestResult<ArticlesResponse>> = RequestResponseMergeStrategy()
     ): Flow<RequestResult<ArticlesResponse>> {
-
         val cachedResponse: Flow<RequestResult<ArticlesResponse>> =
             getTopHeadlinesFromDatabase()
                 .map { result ->
@@ -163,7 +160,7 @@ class DefaultNewsRepository @Inject constructor(
 //                )
 //            }
 //        } catch (e: ResponseException) { // 300, 400, 500
-////            TODO("add cache call result to data")
+//            TODO("add cache call result to data")
 //            Result.Failure(
 //                message = UiErrorMessage(
 //                    text = UiText.DynamicString(e.response.status.description)
@@ -171,7 +168,7 @@ class DefaultNewsRepository @Inject constructor(
 //                cachedData = RemoteNewsResponse(status = "")
 //            )
 //        } catch (e: Exception) {
-////            TODO("add cache call result to data")
+//            TODO("add cache call result to data")
 //            Result.Failure(
 //                message = UiErrorMessage(
 //                    text = UiText.DynamicString(e.message ?: UNKNOWN_ERROR)

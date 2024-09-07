@@ -23,8 +23,8 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.MaterialTheme.colorScheme
 import androidx.compose.material3.MaterialTheme.typography
 import androidx.compose.material3.Text
+import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.graphicsLayer
@@ -43,6 +43,7 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavHostController
 import com.google.accompanist.systemuicontroller.SystemUiController
 import com.google.accompanist.systemuicontroller.rememberSystemUiController
+import dev.aggregate.app.article.R
 import dev.aggregate.designsystem.theme.AggregateTheme
 import dev.aggregate.designsystem.theme.GreyLight
 import dev.aggregate.presentation.model.UiArticle
@@ -67,8 +68,9 @@ fun ArticleScreen(
             dev.aggregate.app.presentation.navigation.Screen.ArticleScreen.route
         )
     }
-    
-    val onBackPressedDispatcher = androidx.activity.compose.LocalOnBackPressedDispatcherOwner.current?.onBackPressedDispatcher
+
+    val onBackPressedDispatcher =
+        androidx.activity.compose.LocalOnBackPressedDispatcherOwner.current?.onBackPressedDispatcher
     val lifecycleOwner = androidx.compose.ui.platform.LocalLifecycleOwner.current
 
     ArticleScreenContent(
@@ -115,8 +117,10 @@ fun ArticleScreenContent(
 ) {
     val scrollState = rememberScrollState()
     // Density scope provides conversion to pixels
-    val headerHeightPx = with(androidx.compose.ui.platform.LocalDensity.current) { headerHeight.toPx() }
-    val topBarHeightPx = with(androidx.compose.ui.platform.LocalDensity.current) { heightToShowTopBar.toPx() }
+    val headerHeightPx =
+        with(androidx.compose.ui.platform.LocalDensity.current) { headerHeight.toPx() }
+    val topBarHeightPx =
+        with(androidx.compose.ui.platform.LocalDensity.current) { heightToShowTopBar.toPx() }
 
     Box(
         modifier = modifier,
@@ -155,7 +159,7 @@ fun ArticleScreenContent(
     }
 }
 
-@androidx.compose.runtime.Composable
+@Composable
 fun ArticleHeader(
     urlToImage: String,
     title: String,
@@ -181,20 +185,21 @@ fun ArticleHeader(
                 alpha = -1f / headerHeightPx * scrollState.value + 1
             },
     ) {
-//        AsyncImage(model = urlToImage, contentDescription =)
+        // AsyncImage(model = urlToImage, contentDescription =)
         Image(
             painter = androidx.compose.ui.res.painterResource(id = dev.aggregate.app.R.drawable.img_news_mock_1),
             contentDescription = null,
             contentScale = androidx.compose.ui.layout.ContentScale.Crop,
             colorFilter = androidx.compose.ui.graphics.ColorFilter.colorMatrix(
                 androidx.compose.ui.graphics.ColorMatrix().apply {
-                setToScale(
-                    0.5f,
-                    0.5f,
-                    0.5f,
-                    1f
-                )
-            }),
+                    setToScale(
+                        0.5f,
+                        0.5f,
+                        0.5f,
+                        1f
+                    )
+                }
+            ),
             modifier = androidx.compose.ui.Modifier.fillMaxSize(),
         )
         Column(
@@ -210,27 +215,39 @@ fun ArticleHeader(
             ) {
                 IconButton(onClick = onBackClick) {
                     Icon(
-                        imageVector = androidx.compose.ui.graphics.vector.ImageVector.vectorResource(id = dev.aggregate.app.R.drawable.ic_arrow_back),
-                        contentDescription = androidx.compose.ui.res.stringResource(id = dev.aggregate.app.R.string.navigate_back),
+                        imageVector = androidx.compose.ui.graphics.vector.ImageVector.vectorResource(
+                            id = dev.aggregate.app.R.drawable.ic_arrow_back
+                        ),
+                        contentDescription = androidx.compose.ui.res.stringResource(id = R.string.navigate_back),
                         tint = androidx.compose.ui.graphics.Color.White
                     )
                 }
                 Row {
                     IconButton(onClick = onShareClick) {
                         Icon(
-                            imageVector = androidx.compose.ui.graphics.vector.ImageVector.vectorResource(id = dev.aggregate.app.R.drawable.ic_share),
-                            contentDescription = androidx.compose.ui.res.stringResource(id = dev.aggregate.app.R.string.share),
+                            imageVector = androidx.compose.ui.graphics.vector.ImageVector.vectorResource(
+                                id = dev.aggregate.app.R.drawable.ic_share
+                            ),
+                            contentDescription = androidx.compose.ui.res.stringResource(id = R.string.share),
                             tint = androidx.compose.ui.graphics.Color.White
                         )
                     }
                     IconButton(onClick = onBookmarkClick) {
                         Icon(
-                            imageVector = if (bookmarked) androidx.compose.ui.graphics.vector.ImageVector.vectorResource(id = dev.aggregate.app.R.drawable.ic_bookmark_selected)
-                            else androidx.compose.ui.graphics.vector.ImageVector.vectorResource(id = dev.aggregate.app.R.drawable.ic_bookmark),
-                            contentDescription = if (bookmarked) androidx.compose.ui.res.stringResource(
-                                id = dev.aggregate.app.R.string.bookmarked
-                            )
-                            else androidx.compose.ui.res.stringResource(id = dev.aggregate.app.R.string.not_bookmarked),
+                            imageVector = if (bookmarked) {
+                                androidx.compose.ui.graphics.vector.ImageVector.vectorResource(
+                                    id = dev.aggregate.app.R.drawable.ic_bookmark_selected
+                                )
+                            } else {
+                                ImageVector.vectorResource(id = R.drawable.ic_bookmark)
+                            },
+                            contentDescription = if (bookmarked) {
+                                androidx.compose.ui.res.stringResource(
+                                    id = dev.aggregate.app.R.string.bookmarked
+                                )
+                            } else {
+                                androidx.compose.ui.res.stringResource(id = R.string.not_bookmarked)
+                            },
                             tint = androidx.compose.ui.graphics.Color.White
                         )
                     }
@@ -288,8 +305,8 @@ fun ArticleBody(
             modifier = androidx.compose.ui.Modifier.height(headerHeight - (overlayPadding + topBarsHeight))
         )
         Text(
-            text = androidx.compose.ui.res.stringResource(id = dev.aggregate.app.R.string.terms_and_conditions_text) +
-                    androidx.compose.ui.res.stringResource(id = dev.aggregate.app.R.string.terms_and_conditions_text),
+            text = stringResource(id = dev.aggregate.app.R.string.terms_and_conditions_text) +
+                    stringResource(id = dev.aggregate.app.R.string.terms_and_conditions_text),
             style = typography.bodyLarge,
             color = colorScheme.onBackground,
             modifier = androidx.compose.ui.Modifier

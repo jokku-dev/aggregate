@@ -1,23 +1,24 @@
-package dev.aggregate.data.local.database
+package dev.aggregate.database
 
 import android.content.Context
 import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
 import androidx.room.TypeConverters
-import dev.aggregate.database.entity.ArticleEntity
-import dev.aggregate.database.entity.ArticleEntitySource
-import dev.aggregate.database.entity.ArticlesResponseEntity
-import dev.aggregate.data.local.database.entity.BookmarkedArticleEntity
 import dev.aggregate.database.dao.BookmarksDao
 import dev.aggregate.database.dao.TopHeadlinesDao
+import dev.aggregate.database.entity.ArticleEntity
+import dev.aggregate.database.entity.ArticleSourceEntity
+import dev.aggregate.database.entity.ArticlesResponseEntity
+import dev.aggregate.database.entity.BookmarkedArticleEntity
 import dev.aggregate.database.entity.SourceEntity
 import dev.aggregate.database.entity.SourcesResponseEntity
 import dev.aggregate.database.utils.Converters
 
 // Wrapper class for library database to use it in public
-class NewsDatabase internal constructor(private val database: NewsRoomDatabase) {
-
+class NewsDatabase internal constructor(
+    private val database: NewsRoomDatabase
+) {
     val topHeadlinesDao: TopHeadlinesDao
         get() = database.topHeadlinesDao()
 
@@ -28,7 +29,7 @@ class NewsDatabase internal constructor(private val database: NewsRoomDatabase) 
 @Database(
     entities = [
         ArticleEntity::class,
-        ArticleEntitySource::class,
+        ArticleSourceEntity::class,
         ArticlesResponseEntity::class,
         BookmarkedArticleEntity::class,
         SourceEntity::class,

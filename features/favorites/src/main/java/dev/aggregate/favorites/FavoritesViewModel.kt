@@ -80,7 +80,8 @@ class DefaultFavoritesViewModel @javax.inject.Inject constructor(
 
 sealed interface FavoritesState {
     data object Loading : FavoritesState
-    data class Success(val categorisedArticles: dev.aggregate.app.presentation.model.UiCategorisedArticles) : FavoritesState
+    data class Success(val categorisedArticles: dev.aggregate.app.presentation.model.UiCategorisedArticles) :
+        FavoritesState
 }
 
 private fun Flow<List<dev.aggregate.app.data.model.ArticlesResponse>>.mapToUiCategorisedArticles(
@@ -88,7 +89,8 @@ private fun Flow<List<dev.aggregate.app.data.model.ArticlesResponse>>.mapToUiCat
     localDataProvider: dev.aggregate.app.presentation.screens.welcome.LocalDataProvider,
     topCategoryType: dev.aggregate.app.database.preferences.model.TopCategoryType
 ): Flow<dev.aggregate.app.presentation.model.UiCategorisedArticles> {
-    val categorisedArticles = mutableListOf<dev.aggregate.app.presentation.model.UiCategorisedArticles>()
+    val categorisedArticles =
+        mutableListOf<dev.aggregate.app.presentation.model.UiCategorisedArticles>()
 
     filterNot { it.isEmpty() }
         .combine(bookmarkedArticleIds) { newsResponses, bookmarkedArticles ->

@@ -2,9 +2,9 @@ package dev.aggregate.data.repository
 
 import dev.aggregate.data.CategoryCode
 import dev.aggregate.data.CountryCode
-import dev.aggregate.data.local.preferences.PreferencesDataSource
-import dev.aggregate.database.preferences.model.DarkThemeConfig
-import dev.aggregate.database.preferences.model.UserData
+import dev.aggregate.datastore.PreferencesDataSource
+import dev.aggregate.datastore.model.DarkThemeConfig
+import dev.aggregate.datastore.model.UserData
 import dev.aggregate.ui.UiArticle
 import kotlinx.coroutines.flow.Flow
 import javax.inject.Inject

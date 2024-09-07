@@ -6,8 +6,8 @@ import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
-import dev.aggregate.data.local.database.NewsDatabase
-import dev.aggregate.data.local.database.NewsRoomDatabase
+import dev.aggregate.database.NewsDatabase
+import dev.aggregate.database.NewsRoomDatabase
 import dev.aggregate.database.dao.TopHeadlinesDao
 import javax.inject.Singleton
 

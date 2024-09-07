@@ -1,6 +1,6 @@
 package dev.aggregate.topheadlines
 
-internal sealed class TopHeadlinesState(open val stateData: UiTopHeadlines?) {
+sealed class TopHeadlinesState(open val stateData: UiTopHeadlines?) {
     data object None : TopHeadlinesState(stateData = null)
 
     class Loading(stateData: UiTopHeadlines? = null) : TopHeadlinesState(stateData)

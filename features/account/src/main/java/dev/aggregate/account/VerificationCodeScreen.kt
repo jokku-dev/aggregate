@@ -17,9 +17,6 @@ import androidx.compose.material3.MaterialTheme.shapes
 import androidx.compose.material3.MaterialTheme.typography
 import androidx.compose.material3.Text
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.focus.FocusRequester
@@ -67,12 +64,18 @@ fun VerificationCodeScreen(
         onOtpValueChange = { newOtpValue -> otpValue = newOtpValue },
         onButtonClick = {
             if (otpValue.length == 4) {
-                navController.popBackStack(route = dev.aggregate.app.presentation.navigation.Screen.SignIn.route, inclusive = false)
+                navController.popBackStack(
+                    route = dev.aggregate.app.presentation.navigation.Screen.SignIn.route,
+                    inclusive = false
+                )
                 navController.navigate(route = dev.aggregate.app.presentation.navigation.Screen.CreateNewPassword.route)
             }
         },
         onBottomHelpTextClick = {
-            navController.popBackStack(route = dev.aggregate.app.presentation.navigation.Screen.ForgotPassword.route, inclusive = false)
+            navController.popBackStack(
+                route = dev.aggregate.app.presentation.navigation.Screen.ForgotPassword.route,
+                inclusive = false
+            )
         }
     )
     // Request textField focus and show keyboard in case of onResume event
@@ -134,7 +137,8 @@ fun VerificationCodeScreenContent(
             value = otpValue,
             onValueChange = { newValue -> if (newValue.length <= 4) onOtpValueChange(newValue) },
             keyboardOptions = KeyboardOptions(
-                keyboardType = androidx.compose.ui.text.input.KeyboardType.NumberPassword, imeAction = androidx.compose.ui.text.input.ImeAction.Done
+                keyboardType = androidx.compose.ui.text.input.KeyboardType.NumberPassword,
+                imeAction = androidx.compose.ui.text.input.ImeAction.Done
             ),
             keyboardActions = KeyboardActions(onDone = { onButtonClick() })
         ) {

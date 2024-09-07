@@ -48,7 +48,8 @@ fun FavoritesScreen(
     val state by viewModel.favoritesUiState.collectAsStateWithLifecycle()
 
     FavoritesScreenContent(
-        categorisedArticles = (state as? dev.aggregate.app.presentation.screens.favorites.FavoritesState.HasArticles)?.categorisedArticles ?: emptyList()
+        categorisedArticles = (state as? dev.aggregate.app.presentation.screens.favorites.FavoritesState.HasArticles)?.categorisedArticles
+            ?: emptyList()
     )
 }
 
@@ -150,13 +151,13 @@ fun ArticleCard(
             contentScale = androidx.compose.ui.layout.ContentScale.Crop,
             colorFilter = androidx.compose.ui.graphics.ColorFilter.colorMatrix(
                 androidx.compose.ui.graphics.ColorMatrix().apply {
-                setToScale(
-                    0.5f,
-                    0.5f,
-                    0.5f,
-                    1f
-                )
-            }),
+                    setToScale(
+                        0.5f,
+                        0.5f,
+                        0.5f,
+                        1f
+                    )
+                }),
         )
         Column(
             modifier = androidx.compose.ui.Modifier

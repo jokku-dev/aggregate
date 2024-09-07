@@ -1,4 +1,4 @@
-package dev.aggregate.ui
+package dev.aggregate.designsystem.component
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -13,16 +13,22 @@ import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme.colorScheme
 import androidx.compose.material3.MaterialTheme.typography
 import androidx.compose.material3.Text
+import androidx.compose.runtime.Composable
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.res.vectorResource
+import androidx.compose.ui.text.AnnotatedString
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import dev.aggregate.app.R
 import dev.aggregate.presentation.theme.AggregateTheme
 
-@androidx.compose.runtime.Composable
+@Composable
 fun HeadlineAndDescriptionText(
     headline: String,
     description: String,
-    modifier: androidx.compose.ui.Modifier = androidx.compose.ui.Modifier
+    modifier: Modifier = Modifier
 ) {
     Column(
         modifier = modifier.fillMaxWidth(),
@@ -41,11 +47,11 @@ fun HeadlineAndDescriptionText(
     }
 }
 
-@androidx.compose.runtime.Composable
+@Composable
 fun BackButtonAndHeadlineText(
     headline: String,
     onClick: () -> Unit,
-    modifier: androidx.compose.ui.Modifier = androidx.compose.ui.Modifier
+    modifier: Modifier = Modifier
 ) {
     Row(
         horizontalArrangement = Arrangement.SpaceBetween,
@@ -54,7 +60,7 @@ fun BackButtonAndHeadlineText(
     ) {
         IconButton(onClick = onClick) {
             Icon(
-                imageVector = androidx.compose.ui.graphics.vector.ImageVector.vectorResource(id = dev.aggregate.app.R.drawable.ic_arrow_back),
+                imageVector = ImageVector.vectorResource(id = R.drawable.ic_arrow_back),
                 contentDescription = null,
                 tint = colorScheme.onSecondary
             )
@@ -64,16 +70,16 @@ fun BackButtonAndHeadlineText(
             style = typography.headlineLarge,
             color = colorScheme.onSurfaceVariant
         )
-        Spacer(modifier = androidx.compose.ui.Modifier.size(48.dp))
+        Spacer(modifier = Modifier.size(48.dp))
     }
 }
 
-@androidx.compose.runtime.Composable
+@Composable
 fun HelpBottomText(
     questionText: String,
-    actionText: androidx.compose.ui.text.AnnotatedString,
+    actionText: AnnotatedString,
     onClick: () -> Unit,
-    modifier: androidx.compose.ui.Modifier = androidx.compose.ui.Modifier
+    modifier: Modifier = Modifier
 ) {
     Row(
         modifier = modifier
@@ -97,7 +103,7 @@ fun HelpBottomText(
 }
 
 @Preview(showBackground = true)
-@androidx.compose.runtime.Composable
+@Composable
 fun HeadlineAndDescriptionTextPreview() {
     dev.aggregate.app.presentation.theme.AggregateTheme {
         HeadlineAndDescriptionText(headline = "Headline", description = "Long description")
@@ -105,22 +111,22 @@ fun HeadlineAndDescriptionTextPreview() {
 }
 
 @Preview(showBackground = true)
-@androidx.compose.runtime.Composable
+@Composable
 fun BackButtonAndHeadlineTextPreview() {
     dev.aggregate.app.presentation.theme.AggregateTheme {
         BackButtonAndHeadlineText(
-            headline = androidx.compose.ui.res.stringResource(dev.aggregate.app.R.string.language),
+            headline = stringResource(R.string.language),
             onClick = {})
     }
 }
 
 @Preview(showBackground = true)
-@androidx.compose.runtime.Composable
+@Composable
 fun HelpBottomTextPreview() {
     dev.aggregate.app.presentation.theme.AggregateTheme {
         HelpBottomText(
             questionText = "Question text?",
-            actionText = androidx.compose.ui.text.AnnotatedString("Action text"),
+            actionText = AnnotatedString("Action text"),
             onClick = {}
         )
     }

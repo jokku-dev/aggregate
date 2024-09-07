@@ -1,4 +1,4 @@
-package dev.aggregate.data.sync
+package dev.aggregate.sync
 
 import android.util.Log
 import dev.aggregate.ui.old.TopHeadlinesRequest

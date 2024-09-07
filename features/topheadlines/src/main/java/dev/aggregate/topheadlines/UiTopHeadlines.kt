@@ -4,7 +4,7 @@ import dev.aggregate.ui.UiArticle
 import dev.aggregate.ui.UiCategory
 
 
-internal data class UiTopHeadlines(
+data class UiTopHeadlines(
     val articles: List<UiArticle> = emptyList(),
     val totalResults: Int = 0,
     val currentTime: Long = 0L,

@@ -14,7 +14,7 @@ interface MergeStrategy<E> {
  * Strategy of what state to pass depending on the result of receiving data
  */
 internal class RequestResponseMergeStrategy<T : Any> : MergeStrategy<RequestResult<T>> {
-
+    @Suppress("CyclomaticComplexMethod")
     override fun merge(
         right: RequestResult<T>,
         left: RequestResult<T>

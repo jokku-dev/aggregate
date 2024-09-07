@@ -1,4 +1,4 @@
-package dev.aggregate.ui
+package dev.aggregate.designsystem.component
 
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -13,19 +13,30 @@ import androidx.compose.material3.MaterialTheme.typography
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.OutlinedTextFieldDefaults
 import androidx.compose.material3.Text
+import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.res.vectorResource
+import androidx.compose.ui.text.input.ImeAction
+import androidx.compose.ui.text.input.KeyboardType
+import androidx.compose.ui.text.input.PasswordVisualTransformation
+import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.tooling.preview.Preview
-import dev.aggregate.presentation.theme.AggregateTheme
+import dev.aggregate.app.R
+import dev.aggregate.designsystem.theme.AggregateTheme
 
-@androidx.compose.runtime.Composable
+@Composable
 fun UsernameTextField(
     username: String,
-    imeAction: androidx.compose.ui.text.input.ImeAction,
+    imeAction: ImeAction,
     onUsernameChange: (String) -> Unit,
-    modifier: androidx.compose.ui.Modifier = androidx.compose.ui.Modifier,
-    placeholder: String = androidx.compose.ui.res.stringResource(id = dev.aggregate.app.R.string.username_hint)
+    modifier: Modifier = Modifier,
+    placeholder: String = stringResource(id = dev.aggregate.app.R.string.username_hint)
 ) {
     OutlinedTextField(
         modifier = modifier.fillMaxWidth(),
@@ -34,7 +45,7 @@ fun UsernameTextField(
         singleLine = true,
         leadingIcon = {
             Icon(
-                imageVector = androidx.compose.ui.graphics.vector.ImageVector.vectorResource(id = dev.aggregate.app.R.drawable.ic_profile),
+                imageVector = ImageVector.vectorResource(id = R.drawable.ic_profile),
                 contentDescription = placeholder
             )
         },
@@ -59,19 +70,19 @@ fun UsernameTextField(
             unfocusedPlaceholderColor = colorScheme.onSecondary
         ),
         keyboardOptions = KeyboardOptions(
-            keyboardType = androidx.compose.ui.text.input.KeyboardType.Text,
+            keyboardType = KeyboardType.Text,
             imeAction = imeAction
         )
     )
 }
 
-@androidx.compose.runtime.Composable
+@Composable
 fun EmailTextField(
     email: String,
-    imeAction: androidx.compose.ui.text.input.ImeAction,
+    imeAction: ImeAction,
     onEmailChange: (String) -> Unit,
-    modifier: androidx.compose.ui.Modifier = androidx.compose.ui.Modifier,
-    placeholder: String = androidx.compose.ui.res.stringResource(id = dev.aggregate.app.R.string.email_hint),
+    modifier: Modifier = Modifier,
+    placeholder: String = stringResource(id = dev.aggregate.app.R.string.email_hint),
     keyboardAction: KeyboardActionScope.() -> Unit = {}
 ) {
     OutlinedTextField(
@@ -81,7 +92,7 @@ fun EmailTextField(
         singleLine = true,
         leadingIcon = {
             Icon(
-                imageVector = androidx.compose.ui.graphics.vector.ImageVector.vectorResource(id = dev.aggregate.app.R.drawable.ic_email),
+                imageVector = ImageVector.vectorResource(id = R.drawable.ic_email),
                 contentDescription = placeholder
             )
         },
@@ -106,25 +117,25 @@ fun EmailTextField(
             unfocusedPlaceholderColor = colorScheme.onSecondary
         ),
         keyboardOptions = KeyboardOptions(
-            keyboardType = androidx.compose.ui.text.input.KeyboardType.Email,
+            keyboardType = KeyboardType.Email,
             imeAction = imeAction
         ),
         keyboardActions = KeyboardActions(onDone = keyboardAction)
     )
 }
 
-@androidx.compose.runtime.Composable
+@Composable
 fun PasswordTextField(
     placeholder: String,
     password: String,
-    imeAction: androidx.compose.ui.text.input.ImeAction,
+    imeAction: ImeAction,
     onPasswordChange: (String) -> Unit,
-    modifier: androidx.compose.ui.Modifier = androidx.compose.ui.Modifier,
+    modifier: Modifier = Modifier,
     keyboardAction: KeyboardActionScope.() -> Unit = {},
     visible: Boolean = false
 ) {
-    var passwordVisible by androidx.compose.runtime.saveable.rememberSaveable {
-        androidx.compose.runtime.mutableStateOf(
+    var passwordVisible by rememberSaveable {
+        mutableStateOf(
             visible
         )
     }
@@ -136,7 +147,7 @@ fun PasswordTextField(
         singleLine = true,
         leadingIcon = {
             Icon(
-                imageVector = androidx.compose.ui.graphics.vector.ImageVector.vectorResource(id = dev.aggregate.app.R.drawable.ic_lock),
+                imageVector = ImageVector.vectorResource(id = R.drawable.ic_lock),
                 contentDescription = placeholder
             )
         },
@@ -149,17 +160,19 @@ fun PasswordTextField(
         trailingIcon = {
             IconButton(onClick = { passwordVisible = !passwordVisible }) {
                 Icon(
-                    imageVector = if (passwordVisible) androidx.compose.ui.graphics.vector.ImageVector.vectorResource(id = dev.aggregate.app.R.drawable.ic_visibility_off)
-                    else androidx.compose.ui.graphics.vector.ImageVector.vectorResource(id = dev.aggregate.app.R.drawable.ic_visibility),
-                    contentDescription = if (passwordVisible) androidx.compose.ui.res.stringResource(
+                    imageVector = if (passwordVisible) ImageVector.vectorResource(
+                        id = R.drawable.ic_visibility_off
+                    )
+                    else ImageVector.vectorResource(id = R.drawable.ic_visibility),
+                    contentDescription = if (passwordVisible) stringResource(
                         id = dev.aggregate.app.R.string.hide_password
                     )
-                    else androidx.compose.ui.res.stringResource(id = dev.aggregate.app.R.string.show_password)
+                    else stringResource(id = dev.aggregate.app.R.string.show_password)
                 )
             }
         },
-        visualTransformation = if (passwordVisible) androidx.compose.ui.text.input.VisualTransformation.None
-        else androidx.compose.ui.text.input.PasswordVisualTransformation('\u002a'),
+        visualTransformation = if (passwordVisible) VisualTransformation.None
+        else PasswordVisualTransformation('\u002a'),
         shape = shapes.medium,
         textStyle = typography.bodyLarge,
         colors = OutlinedTextFieldDefaults.colors(
@@ -177,19 +190,19 @@ fun PasswordTextField(
             unfocusedTrailingIconColor = colorScheme.onSecondary
         ),
         keyboardOptions = KeyboardOptions(
-            keyboardType = androidx.compose.ui.text.input.KeyboardType.Password,
+            keyboardType = KeyboardType.Password,
             imeAction = imeAction
         ),
         keyboardActions = KeyboardActions(onDone = keyboardAction)
     )
 }
 
-@androidx.compose.runtime.Composable
+@Composable
 fun SearchTextField(
     search: String,
     onSearchChange: (String) -> Unit,
     keyboardAction: KeyboardActionScope.() -> Unit,
-    modifier: androidx.compose.ui.Modifier = androidx.compose.ui.Modifier
+    modifier: Modifier = Modifier
 ) {
     OutlinedTextField(
         value = search,
@@ -198,21 +211,21 @@ fun SearchTextField(
         textStyle = typography.bodyLarge,
         leadingIcon = {
             Icon(
-                imageVector = androidx.compose.ui.graphics.vector.ImageVector.vectorResource(id = dev.aggregate.app.R.drawable.ic_search),
-                contentDescription = androidx.compose.ui.res.stringResource(id = dev.aggregate.app.R.string.search)
+                imageVector = ImageVector.vectorResource(id = R.drawable.ic_search),
+                contentDescription = stringResource(id = dev.aggregate.app.R.string.search)
             )
         },
         placeholder = {
             Text(
-                text = androidx.compose.ui.res.stringResource(id = dev.aggregate.app.R.string.search),
+                text = stringResource(id = dev.aggregate.app.R.string.search),
                 style = typography.bodyLarge
             )
         },
         trailingIcon = {
             IconButton(onClick = { }) {
                 Icon(
-                    imageVector = androidx.compose.ui.graphics.vector.ImageVector.vectorResource(id = dev.aggregate.app.R.drawable.ic_mic),
-                    contentDescription = androidx.compose.ui.res.stringResource(id = dev.aggregate.app.R.string.voice_input)
+                    imageVector = ImageVector.vectorResource(id = R.drawable.ic_mic),
+                    contentDescription = stringResource(id = dev.aggregate.app.R.string.voice_input)
                 )
             }
         },
@@ -233,26 +246,26 @@ fun SearchTextField(
             unfocusedTrailingIconColor = colorScheme.onSecondary
         ),
         keyboardOptions = KeyboardOptions(
-            keyboardType = androidx.compose.ui.text.input.KeyboardType.Text,
-            imeAction = androidx.compose.ui.text.input.ImeAction.Search
+            keyboardType = KeyboardType.Text,
+            imeAction = ImeAction.Search
         ),
         keyboardActions = KeyboardActions(onDone = keyboardAction)
     )
 }
 
 @Preview(showBackground = true, name = "Unfocused and Focused")
-@androidx.compose.runtime.Composable
+@Composable
 fun UsernameTextFieldPreview() {
-    dev.aggregate.app.presentation.theme.AggregateTheme {
+    AggregateTheme {
         Column {
             UsernameTextField(
                 username = "Username",
-                imeAction = androidx.compose.ui.text.input.ImeAction.Next,
+                imeAction = ImeAction.Next,
                 onUsernameChange = {}
             )
             UsernameTextField(
                 username = "Username",
-                imeAction = androidx.compose.ui.text.input.ImeAction.Next,
+                imeAction = ImeAction.Next,
                 onUsernameChange = {}
             )
         }
@@ -261,18 +274,18 @@ fun UsernameTextFieldPreview() {
 }
 
 @Preview(showBackground = true, name = "Unfocused and Focused")
-@androidx.compose.runtime.Composable
+@Composable
 private fun EmailTextFieldPreview() {
-    dev.aggregate.app.presentation.theme.AggregateTheme {
+    AggregateTheme {
         Column {
             EmailTextField(
                 email = "Email",
-                imeAction = androidx.compose.ui.text.input.ImeAction.Next,
+                imeAction = ImeAction.Next,
                 onEmailChange = {}
             )
             EmailTextField(
                 email = "Email",
-                imeAction = androidx.compose.ui.text.input.ImeAction.Next,
+                imeAction = ImeAction.Next,
                 onEmailChange = {}
             )
         }
@@ -280,20 +293,20 @@ private fun EmailTextFieldPreview() {
 }
 
 @Preview(showBackground = true)
-@androidx.compose.runtime.Composable
+@Composable
 private fun PasswordTextFieldPreview() {
-    dev.aggregate.app.presentation.theme.AggregateTheme {
+    AggregateTheme {
         Column {
             PasswordTextField(
                 placeholder = "Password",
                 password = "password",
-                imeAction = androidx.compose.ui.text.input.ImeAction.Next,
+                imeAction = ImeAction.Next,
                 onPasswordChange = {}
             )
             PasswordTextField(
                 placeholder = "Password",
                 password = "password",
-                imeAction = androidx.compose.ui.text.input.ImeAction.Next,
+                imeAction = ImeAction.Next,
                 onPasswordChange = {},
                 visible = true
             )
@@ -302,9 +315,9 @@ private fun PasswordTextFieldPreview() {
 }
 
 @Preview
-@androidx.compose.runtime.Composable
+@Composable
 fun SearchTextFieldPreview() {
-    dev.aggregate.app.presentation.theme.AggregateTheme {
+    AggregateTheme {
         Column {
             SearchTextField(
                 search = "Search",

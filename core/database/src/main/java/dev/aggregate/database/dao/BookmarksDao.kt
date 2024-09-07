@@ -3,7 +3,7 @@ package dev.aggregate.database.dao
 import androidx.room.Dao
 import androidx.room.Delete
 import androidx.room.Upsert
-import dev.aggregate.data.local.database.entity.BookmarkedArticleEntity
+import dev.aggregate.database.entity.BookmarkedArticleEntity
 
 @Dao
 interface BookmarksDao {

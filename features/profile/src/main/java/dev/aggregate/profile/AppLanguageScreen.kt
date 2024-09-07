@@ -23,7 +23,12 @@ fun AppLanguageScreen(
 
     AppLanguageScreenContent(
         languages = state.languages,
-        onBackButtonClick = { navController.popBackStack(route = dev.aggregate.app.presentation.navigation.Screen.Profile.route, inclusive = false) }
+        onBackButtonClick = {
+            navController.popBackStack(
+                route = dev.aggregate.app.presentation.navigation.Screen.Profile.route,
+                inclusive = false
+            )
+        }
     )
 }
 

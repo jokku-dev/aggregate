@@ -9,7 +9,7 @@ sealed class UiText {
 
     @androidx.compose.runtime.Composable
     fun asString(): String {
-        return when(this) {
+        return when (this) {
             is DynamicString -> value
             is StringResource -> androidx.compose.ui.res.stringResource(id = id, formatArgs = args)
         }

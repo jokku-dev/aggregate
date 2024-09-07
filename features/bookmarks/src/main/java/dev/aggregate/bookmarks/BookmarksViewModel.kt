@@ -14,7 +14,8 @@ class MainBookmarksViewModel @javax.inject.Inject constructor(
 
 ) : dev.aggregate.app.BaseNewsViewModel(), BookmarksViewModel {
 
-    private val _bookmarksState = MutableStateFlow<dev.aggregate.app.ui.old.Result<BookmarksState>>(dev.aggregate.app.ui.old.Result.Loading)
+    private val _bookmarksState =
+        MutableStateFlow<dev.aggregate.app.ui.old.Result<BookmarksState>>(dev.aggregate.app.ui.old.Result.Loading)
     override val bookmarksState = _bookmarksState.asStateFlow()
 
 }

@@ -8,9 +8,9 @@ data class NetworkArticleSource(
     /**
      * Source identifier
      */
-    @SerialName("id") val id: String,
+    @SerialName("id") val id: String?,
     /**
      * Source name
      */
-    @SerialName("name") val name: String
+    @SerialName("name") val name: String?
 )

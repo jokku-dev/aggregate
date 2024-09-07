@@ -1,4 +1,4 @@
-package dev.aggregate.database.preferences.model
+package dev.aggregate.datastore.model
 
 @Serializable
 data class UserData(

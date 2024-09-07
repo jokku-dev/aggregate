@@ -1,4 +1,4 @@
-package dev.aggregate.database.database.entity.intermediate
+package dev.aggregate.database.entity.intermediate
 
 import androidx.room.Embedded
 import androidx.room.Relation
@@ -16,6 +16,6 @@ data class ResponseWithArticles(
     val articles: List<ArticleEntity>,
 )
 
-fun ResponseWithArticles.toArticlesResponse() : ArticlesResponse {
+fun ResponseWithArticles.toArticlesResponse(): ArticlesResponse {
     TODO("Not Implemented")
 }

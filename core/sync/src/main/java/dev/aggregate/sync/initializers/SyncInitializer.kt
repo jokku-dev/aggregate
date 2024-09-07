@@ -15,7 +15,7 @@ object Sync {
 }
 
 // This name should not be changed otherwise the app may have concurrent sync requests running
-const val SyncFavoriteTopHeadlines = "SyncFavoriteTopHeadlines"
+const val SYNC_FAVORITE_TOP_HEADLINES = "SyncFavoriteTopHeadlines"
 
 /**
  * Registers work to sync the data layer periodically on app startup.
@@ -25,7 +25,7 @@ class SyncInitializer : androidx.startup.Initializer<Sync> {
         androidx.work.WorkManager.getInstance(context).apply {
             // Run sync on app startup and ensure only one sync worker runs at any time
             enqueueUniqueWork(
-                SyncFavoriteTopHeadlines,
+                SYNC_FAVORITE_TOP_HEADLINES,
                 androidx.work.ExistingWorkPolicy.KEEP,
                 dev.aggregate.sync.workers.SyncWorker.startUpSyncWork()
             )
