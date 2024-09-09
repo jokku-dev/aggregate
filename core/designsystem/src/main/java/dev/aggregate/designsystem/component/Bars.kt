@@ -46,8 +46,7 @@ import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
-import com.google.accompanist.systemuicontroller.SystemUiController
-import com.google.accompanist.systemuicontroller.rememberSystemUiController
+import dev.aggregate.app.R
 import dev.aggregate.app.designsystem.R
 import dev.aggregate.app.navigation.Screen
 import dev.aggregate.designsystem.theme.AggregateTheme
@@ -66,7 +65,7 @@ fun ArticleTopBar(
     onBookmarkClick: () -> Unit,
     modifier: Modifier = Modifier,
     colorScheme: ColorScheme = MaterialTheme.colorScheme,
-    systemUiController: SystemUiController = rememberSystemUiController()
+//    systemUiController: SystemUiController = rememberSystemUiController()
 ) {
     val topBarBottom by remember {
         mutableFloatStateOf(headerHeightPx - topBarHeightPx)
@@ -79,10 +78,10 @@ fun ArticleTopBar(
         }
     }
 
-    LaunchedEffect(key1 = showTopBar) {
-        if (showTopBar) systemUiController.setStatusBarColor(color = colorScheme.surface)
-        else systemUiController.setStatusBarColor(color = Color.Transparent)
-    }
+//    LaunchedEffect(key1 = showTopBar) {
+//        if (showTopBar) systemUiController.setStatusBarColor(color = colorScheme.surface)
+//        else systemUiController.setStatusBarColor(color = Color.Transparent)
+//    }
 
     AnimatedVisibility(
         modifier = modifier,
@@ -97,7 +96,7 @@ fun ArticleTopBar(
                         imageVector = ImageVector.vectorResource(
                             id = R.drawable.ic_arrow_back
                         ),
-                        contentDescription = stringResource(id = dev.aggregate.app.R.string.navigate_back)
+                        contentDescription = stringResource(id = R.string.navigate_back)
                     )
                 }
             },
@@ -116,7 +115,7 @@ fun ArticleTopBar(
                         imageVector = ImageVector.vectorResource(
                             id = R.drawable.ic_share
                         ),
-                        contentDescription = stringResource(id = dev.aggregate.app.R.string.share)
+                        contentDescription = stringResource(id = R.string.share)
                     )
                 }
                 IconButton(onClick = onBookmarkClick) {
@@ -126,9 +125,9 @@ fun ArticleTopBar(
                         )
                         else ImageVector.vectorResource(id = R.drawable.ic_bookmark),
                         contentDescription = if (bookmarked) stringResource(
-                            id = dev.aggregate.app.R.string.bookmarked
+                            id = R.string.bookmarked
                         )
-                        else stringResource(id = dev.aggregate.app.R.string.not_bookmarked)
+                        else stringResource(id = R.string.not_bookmarked)
                     )
                 }
             },
