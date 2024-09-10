@@ -34,8 +34,18 @@ android {
         }
     }
 
+    signingConfigs {
+        create("release") {
+            storeFile = File(rootDir, "aggregatekeystore.jks")
+            keyPassword = "@ggreg@te"
+            keyAlias = "aggregate"
+            storePassword = "@ggreg@te"
+        }
+    }
+
     buildTypes {
         getByName("release") {
+            signingConfig = signingConfigs["release"]
             // cuts unused code, keep in mind that compiled dex file can contain a maximum of 65536 functions
             // in case of using reflection or something else indirect
             // we should use keep annotations to retain that unused code
@@ -96,6 +106,7 @@ dependencies {
     implementation(platform(libs.androidx.compose.bom))
     implementation(libs.androidx.material3.android)
     implementation(libs.dagger.hilt.android)
+    "baselineProfile"(project(":baselineprofile"))
     kapt(libs.dagger.hilt.compiler)
 
     implementation(project(":core:data"))

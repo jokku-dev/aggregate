@@ -20,6 +20,14 @@ android {
         buildConfigField("String", "API_BASE_URL", "\"${properties.getProperty("API_BASE_URL")}\"")
     }
 
+    buildTypes {
+        getByName("release") {
+            proguardFiles(
+                "retrofi2.pro"
+            )
+        }
+    }
+
     buildFeatures {
         buildConfig = true
     }
