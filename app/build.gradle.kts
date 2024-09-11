@@ -37,9 +37,9 @@ android {
     signingConfigs {
         create("release") {
             storeFile = File(rootDir, "aggregatekeystore.jks")
-            keyPassword = "@ggreg@te"
-            keyAlias = "aggregate"
             storePassword = "@ggreg@te"
+            keyAlias = "aggregate"
+            keyPassword = "@ggreg@te"
         }
     }
 
@@ -56,12 +56,11 @@ android {
             // but at least it makes code more concise
             // verification - verifies compatibility of code with different versions of language
             // but in android it's out of the box
-            proguardFiles(
-                // default file from Android SDK
-                getDefaultProguardFile("proguard-android-optimize.txt"),
-                // our project file
-                "proguard-rules.pro"
-            )
+
+            // default file from Android SDK
+            proguardFile(getDefaultProguardFile("proguard-android-optimize.txt"))
+            // our project files
+            proguardFile(file("proguard/"))
         }
     }
     compileOptions {
@@ -109,17 +108,17 @@ dependencies {
     "baselineProfile"(project(":baselineprofile"))
     kapt(libs.dagger.hilt.compiler)
 
-    implementation(project(":core:data"))
-    implementation(project(":core:designsystem"))
-    implementation(project(":core:ui"))
-    implementation(project(":features:topheadlines"))
-    implementation(project(":features:account"))
-    implementation(project(":features:bookmarks"))
-    implementation(project(":features:favorites"))
-    implementation(project(":features:article"))
-    implementation(project(":features:profile"))
-    implementation(project(":features:sources"))
-    implementation(project(":features:welcome"))
+    implementation(projects.core.data)
+    implementation(projects.core.designsystem)
+    implementation(projects.core.ui)
+    implementation(projects.features.topheadlines)
+    implementation(projects.features.account)
+    implementation(projects.features.bookmarks)
+    implementation(projects.features.favorites)
+    implementation(projects.features.article)
+    implementation(projects.features.profile)
+    implementation(projects.features.sources)
+    implementation(projects.features.welcome)
 
     debugImplementation(libs.okhttp.logging.interceptor)
 }

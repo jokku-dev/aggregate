@@ -6,7 +6,7 @@ plugins {
 
 android {
     namespace = "dev.aggregate.baselineprofile"
-    compileSdk = 34
+    compileSdk = libs.versions.androidSdk.compile.get().toInt()
 
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_1_8
@@ -18,8 +18,8 @@ android {
     }
 
     defaultConfig {
-        minSdk = 28
-        targetSdk = 34
+        minSdk = libs.versions.androidSdk.min.get().toInt()
+        targetSdk = libs.versions.androidSdk.target.get().toInt()
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }

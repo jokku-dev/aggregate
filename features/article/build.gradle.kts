@@ -4,11 +4,11 @@ plugins {
 }
 
 android {
-    namespace = "dev.aggregate.app.article"
-    compileSdk = 34
+    namespace = "dev.aggregate.article"
+    compileSdk = libs.versions.androidSdk.compile.get().toInt()
 
     defaultConfig {
-        minSdk = 24
+        minSdk = libs.versions.androidSdk.min.get().toInt()
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         consumerProguardFiles("consumer-rules.pro")
@@ -37,7 +37,7 @@ dependencies {
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.appcompat)
     implementation(libs.material)
-    implementation(libs.androidx.runtime.android)
+    implementation(libs.androidx.compose.runtime.android)
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)

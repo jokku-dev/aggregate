@@ -13,6 +13,7 @@ android {
     compileSdk = libs.versions.androidSdk.compile.get().toInt()
 
     defaultConfig {
+        minSdk = libs.versions.androidSdk.min.get().toInt()
         // setting field for generated BuildConfig class
         val properties = Properties()
         properties.load(project.rootProject.file("local.properties").inputStream())
@@ -20,16 +21,17 @@ android {
         buildConfigField("String", "API_BASE_URL", "\"${properties.getProperty("API_BASE_URL")}\"")
     }
 
-    buildTypes {
-        getByName("release") {
-            proguardFiles(
-                "retrofi2.pro"
-            )
-        }
-    }
-
     buildFeatures {
         buildConfig = true
+    }
+
+    compileOptions {
+        sourceCompatibility = JavaVersion.VERSION_1_8
+        targetCompatibility = JavaVersion.VERSION_1_8
+    }
+
+    kotlinOptions {
+        jvmTarget = "1.8"
     }
 }
 
@@ -41,6 +43,7 @@ dependencies {
     implementation(libs.androidx.annotation)
     implementation(libs.retrofit.converter.kotlinx.serialization)
     implementation(libs.retrofit.adapters.result)
+    implementation(libs.retrofit.responseTypeKeeper)
     implementation(libs.dagger.hilt.android)
     kapt(libs.dagger.hilt.compiler)
 }

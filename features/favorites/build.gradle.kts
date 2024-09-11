@@ -4,11 +4,11 @@ plugins {
 }
 
 android {
-    namespace = "dev.aggregate.app.favorites"
-    compileSdk = 34
+    namespace = "dev.aggregate.favorites"
+    compileSdk = libs.versions.androidSdk.compile.get().toInt()
 
     defaultConfig {
-        minSdk = 24
+        minSdk = libs.versions.androidSdk.min.get().toInt()
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         consumerProguardFiles("consumer-rules.pro")

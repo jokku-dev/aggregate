@@ -7,11 +7,11 @@ plugins {
 }
 
 android {
-    namespace = "dev.aggregate.ui"
-    compileSdk = 34
+    namespace = "dev.aggregate.topheadlines"
+    compileSdk = libs.versions.androidSdk.compile.get().toInt()
 
     defaultConfig {
-        minSdk = 24
+        minSdk = libs.versions.androidSdk.min.get().toInt()
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         consumerProguardFiles("consumer-rules.pro")
@@ -56,12 +56,12 @@ dependencies {
     implementation(libs.coil.compose)
     implementation(libs.dagger.hilt.android)
     implementation(libs.kotlinx.coroutines.android)
-    implementation(project(":app"))
-    implementation(project(":core:ui"))
-    implementation(project(":core:designsystem"))
-    implementation(project(":core:model"))
-    implementation(project(":core:datastore"))
-    implementation(project(":core:data"))
+    implementation(projects.app)
+    implementation(projects.core.ui)
+    implementation(projects.core.designsystem)
+    implementation(projects.core.model)
+    implementation(projects.core.datastore)
+    implementation(projects.core.data)
     kapt(libs.dagger.hilt.compiler)
 }
 

@@ -31,5 +31,5 @@ dependencies {
     ksp(libs.androidx.room.compiler)
     kapt(libs.dagger.hilt.compiler)
 
-    implementation(project(":core:model"))
+    implementation(projects.core.model)
 }

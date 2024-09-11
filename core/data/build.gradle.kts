@@ -34,9 +34,9 @@ dependencies {
     implementation(libs.dagger.hilt.android)
     implementation(libs.kotlinx.coroutines.android)
 
-    implementation(project(":core:common"))
-    implementation(project(":core:database"))
-    implementation(project(":core:datastore"))
-    implementation(project(":core:network"))
-    implementation(project(":core:model"))
+    implementation(projects.core.common)
+    implementation(projects.core.database)
+    implementation(projects.core.datastore)
+    implementation(projects.core.network)
+    implementation(projects.core.model)
 }

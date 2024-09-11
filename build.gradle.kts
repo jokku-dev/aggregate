@@ -17,6 +17,7 @@ plugins {
     alias(libs.plugins.ksp) apply false
 }
 
+// This task is time-consuming
 allprojects.onEach { project ->
     project.afterEvaluate {
         // It's a part of configuration phase and executes after project evaluation

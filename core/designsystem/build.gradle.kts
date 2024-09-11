@@ -4,11 +4,11 @@ plugins {
 }
 
 android {
-    namespace = "dev.aggregate.app.designsystem"
-    compileSdk = 34
+    namespace = "dev.aggregate.designsystem"
+    compileSdk = libs.versions.androidSdk.compile.get().toInt()
 
     defaultConfig {
-        minSdk = 24
+        minSdk = libs.versions.androidSdk.min.get().toInt()
     }
 
     compileOptions {
@@ -24,11 +24,11 @@ android {
 dependencies {
     implementation(libs.androidx.appcompat)
     implementation(libs.androidx.core.ktx)
-    implementation(libs.androidx.runtime.android)
+    implementation(libs.androidx.compose.runtime.android)
     implementation(libs.material)
     implementation(libs.androidx.material3.android)
     implementation(libs.coil.compose)
-    implementation(libs.androidx.ui.tooling.preview.android)
+    implementation(libs.androidx.compose.ui.tooling.preview.android)
     implementation(libs.androidx.navigation.runtime.ktx)
 
     testImplementation(libs.junit)

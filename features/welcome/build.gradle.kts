@@ -4,11 +4,11 @@ plugins {
 }
 
 android {
-    namespace = "dev.aggregate.app.welcome"
-    compileSdk = 34
+    namespace = "dev.aggregate.welcome"
+    compileSdk = libs.versions.androidSdk.compile.get().toInt()
 
     defaultConfig {
-        minSdk = 24
+        minSdk = libs.versions.androidSdk.min.get().toInt()
     }
 
     compileOptions {
@@ -28,9 +28,9 @@ dependencies {
     implementation(libs.material)
 
 
-    implementation(project(":app"))
-    implementation(project(":core:database"))
-    implementation(libs.androidx.runtime.android)
+    implementation(projects.app)
+    implementation(projects.core.database)
+    implementation(libs.androidx.compose.runtime.android)
 
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)

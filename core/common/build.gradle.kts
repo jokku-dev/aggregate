@@ -4,7 +4,7 @@ plugins {
 }
 
 android {
-    namespace = "dev.aggregate.app.common"
+    namespace = "dev.aggregate.common"
     compileSdk = libs.versions.androidSdk.compile.get().toInt()
 
     defaultConfig {
