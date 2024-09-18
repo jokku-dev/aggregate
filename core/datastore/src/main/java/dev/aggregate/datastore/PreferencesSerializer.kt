@@ -2,7 +2,7 @@ package dev.aggregate.datastore
 
 import android.util.Log
 import androidx.datastore.core.Serializer
-import dev.aggregate.datastore.model.UserData
+import dev.aggregate.model.UserData
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import kotlinx.serialization.SerializationException
@@ -26,12 +26,12 @@ object PreferencesSerializer : Serializer<UserData> {
         }
     }
 
-    override suspend fun writeTo(model: UserData, output: OutputStream) {
+    override suspend fun writeTo(t: UserData, output: OutputStream) {
         withContext(Dispatchers.IO) {
             output.write(
                 Json.encodeToString(
                     serializer = UserData.serializer(),
-                    value = model
+                    value = t
                 ).encodeToByteArray()
             )
         }

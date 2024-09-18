@@ -56,12 +56,13 @@ dependencies {
     implementation(libs.coil.compose)
     implementation(libs.dagger.hilt.android)
     implementation(libs.kotlinx.coroutines.android)
-    implementation(projects.app)
+
     implementation(projects.core.ui)
     implementation(projects.core.designsystem)
     implementation(projects.core.model)
     implementation(projects.core.datastore)
     implementation(projects.core.data)
+
     kapt(libs.dagger.hilt.compiler)
 }
 

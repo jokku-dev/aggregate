@@ -8,18 +8,18 @@ import dev.aggregate.data.toArticleEntity
 import dev.aggregate.data.toArticlesResponse
 import dev.aggregate.data.toArticlesResponseEntity
 import dev.aggregate.data.toRequestResult
+import dev.aggregate.data.util.ByCountryAndCategoryRequest
+import dev.aggregate.data.util.BySourceRequest
 import dev.aggregate.data.util.MergeStrategy
 import dev.aggregate.data.util.RequestResponseMergeStrategy
+import dev.aggregate.data.util.TopHeadlinesRequest
 import dev.aggregate.database.dao.TopHeadlinesDao
-import dev.aggregate.database.database.entity.intermediate.ResponseWithArticles
-import dev.aggregate.database.database.entity.intermediate.toArticlesResponse
+import dev.aggregate.database.entity.intermediate.ResponseWithArticles
+import dev.aggregate.database.entity.intermediate.toArticlesResponse
 import dev.aggregate.model.ArticlesResponse
 import dev.aggregate.network.NewsApi
 import dev.aggregate.network.model.NetworkArticle
 import dev.aggregate.network.model.NetworkArticlesResponse
-import dev.aggregate.ui.old.ByCountryAndCategoryRequest
-import dev.aggregate.ui.old.BySourceRequest
-import dev.aggregate.ui.old.TopHeadlinesRequest
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.flow
@@ -39,7 +39,7 @@ interface NewsRepository {
     fun observeRandomArticles(): Flow<Set<String>>
 
     fun getTopHeadlines(
-        searchQuery: String,
+        searchQuery: TopHeadlinesRequest,
         mergeStrategy: MergeStrategy<RequestResult<ArticlesResponse>> = RequestResponseMergeStrategy(),
     ): Flow<RequestResult<ArticlesResponse>>
 }
@@ -64,8 +64,8 @@ class DefaultNewsRepository @Inject constructor(
     }
 
     override fun getTopHeadlines(
-        searchQuery: String,
-        mergeStrategy: MergeStrategy<RequestResult<ArticlesResponse>> = RequestResponseMergeStrategy()
+        searchQuery: TopHeadlinesRequest,
+        mergeStrategy: MergeStrategy<RequestResult<ArticlesResponse>>
     ): Flow<RequestResult<ArticlesResponse>> {
         val cachedResponse: Flow<RequestResult<ArticlesResponse>> =
             getTopHeadlinesFromDatabase()

@@ -2,10 +2,10 @@ package dev.aggregate.data.repository
 
 import dev.aggregate.data.CategoryCode
 import dev.aggregate.data.CountryCode
+import dev.aggregate.model.DarkThemeConfig
+import dev.aggregate.model.UserData
 import dev.aggregate.datastore.PreferencesDataSource
-import dev.aggregate.datastore.model.DarkThemeConfig
-import dev.aggregate.datastore.model.UserData
-import dev.aggregate.ui.UiArticle
+import dev.aggregate.model.Article
 import kotlinx.coroutines.flow.Flow
 import javax.inject.Inject
 
@@ -16,7 +16,7 @@ interface PreferencesRepository {
     suspend fun togglePreferredCountries(countryCode: CountryCode, preferred: Boolean)
     suspend fun setPreferredCategories(categories: Set<CategoryCode>)
     suspend fun togglePreferredCategories(categoryCode: CategoryCode, preferred: Boolean)
-    suspend fun updateBookmarkedArticles(article: UiArticle, bookmarked: Boolean)
+    suspend fun updateBookmarkedArticles(article: Article, bookmarked: Boolean)
     suspend fun setDarkThemeConfig(darkThemeConfig: DarkThemeConfig)
     suspend fun setLaunchScreen(screen: String)
     suspend fun setUserLoggedIn(loggedIn: Boolean)
@@ -44,7 +44,7 @@ class UserPreferencesRepository @Inject constructor(
         preferences.togglePreferredCategories(categoryCode, preferred)
     }
 
-    override suspend fun updateBookmarkedArticles(article: UiArticle, bookmarked: Boolean) {
+    override suspend fun updateBookmarkedArticles(article: Article, bookmarked: Boolean) {
 //        preferences.updateBookmarkedArticles(article, bookmarked)
         TODO()
     }

@@ -22,15 +22,13 @@ android {
 }
 
 dependencies {
+    implementation(libs.androidx.compose.runtime.android)
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.appcompat)
     implementation(libs.javax.inject)
     implementation(libs.material)
 
-
-    implementation(projects.app)
     implementation(projects.core.database)
-    implementation(libs.androidx.compose.runtime.android)
 
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)

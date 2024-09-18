@@ -2,10 +2,8 @@ package dev.aggregate.datastore
 
 import android.util.Log
 import androidx.datastore.core.DataStore
-import dev.aggregate.data.CategoryCode
-import dev.aggregate.data.CountryCode
-import dev.aggregate.datastore.model.DarkThemeConfig
-import dev.aggregate.datastore.model.UserData
+import dev.aggregate.model.DarkThemeConfig
+import dev.aggregate.model.UserData
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.catch
 import java.io.IOException
@@ -21,10 +19,10 @@ interface PreferencesDataSource {
 
     val userData: Flow<UserData>
 
-    suspend fun setPreferredCountries(countryCodes: Set<CountryCode>)
-    suspend fun togglePreferredCountries(countryCode: CountryCode, preferred: Boolean)
-    suspend fun setPreferredCategories(categories: Set<CategoryCode>)
-    suspend fun togglePreferredCategories(categoryCode: CategoryCode, preferred: Boolean)
+    suspend fun setPreferredCountries(countryCodes: Set<String>)
+    suspend fun togglePreferredCountries(countryCode: String, preferred: Boolean)
+    suspend fun setPreferredCategories(categories: Set<String>)
+    suspend fun togglePreferredCategories(categoryCode: String, preferred: Boolean)
     suspend fun updateBookmarkedArticles(articleId: String, bookmarked: Boolean)
     suspend fun setDarkThemeConfig(darkThemeConfig: DarkThemeConfig)
     suspend fun setLaunchScreen(screen: String)
@@ -42,7 +40,7 @@ class NewsPreferencesDataSource @Inject constructor(
         }
     }
 
-    override suspend fun setPreferredCountries(countryCodes: Set<CountryCode>) {
+    override suspend fun setPreferredCountries(countryCodes: Set<String>) {
         try {
             preferences.updateData { data -> data.copy(countryCodes = countryCodes) }
         } catch (exception: IOException) {
@@ -50,7 +48,7 @@ class NewsPreferencesDataSource @Inject constructor(
         }
     }
 
-    override suspend fun togglePreferredCountries(countryCode: CountryCode, preferred: Boolean) {
+    override suspend fun togglePreferredCountries(countryCode: String, preferred: Boolean) {
         try {
             preferences.updateData { data ->
                 data.copy(
@@ -67,7 +65,7 @@ class NewsPreferencesDataSource @Inject constructor(
         }
     }
 
-    override suspend fun setPreferredCategories(categories: Set<CategoryCode>) {
+    override suspend fun setPreferredCategories(categories: Set<String>) {
         try {
             preferences.updateData { data -> data.copy(categoryCodes = categories) }
         } catch (exception: IOException) {
@@ -75,7 +73,7 @@ class NewsPreferencesDataSource @Inject constructor(
         }
     }
 
-    override suspend fun togglePreferredCategories(categoryCode: CategoryCode, preferred: Boolean) {
+    override suspend fun togglePreferredCategories(categoryCode: String, preferred: Boolean) {
         try {
             preferences.updateData { data ->
                 data.copy(

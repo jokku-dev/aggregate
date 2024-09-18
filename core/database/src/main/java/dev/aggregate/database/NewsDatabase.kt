@@ -1,8 +1,6 @@
 package dev.aggregate.database
 
-import android.content.Context
 import androidx.room.Database
-import androidx.room.Room
 import androidx.room.RoomDatabase
 import androidx.room.TypeConverters
 import dev.aggregate.database.dao.BookmarksDao
@@ -42,13 +40,4 @@ class NewsDatabase internal constructor(
 abstract class NewsRoomDatabase : RoomDatabase() {
     abstract fun topHeadlinesDao(): TopHeadlinesDao
     abstract fun bookmarksDao(): BookmarksDao
-}
-
-fun NewsDatabase(applicationContext: Context): NewsDatabase {
-    val newsRoomDatabase = Room.databaseBuilder(
-        applicationContext,
-        NewsRoomDatabase::class.java,
-        "news"
-    ).build()
-    return NewsDatabase(newsRoomDatabase)
 }

@@ -46,4 +46,5 @@ dependencies {
     implementation(libs.retrofit.responseTypeKeeper)
     implementation(libs.dagger.hilt.android)
     kapt(libs.dagger.hilt.compiler)
+    implementation(projects.core.model)
 }

@@ -13,8 +13,20 @@ import javax.inject.Qualifier
 object DispatchersModule {
 
     @Provides
+    @Dispatcher(NewsDispatchers.DEFAULT)
+    fun providesDefaultDispatcher(): CoroutineDispatcher = Dispatchers.Default
+
+    @Provides
     @Dispatcher(NewsDispatchers.IO)
     fun providesIODispatcher(): CoroutineDispatcher = Dispatchers.IO
+
+    @Provides
+    @Dispatcher(NewsDispatchers.MAIN)
+    fun providesMainDispatcher(): CoroutineDispatcher = Dispatchers.Main
+
+    @Provides
+    @Dispatcher(NewsDispatchers.UNCONFINED)
+    fun providesUnconfinedDispatcher(): CoroutineDispatcher = Dispatchers.Unconfined
 }
 
 @Qualifier
@@ -22,5 +34,8 @@ object DispatchersModule {
 annotation class Dispatcher(val newsDispatcher: NewsDispatchers)
 
 enum class NewsDispatchers {
-    IO
+    DEFAULT,
+    IO,
+    MAIN,
+    UNCONFINED
 }

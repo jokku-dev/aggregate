@@ -44,9 +44,8 @@ import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
-import dev.aggregate.app.R
-import dev.aggregate.app.designsystem.R
 import dev.aggregate.app.navigation.Screen
+import dev.aggregate.designsystem.R
 import dev.aggregate.designsystem.theme.AggregateTheme
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -63,7 +62,6 @@ fun ArticleTopBar(
     onBookmarkClick: () -> Unit,
     modifier: Modifier = Modifier,
     colorScheme: ColorScheme = MaterialTheme.colorScheme,
-//    systemUiController: SystemUiController = rememberSystemUiController()
 ) {
     val topBarBottom by remember {
         mutableFloatStateOf(headerHeightPx - topBarHeightPx)
@@ -75,11 +73,6 @@ fun ArticleTopBar(
             scrollState.value >= topBarBottom
         }
     }
-
-//    LaunchedEffect(key1 = showTopBar) {
-//        if (showTopBar) systemUiController.setStatusBarColor(color = colorScheme.surface)
-//        else systemUiController.setStatusBarColor(color = Color.Transparent)
-//    }
 
     AnimatedVisibility(
         modifier = modifier,
