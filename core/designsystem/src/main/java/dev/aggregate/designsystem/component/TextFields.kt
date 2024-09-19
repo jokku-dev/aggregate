@@ -27,7 +27,7 @@ import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.tooling.preview.Preview
-import dev.aggregate.app.R
+import dev.aggregate.designsystem.R
 import dev.aggregate.designsystem.theme.AggregateTheme
 
 @Composable
@@ -36,7 +36,7 @@ fun UsernameTextField(
     imeAction: ImeAction,
     onUsernameChange: (String) -> Unit,
     modifier: Modifier = Modifier,
-    placeholder: String = stringResource(id = dev.aggregate.app.R.string.username_hint)
+    placeholder: String = stringResource(id = R.string.username_hint)
 ) {
     OutlinedTextField(
         modifier = modifier.fillMaxWidth(),
@@ -82,7 +82,7 @@ fun EmailTextField(
     imeAction: ImeAction,
     onEmailChange: (String) -> Unit,
     modifier: Modifier = Modifier,
-    placeholder: String = stringResource(id = dev.aggregate.app.R.string.email_hint),
+    placeholder: String = stringResource(id = R.string.email_hint),
     keyboardAction: KeyboardActionScope.() -> Unit = {}
 ) {
     OutlinedTextField(
@@ -134,12 +134,7 @@ fun PasswordTextField(
     keyboardAction: KeyboardActionScope.() -> Unit = {},
     visible: Boolean = false
 ) {
-    var passwordVisible by rememberSaveable {
-        mutableStateOf(
-            visible
-        )
-    }
-
+    var passwordVisible by rememberSaveable { mutableStateOf(visible) }
     OutlinedTextField(
         modifier = modifier.fillMaxWidth(),
         value = password,
@@ -160,19 +155,24 @@ fun PasswordTextField(
         trailingIcon = {
             IconButton(onClick = { passwordVisible = !passwordVisible }) {
                 Icon(
-                    imageVector = if (passwordVisible) ImageVector.vectorResource(
-                        id = R.drawable.ic_visibility_off
-                    )
-                    else ImageVector.vectorResource(id = R.drawable.ic_visibility),
-                    contentDescription = if (passwordVisible) stringResource(
-                        id = dev.aggregate.app.R.string.hide_password
-                    )
-                    else stringResource(id = dev.aggregate.app.R.string.show_password)
+                    imageVector = if (passwordVisible) {
+                        ImageVector.vectorResource(id = R.drawable.ic_visibility_off)
+                    } else {
+                        ImageVector.vectorResource(id = R.drawable.ic_visibility)
+                    },
+                    contentDescription = if (passwordVisible) {
+                        stringResource(id = R.string.hide_password)
+                    } else {
+                        stringResource(id = R.string.show_password)
+                    }
                 )
             }
         },
-        visualTransformation = if (passwordVisible) VisualTransformation.None
-        else PasswordVisualTransformation('\u002a'),
+        visualTransformation = if (passwordVisible) {
+            VisualTransformation.None
+        } else {
+            PasswordVisualTransformation('\u002a')
+        },
         shape = shapes.medium,
         textStyle = typography.bodyLarge,
         colors = OutlinedTextFieldDefaults.colors(
@@ -212,12 +212,12 @@ fun SearchTextField(
         leadingIcon = {
             Icon(
                 imageVector = ImageVector.vectorResource(id = R.drawable.ic_search),
-                contentDescription = stringResource(id = dev.aggregate.app.R.string.search)
+                contentDescription = stringResource(id = R.string.search)
             )
         },
         placeholder = {
             Text(
-                text = stringResource(id = dev.aggregate.app.R.string.search),
+                text = stringResource(id = R.string.search),
                 style = typography.bodyLarge
             )
         },
@@ -225,7 +225,7 @@ fun SearchTextField(
             IconButton(onClick = { }) {
                 Icon(
                     imageVector = ImageVector.vectorResource(id = R.drawable.ic_mic),
-                    contentDescription = stringResource(id = dev.aggregate.app.R.string.voice_input)
+                    contentDescription = stringResource(id = R.string.voice_input)
                 )
             }
         },
@@ -275,7 +275,7 @@ fun UsernameTextFieldPreview() {
 
 @Preview(showBackground = true, name = "Unfocused and Focused")
 @Composable
-private fun EmailTextFieldPreview() {
+fun EmailTextFieldPreview() {
     AggregateTheme {
         Column {
             EmailTextField(
@@ -294,7 +294,7 @@ private fun EmailTextFieldPreview() {
 
 @Preview(showBackground = true)
 @Composable
-private fun PasswordTextFieldPreview() {
+fun PasswordTextFieldPreview() {
     AggregateTheme {
         Column {
             PasswordTextField(

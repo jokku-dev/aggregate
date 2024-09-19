@@ -13,6 +13,7 @@ import dev.aggregate.account.SignUpScreen
 import dev.aggregate.account.VerificationCodeScreen
 import dev.aggregate.article.ArticleScreen
 import dev.aggregate.bookmarks.BookmarksScreen
+import dev.aggregate.designsystem.Screen
 import dev.aggregate.favorites.FavoritesScreen
 import dev.aggregate.profile.AppLanguageScreen
 import dev.aggregate.profile.ChangePasswordScreen
@@ -26,8 +27,14 @@ import dev.aggregate.welcome.SelectFavoriteTopicsScreen
 
 @Composable
 @Suppress("LongMethod")
-fun Navigation(navController: NavHostController, startDestination: String) {
-    NavHost(navController = navController, startDestination = startDestination) {
+fun Navigation(
+    navController: NavHostController,
+    startDestination: String
+) {
+    NavHost(
+        navController = navController,
+        startDestination = startDestination
+    ) {
         composable(route = Screen.OnBoarding.route) {
             OnBoardingScreen(navController = navController)
         }

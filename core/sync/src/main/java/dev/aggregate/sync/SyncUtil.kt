@@ -1,7 +1,6 @@
 package dev.aggregate.sync
 
 import android.util.Log
-import dev.aggregate.ui.old.TopHeadlinesRequest
 import kotlin.coroutines.cancellation.CancellationException
 
 /**
@@ -9,9 +8,9 @@ import kotlin.coroutines.cancellation.CancellationException
  * source for a [Syncable].
  */
 interface Synchronizer {
-    suspend fun getChangeListVersions(): ChangeListVersions
+//    suspend fun getChangeListVersions(): ChangeListVersions
 
-    suspend fun updateChangeListVersions(update: ChangeListVersions.() -> ChangeListVersions)
+//    suspend fun updateChangeListVersions(update: ChangeListVersions.() -> ChangeListVersions)
 
     // Convenience function to call repository syncing with auto passing
     // Synchronizer implementing SyncWorker class in our case
@@ -49,29 +48,30 @@ interface Syncable {
  * implementation must guarantee this.
  */
 suspend fun Synchronizer.changeListSync(
-    changeListFetcher: suspend (TopHeadlinesRequest) -> List<NetworkChangeList>,
-    versionUpdater: ChangeListVersions.(Int) -> ChangeListVersions,
+//    changeListFetcher: suspend (TopHeadlinesRequest) -> List<NetworkChangeList>,
+//    versionUpdater: ChangeListVersions.(Int) -> ChangeListVersions,
     modelDeleter: suspend (List<String>) -> Unit,
     modelUpdater: suspend (List<String>) -> Unit,
 ) = suspendRunCatching {
+    TODO("Not yet implemented")
     // Make a GET network request using current version of data
-    val changeList = changeListFetcher()
-    if (changeList.isEmpty()) return@suspendRunCatching true
+//    val changeList = changeListFetcher()
+//    if (changeList.isEmpty()) return@suspendRunCatching true
 
     // Paired response list of deleted and new or updated
-    val (deleted, updated) = changeList.partition(NetworkChangeList::isDelete)
+//    val (deleted, updated) = changeList.partition(NetworkChangeList::isDelete)
 
     // Delete models from database that have been deleted server-side using paired list of ID's for deletion
-    modelDeleter(deleted.map(NetworkChangeList::id))
+//    modelDeleter(deleted.map(NetworkChangeList::id))
 
     // Using the change list, pull down and save the changes (akin to a git pull)
-    modelUpdater(updated.map(NetworkChangeList::id))
+//    modelUpdater(updated.map(NetworkChangeList::id))
 
     // Update the last synced version (akin to updating local git HEAD)
-    val latestVersion = changeList.last().changeListVersion
-    updateChangeListVersions {
-        versionUpdater(latestVersion)
-    }
+//    val latestVersion = changeList.last().changeListVersion
+//    updateChangeListVersions {
+//        versionUpdater(latestVersion)
+//    }
 }.isSuccess
 
 /**

@@ -1,4 +1,4 @@
-package dev.aggregate.ui
+package dev.aggregate.designsystem.component
 
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Image
@@ -39,7 +39,7 @@ import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
 import coil.request.ImageRequest
 import coil.size.Size
-import dev.aggregate.app.R
+import dev.aggregate.designsystem.R
 import dev.aggregate.designsystem.theme.AggregateTheme
 
 @Composable
@@ -62,16 +62,20 @@ fun CategoryItem(
         Text(
             text = text,
             style = typography.titleSmall,
-            color = if (unchangeableTextColor) Color.White
-            else if (selected) colorScheme.surface
-            else colorScheme.onBackground
+            color = if (unchangeableTextColor) {
+                Color.White
+            } else if (selected) {
+                colorScheme.surface
+            } else {
+                colorScheme.onBackground
+            }
         )
     }
 }
 
 @Composable
 fun ArticleItem(
-    image: String,
+    image: Any,
     title: String,
     publishedAt: String,
     bookmarked: Boolean,
@@ -85,7 +89,10 @@ fun ArticleItem(
             .height(300.dp),
         shape = CardDefaults.outlinedShape,
         colors = CardDefaults.outlinedCardColors(containerColor = colorScheme.surface),
-        border = BorderStroke(width = 1.dp, color = colorScheme.secondary)
+        border = BorderStroke(
+            width = 1.dp,
+            color = colorScheme.secondary
+        )
     ) {
         AsyncImage(
             model = ImageRequest.Builder(LocalContext.current)
@@ -122,12 +129,16 @@ fun ArticleItem(
                     color = colorScheme.onSecondary
                 )
                 Icon(
-                    imageVector = if (bookmarked) ImageVector.vectorResource(
-                        R.drawable.ic_bookmark_selected
-                    )
-                    else ImageVector.vectorResource(R.drawable.ic_bookmark),
-                    contentDescription = if (bookmarked) stringResource(id = R.string.bookmarked)
-                    else stringResource(id = R.string.not_bookmarked)
+                    imageVector = if (bookmarked) {
+                        ImageVector.vectorResource(R.drawable.ic_bookmark_selected)
+                    } else {
+                        ImageVector.vectorResource(R.drawable.ic_bookmark)
+                    },
+                    contentDescription = if (bookmarked) {
+                        stringResource(id = R.string.bookmarked)
+                    } else {
+                        stringResource(id = R.string.not_bookmarked)
+                    }
                 )
             }
         }
@@ -142,10 +153,16 @@ fun SourceItem(
 ) {
     Box(
         modifier = Modifier
-            .size(width = 160.dp, height = 72.dp)
+            .size(
+                width = 160.dp,
+                height = 72.dp
+            )
             .background(color = colorScheme.surface)
             .border(
-                border = BorderStroke(width = 1.dp, color = colorScheme.secondary),
+                border = BorderStroke(
+                    width = 1.dp,
+                    color = colorScheme.secondary
+                ),
                 shape = shapes.medium
             )
             .clickable(onClick = onItemClick),

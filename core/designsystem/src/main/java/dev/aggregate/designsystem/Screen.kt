@@ -1,6 +1,4 @@
-package dev.aggregate.app.navigation
-
-import dev.aggregate.app.R
+package dev.aggregate.designsystem
 
 sealed class Screen(val route: String) {
     object OnBoarding : Screen("onBoarding")

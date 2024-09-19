@@ -12,12 +12,12 @@
     <!--Sign In-->
     <string name="welcome_back">Welcome Back</string>
     <string name="i_am_happy_to_see_you_again">I am happy to see you again. You can continue where you left off by logging in.</string>
-    <string name="email_hint">Email Address</string>
+
     <string name="password_hint">Password</string>
     <string name="forgot_password_question">Forgot Password?</string>
-    <string name="sign_in">Sign In</string>
+
     <string name="or">or</string>
-    <string name="sign_in_with_google">Sign In with Google</string>
+
     <string name="sign_in_with_facebook">Sign In with Facebook</string>
     <string name="do_not_have_an_account">Don\'t have an account?</string>
     <string name="sign_up">Sign Up</string>
@@ -40,9 +40,9 @@
     <string name="repeat_new_password">Repeat New Password</string>
     <string name="remember_an_old_password">Remember an old password?</string>
     <!--Sign Up-->
-    <string name="welcome_to_aggregate">Welcome to Aggregate</string>
+
     <string name="i_guess_you_are_new_around">Hello, I guess you are new around here. You can start using the application after sign up.</string>
-    <string name="username_hint">Username</string>
+
     <string name="repeat_password">Repeat Password</string>
     <string name="already_have_an_account">Already have an account?</string>
     <!--Select Favorite Topics-->
@@ -61,7 +61,7 @@
     <!--Homepage-->
     <string name="browse">Browse</string>
     <string name="discover_things">Discover things of this world</string>
-    <string name="search">Search</string>
+
     <string name="temp_category">Category</string>
     <string name="temp_category_capitalized">CATEGORY</string>
     <string name="recommended_for_you">Recommended for you</string>
@@ -77,16 +77,16 @@
     <string name="you_have_not_saved_any">You haven\'t saved any articles yet. Start reading and bookmarking them now</string>
     <!--Profile-->
     <string name="profile">Profile</string>
-    <string name="notifications">Notifications</string>
+
     <string name="favorite_topics">Favorite topics</string>
     <string name="on_boarding">On Boarding</string>
-    <string name="language">Language</string>
+
     <string name="change_password">Change Password</string>
     <string name="privacy">Privacy</string>
     <string name="terms_and_conditions">Terms &amp; Conditions</string>
     <string name="sign_out">Sign Out</string>
     <!--Profile settings-->
-    <string name="system">System</string>
+
     <string name="current_password">Current Password</string>
     <string name="terms_and_conditions_text">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
         Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
@@ -99,13 +99,9 @@
     <string name="author">Author</string>
     <!--Accessibility-->
     <string name="bookmarked">bookmarked article</string>
-    <string name="not_bookmarked">not bookmarked article</string>
-    <string name="selected">selected</string>
-    <string name="navigate_back">navigate back</string>
-    <string name="share">share</string>
-    <string name="show_password">show password</string>
-    <string name="hide_password">hide password</string>
-    <string name="voice_input">voice input</string>
+
+
+
     <string name="profile_image">profile image</string>
 
     <!--Countries-->
@@ -191,6 +187,5 @@
     <string name="unknown_category">Unknown category</string>
 
     <!--Tray notification-->
-    <string name="sync_notification">Sync notification</string>
-    <string name="foreground_task_for_syncing_news">Foreground task for syncing news</string>
+
 </resources>

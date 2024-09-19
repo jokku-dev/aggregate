@@ -7,7 +7,6 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.text.ClickableText
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme.colorScheme
@@ -21,8 +20,8 @@ import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.text.AnnotatedString
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import dev.aggregate.app.R
-import dev.aggregate.presentation.theme.AggregateTheme
+import dev.aggregate.designsystem.R
+import dev.aggregate.designsystem.theme.AggregateTheme
 
 @Composable
 fun HeadlineAndDescriptionText(
@@ -78,7 +77,6 @@ fun BackButtonAndHeadlineText(
 fun HelpBottomText(
     questionText: String,
     actionText: AnnotatedString,
-    onClick: () -> Unit,
     modifier: Modifier = Modifier
 ) {
     Row(
@@ -92,12 +90,11 @@ fun HelpBottomText(
             style = typography.bodyLarge,
             color = colorScheme.onSecondary
         )
-        ClickableText(
+        Text(
             text = actionText,
             style = typography.bodyLarge.copy(
                 color = colorScheme.onSurfaceVariant
             ),
-            onClick = { onClick() },
         )
     }
 }
@@ -105,29 +102,32 @@ fun HelpBottomText(
 @Preview(showBackground = true)
 @Composable
 fun HeadlineAndDescriptionTextPreview() {
-    dev.aggregate.app.presentation.theme.AggregateTheme {
-        HeadlineAndDescriptionText(headline = "Headline", description = "Long description")
+    AggregateTheme {
+        HeadlineAndDescriptionText(
+            headline = "Headline",
+            description = "Long description"
+        )
     }
 }
 
 @Preview(showBackground = true)
 @Composable
 fun BackButtonAndHeadlineTextPreview() {
-    dev.aggregate.app.presentation.theme.AggregateTheme {
+    AggregateTheme {
         BackButtonAndHeadlineText(
             headline = stringResource(R.string.language),
-            onClick = {})
+            onClick = {}
+        )
     }
 }
 
 @Preview(showBackground = true)
 @Composable
 fun HelpBottomTextPreview() {
-    dev.aggregate.app.presentation.theme.AggregateTheme {
+    AggregateTheme {
         HelpBottomText(
             questionText = "Question text?",
-            actionText = AnnotatedString("Action text"),
-            onClick = {}
+            actionText = AnnotatedString("Action text")
         )
     }
 }

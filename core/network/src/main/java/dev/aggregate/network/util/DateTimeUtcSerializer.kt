@@ -10,7 +10,10 @@ import java.util.Date
 
 internal object DateTimeUtcSerializer : KSerializer<Date> {
 
-    override val descriptor = PrimitiveSerialDescriptor("Date", PrimitiveKind.STRING)
+    override val descriptor = PrimitiveSerialDescriptor(
+        "Date",
+        PrimitiveKind.STRING
+    )
 
     override fun serialize(
         encoder: Encoder,
@@ -19,5 +22,5 @@ internal object DateTimeUtcSerializer : KSerializer<Date> {
 
     override fun deserialize(
         decoder: Decoder
-    ): Date = DateFormat.getDateTimeInstance().parse(decoder.decodeString())
+    ): Date = DateFormat.getDateTimeInstance().parse(decoder.decodeString()) as Date
 }

@@ -1,15 +1,19 @@
 package dev.aggregate.sync.initializers
 
 import android.content.Context
-import kotlin.apply
-import kotlin.jvm.java
+import androidx.startup.AppInitializer
+import androidx.startup.Initializer
+import androidx.work.ExistingWorkPolicy
+import androidx.work.WorkManager
+import androidx.work.WorkManagerInitializer
+import dev.aggregate.sync.workers.SyncWorker
 
 object Sync {
     // This method is a workaround to manually initialize the sync process instead of relying on
     // automatic initialization with Androidx Startup. It is called from the app module's
     // Application.onCreate() and should be only done once.
     fun initialize(context: Context) {
-        androidx.startup.AppInitializer.getInstance(context)
+        AppInitializer.getInstance(context)
             .initializeComponent(SyncInitializer::class.java)
     }
 }
@@ -20,20 +24,20 @@ const val SYNC_FAVORITE_TOP_HEADLINES = "SyncFavoriteTopHeadlines"
 /**
  * Registers work to sync the data layer periodically on app startup.
  */
-class SyncInitializer : androidx.startup.Initializer<Sync> {
+class SyncInitializer : Initializer<Sync> {
     override fun create(context: Context): Sync {
-        androidx.work.WorkManager.getInstance(context).apply {
+        WorkManager.getInstance(context).apply {
             // Run sync on app startup and ensure only one sync worker runs at any time
             enqueueUniqueWork(
                 SYNC_FAVORITE_TOP_HEADLINES,
-                androidx.work.ExistingWorkPolicy.KEEP,
-                dev.aggregate.sync.workers.SyncWorker.startUpSyncWork()
+                ExistingWorkPolicy.KEEP,
+                SyncWorker.startUpSyncWork()
             )
         }
 
         return Sync
     }
 
-    override fun dependencies(): List<Class<out androidx.startup.Initializer<*>>> =
-        listOf(androidx.work.WorkManagerInitializer::class.java)
+    override fun dependencies(): List<Class<out Initializer<*>>> =
+        listOf(WorkManagerInitializer::class.java)
 }

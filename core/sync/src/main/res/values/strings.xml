@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="foreground_task_for_syncing_news">Foreground task for syncing news</string>
+    <string name="sync_notification">Sync notification</string>
+    <string name="welcome_to_aggregate">Welcome to Aggregate</string>
+</resources>

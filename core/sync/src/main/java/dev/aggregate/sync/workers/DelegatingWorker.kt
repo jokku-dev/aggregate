@@ -1,6 +1,14 @@
 package dev.aggregate.sync.workers
 
 import android.content.Context
+import androidx.hilt.work.HiltWorkerFactory
+import androidx.work.CoroutineWorker
+import androidx.work.Data
+import androidx.work.ForegroundInfo
+import androidx.work.WorkerParameters
+import dagger.hilt.EntryPoint
+import dagger.hilt.InstallIn
+import dagger.hilt.android.EntryPointAccessors
 import dagger.hilt.components.SingletonComponent
 import kotlin.reflect.KClass
 
@@ -19,27 +27,25 @@ internal fun KClass<out CoroutineWorker>.delegatedData() =
 
 class DelegatingWorker(
     appContext: Context,
-    workerParams: androidx.work.WorkerParameters,
-) : androidx.work.CoroutineWorker(appContext, workerParams) {
+    workerParams: WorkerParameters,
+) : CoroutineWorker(appContext, workerParams) {
     // get worker name from key/value worker params input data
     private val workerClassName =
         workerParams.inputData.getString(WORKER_CLASS_NAME) ?: ""
     private val delegateWorker =
         // Call a Hilt WorkerFactory from SingletonComponent and ask it to create our worker
-        dagger.hilt.android.EntryPointAccessors.fromApplication<HiltWorkerFactoryEntryPoint>(
-            appContext
-        )
+        EntryPointAccessors.fromApplication<HiltWorkerFactoryEntryPoint>(appContext)
             .hiltWorkerFactory()
             .createWorker(
                 appContext,
                 workerClassName,
                 workerParams
-            ) as? androidx.work.CoroutineWorker
+            ) as? CoroutineWorker
             ?: throw IllegalArgumentException("Unable to find appropriate worker")
 
-    override suspend fun getForegroundInfo(): androidx.work.ForegroundInfo =
+    override suspend fun getForegroundInfo(): ForegroundInfo =
         delegateWorker.getForegroundInfo()
 
-    override suspend fun doWork(): androidx.work.ListenableWorker.Result =
+    override suspend fun doWork(): Result =
         delegateWorker.doWork()
 }

@@ -1,13 +1,14 @@
 package dev.aggregate.ui
 
 import kotlinx.serialization.Contextual
+import kotlinx.serialization.Serializable
 
 @Serializable
 data class UiCategory(
     @Contextual
     val name: UiText,
     @Contextual
-    val code: UrlParameter,
+    val code: String,
     val imageId: Int = 0,
     val selected: Boolean
 )

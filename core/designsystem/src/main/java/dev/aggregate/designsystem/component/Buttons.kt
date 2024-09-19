@@ -22,21 +22,25 @@ import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.Switch
 import androidx.compose.material3.SwitchDefaults
 import androidx.compose.material3.Text
+import androidx.compose.runtime.Composable
+import androidx.compose.ui.Alignment
+import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.painter.Painter
+import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.res.vectorResource
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import dev.aggregate.presentation.theme.AggregateTheme
+import dev.aggregate.designsystem.R
+import dev.aggregate.designsystem.theme.AggregateTheme
 
-enum class ButtonType {
-    DIRECTION, SIGN_IN_OUT, SWITCH, SELECT
-}
-
-@androidx.compose.runtime.Composable
+@Composable
 fun BigActionButton(
     text: String,
     onClick: () -> Unit,
-    modifier: androidx.compose.ui.Modifier = androidx.compose.ui.Modifier
+    modifier: Modifier = Modifier
 ) {
     Button(
         modifier = modifier
@@ -56,12 +60,12 @@ fun BigActionButton(
     }
 }
 
-@androidx.compose.runtime.Composable
+@Composable
 fun SignInWithButton(
-    painter: androidx.compose.ui.graphics.painter.Painter,
+    painter: Painter,
     text: String,
     onClick: () -> Unit,
-    modifier: androidx.compose.ui.Modifier = androidx.compose.ui.Modifier
+    modifier: Modifier = Modifier
 ) {
     OutlinedButton(
         modifier = modifier
@@ -79,33 +83,33 @@ fun SignInWithButton(
         )
     ) {
         Row(
-            modifier = androidx.compose.ui.Modifier.fillMaxWidth(),
+            modifier = Modifier.fillMaxWidth(),
             horizontalArrangement = Arrangement.SpaceBetween,
-            verticalAlignment = androidx.compose.ui.Alignment.CenterVertically
+            verticalAlignment = Alignment.CenterVertically
         ) {
             Image(
-                modifier = androidx.compose.ui.Modifier.size(24.dp),
+                modifier = Modifier.size(24.dp),
                 painter = painter,
                 contentDescription = text
             )
             Text(
                 text = text,
                 style = typography.titleLarge,
-                textAlign = androidx.compose.ui.text.style.TextAlign.Center,
+                textAlign = TextAlign.Center,
                 softWrap = false
             )
             Spacer(
-                modifier = androidx.compose.ui.Modifier.size(24.dp)
+                modifier = Modifier.size(24.dp)
             )
         }
     }
 }
 
-@androidx.compose.runtime.Composable
+@Composable
 fun PreferencesButton(
     title: Int,
     buttonType: ButtonType,
-    modifier: androidx.compose.ui.Modifier = androidx.compose.ui.Modifier,
+    modifier: Modifier = Modifier,
     onClick: () -> Unit = {},
     checked: Boolean = false,
     onCheckedChanged: (Boolean) -> Unit = {},
@@ -121,29 +125,30 @@ fun PreferencesButton(
             .padding(horizontal = 24.dp)
             .clickable(onClick = onClick),
         horizontalArrangement = Arrangement.SpaceBetween,
-        verticalAlignment = androidx.compose.ui.Alignment.CenterVertically
+        verticalAlignment = Alignment.CenterVertically
     ) {
         Text(
-            text = androidx.compose.ui.res.stringResource(id = title),
+            text = stringResource(id = title),
             style = typography.titleLarge,
             color = if (selected) colorScheme.surface else colorScheme.onBackground,
         )
         when (buttonType) {
             ButtonType.DIRECTION -> {
                 Icon(
-                    imageVector = androidx.compose.ui.graphics.vector.ImageVector.vectorResource(dev.aggregate.app.R.drawable.ic_arrow_right),
-                    contentDescription = androidx.compose.ui.res.stringResource(id = title),
+                    imageVector = ImageVector.vectorResource(R.drawable.ic_arrow_right),
+                    contentDescription = stringResource(id = title),
                     tint = colorScheme.onBackground
                 )
             }
 
             ButtonType.SIGN_IN_OUT -> {
                 Icon(
-                    imageVector = if (signedIn) androidx.compose.ui.graphics.vector.ImageVector.vectorResource(
-                        dev.aggregate.app.R.drawable.ic_logout
-                    )
-                    else androidx.compose.ui.graphics.vector.ImageVector.vectorResource(dev.aggregate.app.R.drawable.ic_login),
-                    contentDescription = androidx.compose.ui.res.stringResource(id = title),
+                    imageVector = if (signedIn) {
+                        ImageVector.vectorResource(R.drawable.ic_logout)
+                    } else {
+                        ImageVector.vectorResource(R.drawable.ic_login)
+                    },
+                    contentDescription = stringResource(id = title),
                     tint = colorScheme.onBackground
                 )
             }
@@ -162,25 +167,24 @@ fun PreferencesButton(
             }
 
             ButtonType.SELECT -> {
-                if (selected)
+                if (selected) {
                     Icon(
-                        imageVector = androidx.compose.ui.graphics.vector.ImageVector.vectorResource(
-                            id = dev.aggregate.app.R.drawable.ic_round_check
-                        ),
-                        contentDescription = androidx.compose.ui.res.stringResource(id = dev.aggregate.app.R.string.selected),
+                        imageVector = ImageVector.vectorResource(id = R.drawable.ic_round_check),
+                        contentDescription = stringResource(id = R.string.selected),
                         tint = colorScheme.surface
                     )
-                else
-                    Spacer(modifier = androidx.compose.ui.Modifier.size(24.dp))
+                } else {
+                    Spacer(modifier = Modifier.size(24.dp))
+                }
             }
         }
     }
 }
 
 @Preview
-@androidx.compose.runtime.Composable
+@Composable
 fun BigActionButtonPreview() {
-    dev.aggregate.app.presentation.theme.AggregateTheme {
+    AggregateTheme {
         BigActionButton(
             text = "Get Started",
             onClick = {}
@@ -189,55 +193,62 @@ fun BigActionButtonPreview() {
 }
 
 @Preview
-@androidx.compose.runtime.Composable
+@Composable
 fun SignInButtonPreview() {
-    dev.aggregate.app.presentation.theme.AggregateTheme {
+    AggregateTheme {
         SignInWithButton(
-            painter = androidx.compose.ui.res.painterResource(id = dev.aggregate.app.R.drawable.ic_logo_google),
-            text = androidx.compose.ui.res.stringResource(id = dev.aggregate.app.R.string.sign_in_with_google),
+            painter = androidx.compose.ui.res.painterResource(id = R.drawable.ic_logo_google),
+            text = stringResource(id = R.string.sign_in_with_google),
             onClick = {}
         )
     }
 }
 
 @Preview
-@androidx.compose.runtime.Composable
+@Composable
 fun PreferencesButtonPreview() {
-    dev.aggregate.app.presentation.theme.AggregateTheme {
+    AggregateTheme {
         Column {
             PreferencesButton(
-                title = dev.aggregate.app.R.string.notifications,
+                title = R.string.notifications,
                 onClick = {},
                 buttonType = ButtonType.SWITCH,
                 checked = true
             )
             PreferencesButton(
-                title = dev.aggregate.app.R.string.notifications,
+                title = R.string.notifications,
                 onClick = {},
                 buttonType = ButtonType.SWITCH,
                 checked = false
             )
             PreferencesButton(
-                title = dev.aggregate.app.R.string.language,
+                title = R.string.language,
                 onClick = {},
                 buttonType = ButtonType.DIRECTION
             )
             PreferencesButton(
-                title = dev.aggregate.app.R.string.sign_in,
+                title = R.string.sign_in,
                 onClick = {},
                 buttonType = ButtonType.SIGN_IN_OUT
             )
             PreferencesButton(
-                title = dev.aggregate.app.R.string.system,
+                title = R.string.system,
                 onClick = {},
                 buttonType = ButtonType.SELECT
             )
             PreferencesButton(
-                title = dev.aggregate.app.R.string.system,
+                title = R.string.system,
                 onClick = {},
                 buttonType = ButtonType.SELECT,
                 selected = true
             )
         }
     }
+}
+
+enum class ButtonType {
+    DIRECTION,
+    SIGN_IN_OUT,
+    SWITCH,
+    SELECT
 }

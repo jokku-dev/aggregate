@@ -1,12 +1,16 @@
 package dev.aggregate.sync.di
 
+import dagger.Module
+import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
+import dev.aggregate.sync.SyncStatusMonitor
+import dev.aggregate.sync.WorkManagerSyncStatusMonitor
 
-@dagger.Module
-@dagger.hilt.InstallIn(dagger.hilt.components.SingletonComponent::class)
+@Module
+@InstallIn(SingletonComponent::class)
 interface SyncModule {
     @dagger.Binds
     fun bindsSyncStatusMonitor(
-        syncStatusMonitor: dev.aggregate.data.sync.WorkManagerSyncStatusMonitor
-    ): dev.aggregate.data.sync.SyncStatusMonitor
+        syncStatusMonitor: WorkManagerSyncStatusMonitor
+    ): SyncStatusMonitor
 }

@@ -29,12 +29,11 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavHostController
-import dev.aggregate.app.R
 import dev.aggregate.designsystem.component.HeadlineAndDescriptionText
 import dev.aggregate.designsystem.component.SearchTextField
 import dev.aggregate.designsystem.theme.AggregateTheme
-import dev.aggregate.ui.ArticleItem
-import dev.aggregate.ui.CategoryItem
+import dev.aggregate.designsystem.component.ArticleItem
+import dev.aggregate.designsystem.component.CategoryItem
 import dev.aggregate.ui.UiArticle
 import dev.aggregate.ui.UiCategory
 

@@ -1,21 +1,19 @@
 package dev.aggregate.data.repository
 
-import dev.aggregate.data.CategoryCode
-import dev.aggregate.data.CountryCode
-import dev.aggregate.model.DarkThemeConfig
-import dev.aggregate.model.UserData
 import dev.aggregate.datastore.PreferencesDataSource
 import dev.aggregate.model.Article
+import dev.aggregate.model.DarkThemeConfig
+import dev.aggregate.model.UserData
 import kotlinx.coroutines.flow.Flow
 import javax.inject.Inject
 
 interface PreferencesRepository {
     val userData: Flow<UserData>
 
-    suspend fun setPreferredCountries(countryCodes: Set<CountryCode>)
-    suspend fun togglePreferredCountries(countryCode: CountryCode, preferred: Boolean)
-    suspend fun setPreferredCategories(categories: Set<CategoryCode>)
-    suspend fun togglePreferredCategories(categoryCode: CategoryCode, preferred: Boolean)
+    suspend fun setPreferredCountries(countryCodes: Set<String>)
+    suspend fun togglePreferredCountries(countryCode: String, preferred: Boolean)
+    suspend fun setPreferredCategories(categories: Set<String>)
+    suspend fun togglePreferredCategories(categoryCode: String, preferred: Boolean)
     suspend fun updateBookmarkedArticles(article: Article, bookmarked: Boolean)
     suspend fun setDarkThemeConfig(darkThemeConfig: DarkThemeConfig)
     suspend fun setLaunchScreen(screen: String)
@@ -28,19 +26,19 @@ class UserPreferencesRepository @Inject constructor(
 
     override val userData: Flow<UserData> = preferences.userData
 
-    override suspend fun setPreferredCountries(countryCodes: Set<CountryCode>) {
+    override suspend fun setPreferredCountries(countryCodes: Set<String>) {
         preferences.setPreferredCountries(countryCodes)
     }
 
-    override suspend fun togglePreferredCountries(countryCode: CountryCode, preferred: Boolean) {
+    override suspend fun togglePreferredCountries(countryCode: String, preferred: Boolean) {
         preferences.togglePreferredCountries(countryCode, preferred)
     }
 
-    override suspend fun setPreferredCategories(categories: Set<CategoryCode>) {
+    override suspend fun setPreferredCategories(categories: Set<String>) {
         preferences.setPreferredCategories(categories)
     }
 
-    override suspend fun togglePreferredCategories(categoryCode: CategoryCode, preferred: Boolean) {
+    override suspend fun togglePreferredCategories(categoryCode: String, preferred: Boolean) {
         preferences.togglePreferredCategories(categoryCode, preferred)
     }
 

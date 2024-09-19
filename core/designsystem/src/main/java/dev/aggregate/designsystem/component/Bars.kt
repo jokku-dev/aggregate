@@ -44,8 +44,8 @@ import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
-import dev.aggregate.app.navigation.Screen
 import dev.aggregate.designsystem.R
+import dev.aggregate.designsystem.Screen
 import dev.aggregate.designsystem.theme.AggregateTheme
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -84,9 +84,7 @@ fun ArticleTopBar(
             navigationIcon = {
                 IconButton(onClick = onBackClick) {
                     Icon(
-                        imageVector = ImageVector.vectorResource(
-                            id = R.drawable.ic_arrow_back
-                        ),
+                        imageVector = ImageVector.vectorResource(id = R.drawable.ic_arrow_back),
                         contentDescription = stringResource(id = R.string.navigate_back)
                     )
                 }
@@ -103,22 +101,22 @@ fun ArticleTopBar(
             actions = {
                 IconButton(onClick = onShareClick) {
                     Icon(
-                        imageVector = ImageVector.vectorResource(
-                            id = R.drawable.ic_share
-                        ),
+                        imageVector = ImageVector.vectorResource(id = R.drawable.ic_share),
                         contentDescription = stringResource(id = R.string.share)
                     )
                 }
                 IconButton(onClick = onBookmarkClick) {
                     Icon(
-                        imageVector = if (bookmarked) ImageVector.vectorResource(
-                            id = R.drawable.ic_bookmark_selected
-                        )
-                        else ImageVector.vectorResource(id = R.drawable.ic_bookmark),
-                        contentDescription = if (bookmarked) stringResource(
-                            id = R.string.bookmarked
-                        )
-                        else stringResource(id = R.string.not_bookmarked)
+                        imageVector = if (bookmarked) {
+                            ImageVector.vectorResource(id = R.drawable.ic_bookmark_selected)
+                        } else {
+                            ImageVector.vectorResource(id = R.drawable.ic_bookmark)
+                        },
+                        contentDescription = if (bookmarked) {
+                            stringResource(id = R.string.bookmarked)
+                        } else {
+                            stringResource(id = R.string.not_bookmarked)
+                        }
                     )
                 }
             },
@@ -164,6 +162,21 @@ fun BottomBar(
             val currentDestination = navBackStackEntry?.destination
             items.forEach { item ->
                 NavigationBarItem(
+                    // Defines whether any of hierarchy destinations and item roots are the same
+                    // (in cases of nested navigation)
+                    selected = currentDestination?.hierarchy?.any { it.route == item.route } == true,
+                    onClick = {
+                        navController.navigate(item.route) {
+                            // pops all previous destinations up to start destination
+                            popUpTo(navController.graph.findStartDestination().id) {
+                                saveState = true
+                            }
+                            // Avoid multiple copies of the same destination when reselecting the same item
+                            launchSingleTop = true
+                            // Restore state when reselecting a previously selected item
+                            restoreState = true
+                        }
+                    },
                     icon = {
                         Column(horizontalAlignment = CenterHorizontally) {
                             if (item.badgeCount > 0) {
@@ -179,17 +192,13 @@ fun BottomBar(
                                     }
                                 ) {
                                     Icon(
-                                        imageVector = ImageVector.vectorResource(
-                                            id = item.icon
-                                        ),
+                                        imageVector = ImageVector.vectorResource(id = item.icon),
                                         contentDescription = item.route
                                     )
                                 }
                             } else {
                                 Icon(
-                                    imageVector = ImageVector.vectorResource(
-                                        id = item.icon
-                                    ),
+                                    imageVector = ImageVector.vectorResource(id = item.icon),
                                     contentDescription = item.route
                                 )
                             }
@@ -199,22 +208,7 @@ fun BottomBar(
                         selectedIconColor = colorScheme.primary,
                         unselectedIconColor = colorScheme.onSurface,
                         indicatorColor = colorScheme.surface
-                    ),
-                    // Defines whether any of hierarchy destinations and item roots are the same
-                    // (in cases of nested navigation)
-                    selected = currentDestination?.hierarchy?.any { it.route == item.route } == true,
-                    onClick = {
-                        navController.navigate(item.route) {
-                            // pops all previous destinations up to start destination
-                            popUpTo(navController.graph.findStartDestination().id) {
-                                saveState = true
-                            }
-                            // Avoid multiple copies of the same destination when reselecting the same item
-                            launchSingleTop = true
-                            // Restore state when reselecting a previously selected item
-                            restoreState = true
-                        }
-                    }
+                    )
                 )
             }
         }

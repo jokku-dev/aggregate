@@ -6,7 +6,7 @@ import androidx.compose.ui.text.font.Font
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.sp
-import dev.aggregate.app.R
+import dev.aggregate.designsystem.R
 
 val SfProText = FontFamily(
     Font(
@@ -28,7 +28,6 @@ val SfProText = FontFamily(
 )
 
 val Typography = Typography(
-
     // Top bar headlines
     headlineLarge = TextStyle(
         fontFamily = SfProText,

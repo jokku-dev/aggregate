@@ -33,11 +33,20 @@ android {
 }
 
 dependencies {
-
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.appcompat)
+    implementation(libs.androidx.compose.runtime)
     implementation(libs.material)
     implementation(libs.androidx.hilt.common)
+    implementation(libs.androidx.lifecycle.livedata)
+    implementation(libs.androidx.tracing.ktx)
+    implementation(libs.dagger.hilt.android)
+    implementation(libs.androidx.work.ktx)
+    implementation(libs.androidx.hilt.work)
+    implementation(libs.kotlinx.coroutines.core)
+    implementation(projects.core.common)
+    implementation(projects.core.data)
+    implementation(projects.core.datastore)
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
