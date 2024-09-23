@@ -34,8 +34,8 @@ import dev.aggregate.designsystem.component.SearchTextField
 import dev.aggregate.designsystem.theme.AggregateTheme
 import dev.aggregate.designsystem.component.ArticleItem
 import dev.aggregate.designsystem.component.CategoryItem
-import dev.aggregate.ui.UiArticle
-import dev.aggregate.ui.UiCategory
+import dev.aggregate.model.ui.UiArticle
+import dev.aggregate.model.ui.UiCategory
 
 @Composable
 fun TopHeadlinesScreen(

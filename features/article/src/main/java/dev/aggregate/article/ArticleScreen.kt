@@ -1,6 +1,8 @@
 package dev.aggregate.article
 
+import android.app.Activity
 import androidx.activity.OnBackPressedCallback
+import androidx.activity.compose.LocalOnBackPressedDispatcherOwner
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.ScrollState
 import androidx.compose.foundation.background
@@ -24,72 +26,78 @@ import androidx.compose.material3.MaterialTheme.colorScheme
 import androidx.compose.material3.MaterialTheme.typography
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.DisposableEffect
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
+import androidx.compose.ui.Alignment
+import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.ColorFilter
+import androidx.compose.ui.graphics.ColorMatrix
 import androidx.compose.ui.graphics.graphicsLayer
+import androidx.compose.ui.graphics.toArgb
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalDensity
-import androidx.compose.ui.platform.LocalLifecycleOwner
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.unit.Density.toPx
+import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.lifecycle.compose.LocalLifecycleOwner
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavHostController
-import com.google.accompanist.systemuicontroller.SystemUiController
-import com.google.accompanist.systemuicontroller.rememberSystemUiController
-import dev.aggregate.app.article.R
+import dev.aggregate.designsystem.Screen
+import dev.aggregate.designsystem.component.ArticleTopBar
+import dev.aggregate.designsystem.component.CategoryItem
 import dev.aggregate.designsystem.theme.AggregateTheme
 import dev.aggregate.designsystem.theme.GreyLight
-import dev.aggregate.presentation.model.UiArticle
-import dev.aggregate.presentation.model.UiArticleSource
-import dev.aggregate.presentation.navigation.Screen
-import dev.aggregate.ui.ArticleTopBar
-import kotlin.apply
-import kotlin.text.toFloat
+import dev.aggregate.model.ui.UiArticle
+import dev.aggregate.model.ui.UiArticleSource
 
 private const val OTHER = "other"
 
-@androidx.compose.runtime.Composable
+@Composable
 fun ArticleScreen(
     navController: NavHostController,
-    viewModel: dev.aggregate.app.NewsViewModel = hiltViewModel<dev.aggregate.app.BaseNewsViewModel>(),
-    systemUiController: SystemUiController = rememberSystemUiController(),
-    colorScheme: ColorScheme = MaterialTheme.colorScheme
+    colorScheme: ColorScheme = MaterialTheme.colorScheme,
+    viewModel: ArticleViewModel = hiltViewModel<BaseArticleViewModel>()
 ) {
-    val state by viewModel.articleState.collectAsStateWithLifecycle()
-    var currentScreen by androidx.compose.runtime.remember {
-        androidx.compose.runtime.mutableStateOf(
-            dev.aggregate.app.presentation.navigation.Screen.ArticleScreen.route
+    var currentScreen by remember { mutableStateOf(Screen.ArticleScreen.route) }
+    val articleUiState = viewModel.articleUiState.collectAsStateWithLifecycle().value
+    val onBackPressedDispatcher = LocalOnBackPressedDispatcherOwner.current?.onBackPressedDispatcher
+    val lifecycleOwner = LocalLifecycleOwner.current
+    val window = (LocalContext.current as Activity).window
+
+    if (articleUiState is ArticleUiState.Success) {
+        ArticleScreenContent(
+            article = articleUiState.article,
+            onBackClick = {
+                currentScreen = OTHER
+                navController.popBackStack()
+            }
         )
     }
 
-    val onBackPressedDispatcher =
-        androidx.activity.compose.LocalOnBackPressedDispatcherOwner.current?.onBackPressedDispatcher
-    val lifecycleOwner = androidx.compose.ui.platform.LocalLifecycleOwner.current
+    LaunchedEffect(key1 = currentScreen) {
 
-    ArticleScreenContent(
-        article = state.article,
-        onBackClick = {
-            currentScreen = OTHER
-            navController.popBackStack()
-        }
-    )
-
-    androidx.compose.runtime.LaunchedEffect(key1 = currentScreen) {
-        if (currentScreen == dev.aggregate.app.presentation.navigation.Screen.ArticleScreen.route) {
-            systemUiController.setStatusBarColor(color = androidx.compose.ui.graphics.Color.Transparent)
+        if (currentScreen == Screen.ArticleScreen.route) {
+            window.statusBarColor = Color.Transparent.toArgb()
+            window.navigationBarColor = Color.Transparent.toArgb()
         } else {
-            systemUiController.setStatusBarColor(color = colorScheme.surface)
+            window.statusBarColor = colorScheme.surface.toArgb()
+            window.navigationBarColor = colorScheme.surface.toArgb()
         }
     }
     // On back pressed handling to bring back the color of the status bar
-    androidx.compose.runtime.DisposableEffect(key1 = Unit) {
+    DisposableEffect(key1 = Unit) {
         val backCallback: OnBackPressedCallback = object : OnBackPressedCallback(true) {
             override fun handleOnBackPressed() {
                 currentScreen = OTHER
@@ -105,26 +113,24 @@ fun ArticleScreen(
     }
 }
 
-@androidx.compose.runtime.Composable
+@Composable
 fun ArticleScreenContent(
-    article: dev.aggregate.app.presentation.model.UiArticle,
+    article: UiArticle,
     onBackClick: () -> Unit,
-    modifier: androidx.compose.ui.Modifier = androidx.compose.ui.Modifier,
-    headerHeight: androidx.compose.ui.unit.Dp = 400.dp,
-    heightToShowTopBar: androidx.compose.ui.unit.Dp = 108.dp,
-    topBarsHeight: androidx.compose.ui.unit.Dp = 84.dp,
-    overlayPadding: androidx.compose.ui.unit.Dp = 32.dp
+    modifier: Modifier = Modifier,
+    headerHeight: Dp = 400.dp,
+    heightToShowTopBar: Dp = 108.dp,
+    topBarsHeight: Dp = 84.dp,
+    overlayPadding: Dp = 32.dp
 ) {
     val scrollState = rememberScrollState()
     // Density scope provides conversion to pixels
-    val headerHeightPx =
-        with(androidx.compose.ui.platform.LocalDensity.current) { headerHeight.toPx() }
-    val topBarHeightPx =
-        with(androidx.compose.ui.platform.LocalDensity.current) { heightToShowTopBar.toPx() }
+    val headerHeightPx = with(LocalDensity.current) { headerHeight.toPx() }
+    val topBarHeightPx = with(LocalDensity.current) { heightToShowTopBar.toPx() }
 
     Box(
         modifier = modifier,
-        contentAlignment = androidx.compose.ui.Alignment.TopCenter
+        contentAlignment = Alignment.TopCenter
     ) {
         ArticleHeader(
             urlToImage = article.urlToImage,
@@ -137,7 +143,7 @@ fun ArticleScreenContent(
             onBackClick = onBackClick,
             onShareClick = {},
             onBookmarkClick = {},
-            modifier = androidx.compose.ui.Modifier.height(headerHeight)
+            modifier = Modifier.height(headerHeight)
         )
         ArticleBody(
             scrollState = scrollState,
@@ -145,7 +151,7 @@ fun ArticleScreenContent(
             topBarsHeight = topBarsHeight,
             overlayPadding = overlayPadding
         )
-        dev.aggregate.app.ui.ArticleTopBar(
+        ArticleTopBar(
             bookmarked = article.bookmarked,
             sourceName = article.source.name,
             url = article.url,
@@ -171,7 +177,7 @@ fun ArticleHeader(
     onBackClick: () -> Unit,
     onShareClick: () -> Unit,
     onBookmarkClick: () -> Unit,
-    modifier: androidx.compose.ui.Modifier = androidx.compose.ui.Modifier
+    modifier: Modifier = Modifier
 ) {
     Box(
         modifier = modifier
@@ -187,11 +193,11 @@ fun ArticleHeader(
     ) {
         // AsyncImage(model = urlToImage, contentDescription =)
         Image(
-            painter = androidx.compose.ui.res.painterResource(id = dev.aggregate.app.R.drawable.img_news_mock_1),
+            painter = painterResource(id = R.drawable.img_news_mock_1),
             contentDescription = null,
-            contentScale = androidx.compose.ui.layout.ContentScale.Crop,
-            colorFilter = androidx.compose.ui.graphics.ColorFilter.colorMatrix(
-                androidx.compose.ui.graphics.ColorMatrix().apply {
+            contentScale = ContentScale.Crop,
+            colorFilter = ColorFilter.colorMatrix(
+                ColorMatrix().apply {
                     setToScale(
                         0.5f,
                         0.5f,
@@ -200,86 +206,78 @@ fun ArticleHeader(
                     )
                 }
             ),
-            modifier = androidx.compose.ui.Modifier.fillMaxSize(),
+            modifier = Modifier.fillMaxSize(),
         )
         Column(
-            horizontalAlignment = androidx.compose.ui.Alignment.Start,
-            modifier = androidx.compose.ui.Modifier.padding(top = 36.dp, bottom = 32.dp)
+            horizontalAlignment = Alignment.Start,
+            modifier = Modifier.padding(top = 36.dp, bottom = 32.dp)
         ) {
             Row(
-                modifier = androidx.compose.ui.Modifier
+                modifier = Modifier
                     .fillMaxWidth()
                     .padding(horizontal = 4.dp),
                 horizontalArrangement = Arrangement.SpaceBetween,
-                verticalAlignment = androidx.compose.ui.Alignment.Top
+                verticalAlignment = Alignment.Top
             ) {
                 IconButton(onClick = onBackClick) {
                     Icon(
-                        imageVector = androidx.compose.ui.graphics.vector.ImageVector.vectorResource(
-                            id = dev.aggregate.app.R.drawable.ic_arrow_back
-                        ),
-                        contentDescription = androidx.compose.ui.res.stringResource(id = R.string.navigate_back),
-                        tint = androidx.compose.ui.graphics.Color.White
+                        imageVector = ImageVector.vectorResource(id = R.drawable.ic_arrow_back),
+                        contentDescription = stringResource(id = R.string.navigate_back),
+                        tint = Color.White
                     )
                 }
                 Row {
                     IconButton(onClick = onShareClick) {
                         Icon(
-                            imageVector = androidx.compose.ui.graphics.vector.ImageVector.vectorResource(
-                                id = dev.aggregate.app.R.drawable.ic_share
-                            ),
-                            contentDescription = androidx.compose.ui.res.stringResource(id = R.string.share),
-                            tint = androidx.compose.ui.graphics.Color.White
+                            imageVector = ImageVector.vectorResource(id = R.drawable.ic_share),
+                            contentDescription = stringResource(id = R.string.share),
+                            tint = Color.White
                         )
                     }
                     IconButton(onClick = onBookmarkClick) {
                         Icon(
                             imageVector = if (bookmarked) {
-                                androidx.compose.ui.graphics.vector.ImageVector.vectorResource(
-                                    id = dev.aggregate.app.R.drawable.ic_bookmark_selected
-                                )
+                                ImageVector.vectorResource(id = R.drawable.ic_bookmark_selected)
                             } else {
                                 ImageVector.vectorResource(id = R.drawable.ic_bookmark)
                             },
                             contentDescription = if (bookmarked) {
-                                androidx.compose.ui.res.stringResource(
-                                    id = dev.aggregate.app.R.string.bookmarked
-                                )
+                                stringResource(id = R.string.bookmarked)
                             } else {
-                                androidx.compose.ui.res.stringResource(id = R.string.not_bookmarked)
+                                stringResource(id = R.string.not_bookmarked)
                             },
-                            tint = androidx.compose.ui.graphics.Color.White
+                            tint = Color.White
                         )
                     }
                 }
             }
             Column(
-                horizontalAlignment = androidx.compose.ui.Alignment.Start,
+                horizontalAlignment = Alignment.Start,
                 verticalArrangement = Arrangement.SpaceEvenly,
-                modifier = androidx.compose.ui.Modifier
+                modifier = Modifier
                     .fillMaxSize()
                     .padding(horizontal = 16.dp)
                     .padding(top = 32.dp)
             ) {
-                dev.aggregate.app.ui.CategoryItem(
+                CategoryItem(
                     text = sourceName,
                     unchangeableTextColor = true
                 )
                 Text(
                     text = title,
                     style = typography.headlineMedium,
-                    color = androidx.compose.ui.graphics.Color.White,
+                    color = Color.White,
                 )
                 Column {
                     Text(
                         text = author,
                         style = typography.titleLarge,
-                        color = androidx.compose.ui.graphics.Color.White
+                        color = Color.White
                     )
                     Text(
-                        text = androidx.compose.ui.res.stringResource(dev.aggregate.app.R.string.author),
+                        text = stringResource(R.string.author),
                         style = typography.labelMedium,
-                        color = dev.aggregate.app.designsystem.theme.GreyLight
+                        color = GreyLight
                     )
                 }
             }
@@ -287,13 +285,13 @@ fun ArticleHeader(
     }
 }
 
-@androidx.compose.runtime.Composable
+@Composable
 fun ArticleBody(
     scrollState: ScrollState,
-    headerHeight: androidx.compose.ui.unit.Dp,
-    topBarsHeight: androidx.compose.ui.unit.Dp,
-    overlayPadding: androidx.compose.ui.unit.Dp,
-    modifier: androidx.compose.ui.Modifier = androidx.compose.ui.Modifier
+    headerHeight: Dp,
+    topBarsHeight: Dp,
+    overlayPadding: Dp,
+    modifier: Modifier = Modifier
 ) {
     Column(
         modifier = modifier
@@ -301,15 +299,13 @@ fun ArticleBody(
             .padding(top = topBarsHeight)
             .verticalScroll(scrollState)
     ) {
-        Spacer(
-            modifier = androidx.compose.ui.Modifier.height(headerHeight - (overlayPadding + topBarsHeight))
-        )
+        Spacer(modifier = Modifier.height(headerHeight - (overlayPadding + topBarsHeight)))
         Text(
-            text = stringResource(id = dev.aggregate.app.R.string.terms_and_conditions_text) +
-                    stringResource(id = dev.aggregate.app.R.string.terms_and_conditions_text),
+            text = stringResource(id = R.string.terms_and_conditions_text) +
+                    stringResource(id = R.string.terms_and_conditions_text),
             style = typography.bodyLarge,
             color = colorScheme.onBackground,
-            modifier = androidx.compose.ui.Modifier
+            modifier = Modifier
                 .clip(RoundedCornerShape(topStart = 24.dp, topEnd = 24.dp))
                 .background(color = colorScheme.surface)
                 .padding(horizontal = 16.dp)
@@ -319,18 +315,21 @@ fun ArticleBody(
 }
 
 @Preview
-@androidx.compose.runtime.Composable
+@Composable
 fun ArticleScreenPreview() {
-    dev.aggregate.app.designsystem.theme.AggregateTheme {
+    AggregateTheme {
         ArticleScreenContent(
-            article = dev.aggregate.app.presentation.model.UiArticle(
-                source = dev.aggregate.app.presentation.model.UiArticleSource(name = "The Washington Post"),
+            article = UiArticle(
                 author = "Oliver Darcy",
+                bookmarked = false,
+                content = "",
+                description = "",
+                publishedAt = "2023-04-25T08:36",
+                source = UiArticleSource(id = "", name = "The Washington Post"),
                 title = "Fox News' sudden firing of Tucker Carlson may have come down to one simple calculation - CNN",
                 url = "",
                 urlToImage = "",
-                publishedAt = "2023-04-25T08:36",
-                bookmarked = false
+                viewed = false
             ),
             onBackClick = {}
         )

@@ -1,7 +1,7 @@
 package dev.aggregate.topheadlines
 
-import dev.aggregate.ui.UiArticle
-import dev.aggregate.ui.UiCategory
+import dev.aggregate.model.ui.UiArticle
+import dev.aggregate.model.ui.UiCategory
 
 
 data class UiTopHeadlines(

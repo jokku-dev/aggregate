@@ -8,9 +8,9 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import dev.aggregate.data.map
 import dev.aggregate.data.repository.NewsRepository
 import dev.aggregate.datastore.PreferencesDataSource
-import dev.aggregate.ui.UiCategory
-import dev.aggregate.ui.UiErrorMessage
-import dev.aggregate.ui.UiText
+import dev.aggregate.model.ui.UiCategory
+import dev.aggregate.model.ui.UiErrorMessage
+import dev.aggregate.model.ui.UiText
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job

@@ -4,41 +4,43 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
+import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
+import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.AnnotatedString
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
-import dev.aggregate.app.account.R
+import dev.aggregate.designsystem.Screen
+import dev.aggregate.designsystem.component.BigActionButton
+import dev.aggregate.designsystem.component.CommonColumn
+import dev.aggregate.designsystem.component.EmailTextField
+import dev.aggregate.designsystem.component.HeadlineAndDescriptionText
+import dev.aggregate.designsystem.component.HelpBottomText
+import dev.aggregate.designsystem.component.PasswordTextField
+import dev.aggregate.designsystem.component.UsernameTextField
 import dev.aggregate.designsystem.theme.AggregateTheme
-import dev.aggregate.presentation.navigation.Screen
-import dev.aggregate.ui.HelpBottomText
 
-@androidx.compose.runtime.Composable
+@Composable
 fun SignUpScreen(
     navController: NavHostController
 ) {
-    var username by androidx.compose.runtime.saveable.rememberSaveable {
-        androidx.compose.runtime.mutableStateOf(
-            ""
-        )
+    var username by rememberSaveable {
+        mutableStateOf("")
     }
-    var email by androidx.compose.runtime.saveable.rememberSaveable {
-        androidx.compose.runtime.mutableStateOf(
-            ""
-        )
+    var email by rememberSaveable {
+        mutableStateOf("")
     }
-    var password by androidx.compose.runtime.saveable.rememberSaveable {
-        androidx.compose.runtime.mutableStateOf(
-            ""
-        )
+    var password by rememberSaveable {
+        mutableStateOf("")
     }
-    var passwordRepeat by androidx.compose.runtime.saveable.rememberSaveable {
-        androidx.compose.runtime.mutableStateOf(
-            ""
-        )
+    var passwordRepeat by rememberSaveable {
+        mutableStateOf("")
     }
 
     SignUpScreenContent(
@@ -52,20 +54,20 @@ fun SignUpScreen(
         onPasswordRepeatChange = { newPasswordRepeat -> passwordRepeat = newPasswordRepeat },
         onButtonClick = {
             navController.popBackStack(
-                route = dev.aggregate.app.presentation.navigation.Screen.SignIn.route,
+                route = Screen.SignIn.route,
                 inclusive = false
             )
         },
         onBottomTextClick = {
             navController.popBackStack(
-                route = dev.aggregate.app.presentation.navigation.Screen.SignIn.route,
+                route = Screen.SignIn.route,
                 inclusive = false
             )
         }
     )
 }
 
-@androidx.compose.runtime.Composable
+@Composable
 fun SignUpScreenContent(
     username: String,
     email: String,
@@ -80,50 +82,48 @@ fun SignUpScreenContent(
 ) {
     val scrollState = rememberScrollState()
 
-    dev.aggregate.app.ui.CommonColumn(modifier = androidx.compose.ui.Modifier.verticalScroll(state = scrollState)) {
-        dev.aggregate.app.ui.HeadlineAndDescriptionText(
-            headline = androidx.compose.ui.res.stringResource(id = R.string.welcome_to_aggregate),
-            description = androidx.compose.ui.res.stringResource(id = R.string.i_guess_you_are_new_around)
+    CommonColumn(modifier = Modifier.verticalScroll(state = scrollState)) {
+        HeadlineAndDescriptionText(
+            headline = stringResource(id = R.string.welcome_to_aggregate),
+            description = stringResource(id = R.string.i_guess_you_are_new_around)
         )
-        dev.aggregate.app.ui.UsernameTextField(
-            modifier = androidx.compose.ui.Modifier.padding(top = 32.dp),
-            imeAction = androidx.compose.ui.text.input.ImeAction.Next,
+        UsernameTextField(
+            modifier = Modifier.padding(top = 32.dp),
+            imeAction = ImeAction.Next,
             username = username,
             onUsernameChange = { newUsername -> onUsernameChange(newUsername) }
         )
-        dev.aggregate.app.ui.EmailTextField(
-            modifier = androidx.compose.ui.Modifier.padding(top = 16.dp),
-            imeAction = androidx.compose.ui.text.input.ImeAction.Next,
+        EmailTextField(
+            modifier = Modifier.padding(top = 16.dp),
+            imeAction = ImeAction.Next,
             email = email,
             onEmailChange = { newEmail -> onEmailChange(newEmail) }
         )
-        dev.aggregate.app.ui.PasswordTextField(
-            modifier = androidx.compose.ui.Modifier.padding(top = 16.dp),
-            placeholder = androidx.compose.ui.res.stringResource(id = dev.aggregate.app.R.string.password_hint),
-            imeAction = androidx.compose.ui.text.input.ImeAction.Next,
+        PasswordTextField(
+            modifier = Modifier.padding(top = 16.dp),
+            placeholder = stringResource(id = R.string.password_hint),
+            imeAction = ImeAction.Next,
             password = password,
             onPasswordChange = { newPassword -> onPasswordChange(newPassword) }
         )
-        dev.aggregate.app.ui.PasswordTextField(
-            modifier = androidx.compose.ui.Modifier.padding(top = 16.dp),
-            placeholder = androidx.compose.ui.res.stringResource(id = dev.aggregate.app.R.string.repeat_password),
-            imeAction = androidx.compose.ui.text.input.ImeAction.Done,
+        PasswordTextField(
+            modifier = Modifier.padding(top = 16.dp),
+            placeholder = stringResource(id = R.string.repeat_password),
+            imeAction = ImeAction.Done,
             password = passwordRepeat,
             onPasswordChange = { newPasswordRepeat -> onPasswordRepeatChange(newPasswordRepeat) },
             keyboardAction = { onButtonClick() }
         )
-        dev.aggregate.app.ui.BigActionButton(
-            modifier = androidx.compose.ui.Modifier.padding(top = 16.dp),
-            text = androidx.compose.ui.res.stringResource(id = dev.aggregate.app.R.string.sign_up),
+        BigActionButton(
+            modifier = Modifier.padding(top = 16.dp),
+            text = stringResource(id = R.string.sign_up),
             onClick = onButtonClick
         )
-        Spacer(modifier = androidx.compose.ui.Modifier.weight(1f))
-        dev.aggregate.app.ui.HelpBottomText(
-            questionText = androidx.compose.ui.res.stringResource(id = R.string.already_have_an_account),
-            actionText = androidx.compose.ui.text.AnnotatedString(
-                text = androidx.compose.ui.res.stringResource(
-                    id = dev.aggregate.app.R.string.sign_in
-                )
+        Spacer(modifier = Modifier.weight(1f))
+        HelpBottomText(
+            questionText = stringResource(id = R.string.already_have_an_account),
+            actionText = AnnotatedString(
+                text = stringResource(id = R.string.sign_in)
             ),
             onClick = onBottomTextClick
         )
@@ -131,9 +131,9 @@ fun SignUpScreenContent(
 }
 
 @Preview(showBackground = true)
-@androidx.compose.runtime.Composable
+@Composable
 fun SignUpScreenPreview() {
-    dev.aggregate.app.designsystem.theme.AggregateTheme {
+    AggregateTheme {
         SignUpScreenContent(
             username = "Username",
             email = "Email",

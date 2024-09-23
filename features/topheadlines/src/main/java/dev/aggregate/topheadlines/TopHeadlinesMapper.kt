@@ -1,9 +1,7 @@
 package dev.aggregate.topheadlines
 
 import dev.aggregate.data.RequestResult
-import dev.aggregate.model.Article
 import dev.aggregate.model.ArticlesResponse
-import dev.aggregate.ui.UiArticle
 
 internal fun RequestResult<UiTopHeadlines>.toState(): TopHeadlinesState {
     return when (this) {
@@ -14,5 +12,3 @@ internal fun RequestResult<UiTopHeadlines>.toState(): TopHeadlinesState {
 }
 
 internal fun ArticlesResponse.toUiTopHeadlines() = UiTopHeadlines()
-
-internal fun Article.toUiArticle() = UiArticle()

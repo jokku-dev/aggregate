@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="bookmarks">Bookmarks</string>
+    <string name="saved_articles">Saved articles to the library</string>
+    <string name="you_have_not_saved_any">You haven\'t saved any articles yet. Start reading and bookmarking them now</string>
+</resources>

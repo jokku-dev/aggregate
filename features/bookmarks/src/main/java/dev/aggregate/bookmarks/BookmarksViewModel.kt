@@ -1,25 +1,38 @@
 package dev.aggregate.bookmarks
 
-import dev.aggregate.ui.old.Result
-import kotlinx.coroutines.flow.MutableStateFlow
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
+import dagger.hilt.android.lifecycle.HiltViewModel
+import dev.aggregate.data.repository.NewsPreferencesRepository
+import dev.aggregate.model.ui.UiArticle
+import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.flow.onStart
+import kotlinx.coroutines.flow.stateIn
+import javax.inject.Inject
 
 interface BookmarksViewModel {
-    val bookmarksState: StateFlow<dev.aggregate.app.ui.old.Result<BookmarksState>>
+    val bookmarksState: StateFlow<BookmarksState>
 }
 
-@dagger.hilt.android.lifecycle.HiltViewModel
-class MainBookmarksViewModel @javax.inject.Inject constructor(
+@HiltViewModel
+class MainBookmarksViewModel @Inject constructor(
+    val newsPreferencesRepository: NewsPreferencesRepository,
+) : ViewModel(), BookmarksViewModel {
 
-) : dev.aggregate.app.BaseNewsViewModel(), BookmarksViewModel {
-
-    private val _bookmarksState =
-        MutableStateFlow<dev.aggregate.app.ui.old.Result<BookmarksState>>(dev.aggregate.app.ui.old.Result.Loading)
-    override val bookmarksState = _bookmarksState.asStateFlow()
-
+    override val bookmarksState: StateFlow<BookmarksState> =
+        newsPreferencesRepository.observeBookmarkedArticles()
+            .map<List<UiArticle>, BookmarksState>(BookmarksState::Success)
+            .onStart { emit(BookmarksState.Loading) }
+            .stateIn(
+                scope = viewModelScope,
+                started = SharingStarted.WhileSubscribed(5_000),
+                initialValue = BookmarksState.Loading
+            )
 }
 
-data class BookmarksState(
-    val bookmarkedArticles: List<dev.aggregate.app.presentation.model.UiArticle> = emptyList()
-)
+sealed interface BookmarksState {
+    data object Loading : BookmarksState
+    data class Success(val bookmarkedArticles: List<UiArticle>) : BookmarksState
+}

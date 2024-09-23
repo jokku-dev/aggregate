@@ -1,4 +1,4 @@
-package dev.aggregate.ui
+package dev.aggregate.model.ui
 
 import kotlinx.serialization.Contextual
 import kotlinx.serialization.Serializable

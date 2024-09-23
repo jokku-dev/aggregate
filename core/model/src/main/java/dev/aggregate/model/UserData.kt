@@ -7,6 +7,7 @@ data class UserData(
     val categoryCodes: Set<String> = emptySet(),
     val countryCodes: Set<String> = emptySet(),
     val bookmarkedArticleIds: Set<String> = emptySet(),
+    val viewedArticleIds: Set<String> = emptySet(),
     val topCategoryType: TopCategoryType = TopCategoryType.COUNTRY,
     val darkThemeConfig: DarkThemeConfig = DarkThemeConfig.FOLLOW_SYSTEM,
     val launchScreen: String = "",

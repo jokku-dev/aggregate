@@ -1,4 +1,4 @@
-package dev.aggregate.ui
+package dev.aggregate.model.ui
 
 data class UiAppLanguage(
     val language: UiText,

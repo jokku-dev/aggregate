@@ -1,5 +1,6 @@
 package dev.aggregate.designsystem.component
 
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -77,7 +78,8 @@ fun BackButtonAndHeadlineText(
 fun HelpBottomText(
     questionText: String,
     actionText: AnnotatedString,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    onClick: () -> Unit
 ) {
     Row(
         modifier = modifier
@@ -92,6 +94,7 @@ fun HelpBottomText(
         )
         Text(
             text = actionText,
+            modifier = Modifier.clickable { onClick() },
             style = typography.bodyLarge.copy(
                 color = colorScheme.onSurfaceVariant
             ),
@@ -127,7 +130,8 @@ fun HelpBottomTextPreview() {
     AggregateTheme {
         HelpBottomText(
             questionText = "Question text?",
-            actionText = AnnotatedString("Action text")
+            actionText = AnnotatedString("Action text"),
+            onClick = {}
         )
     }
 }

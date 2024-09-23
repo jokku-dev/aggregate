@@ -1,4 +1,4 @@
-package dev.aggregate.ui
+package dev.aggregate.model.ui
 
 import androidx.annotation.DrawableRes
 import androidx.annotation.StringRes
