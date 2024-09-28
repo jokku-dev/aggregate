@@ -29,11 +29,11 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavHostController
+import dev.aggregate.designsystem.component.ArticleItem
+import dev.aggregate.designsystem.component.CategoryItem
 import dev.aggregate.designsystem.component.HeadlineAndDescriptionText
 import dev.aggregate.designsystem.component.SearchTextField
 import dev.aggregate.designsystem.theme.AggregateTheme
-import dev.aggregate.designsystem.component.ArticleItem
-import dev.aggregate.designsystem.component.CategoryItem
 import dev.aggregate.model.ui.UiArticle
 import dev.aggregate.model.ui.UiCategory
 
@@ -47,17 +47,15 @@ fun TopHeadlinesScreen(
     var search by rememberSaveable { mutableStateOf("") }
 
     when (val currentState = state) {
-        is TopHeadlinesState.Failure -> TopHeadlinesWithError()
-        is TopHeadlinesState.Loading -> ArticlesDuringUpdate()
-        is TopHeadlinesState.None -> EmptyTopHeadlines()
+        is TopHeadlinesState.Failure -> TODO("Not implemented")
+        is TopHeadlinesState.Loading -> TODO("Not implemented")
+        is TopHeadlinesState.None -> TODO("Not implemented")
         is TopHeadlinesState.Success -> TopHeadlinesScreenContent(
             categories = currentState.stateData.categories,
             uiArticles = currentState.stateData.articles,
             search = search,
             onSearchChanged = { newSearch -> search = newSearch },
-            selectCategory = { category ->
-                viewModel.selectCategory(category)
-            },
+            selectCategory = { category -> viewModel.selectCategory(category) },
             keyboardAction = {},
             onArticleClick = {}
         )
@@ -103,7 +101,7 @@ fun TopHeadlinesScreenContent(
         ) {
             items(count = categories.size) {
                 CategoryItem(
-                    text = stringResource(id = TODO("Not Implemented")),
+                    text = categories[it].name.asString(),
                     selected = categories[it].selected,
                     onItemClick = { selectCategory(categories[it]) }
                 )
@@ -221,20 +219,7 @@ fun TopHeadlinesScreenPreview(
 ) {
     AggregateTheme {
         TopHeadlinesScreenContent(
-            categories = listOf(
-//                UiCategory(
-//                    text = R.string.sports,
-//                    selected = false
-//                ),
-//                UiCategory(
-//                    text = R.string.sports,
-//                    selected = true
-//                ),
-//                UiCategory(
-//                    text = R.string.sports,
-//                    selected = false
-//                ),
-            ),
+            categories = emptyList(),
             uiArticles = articles,
             search = "",
             onSearchChanged = {},
@@ -245,10 +230,6 @@ fun TopHeadlinesScreenPreview(
     }
 }
 
-private class ArticlesPreviewProvider() : PreviewParameterProvider<UiArticle> {
-    override val values: Sequence<UiArticle> = sequenceOf(
-        UiArticle(),
-        UiArticle(),
-        UiArticle(),
-    )
+private class ArticlesPreviewProvider : PreviewParameterProvider<UiArticle> {
+    override val values: Sequence<UiArticle> = emptySequence()
 }

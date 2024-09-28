@@ -37,7 +37,7 @@ interface NewsRepository {
     fun observeRandomArticles(): Flow<Set<String>>
 
     fun getTopHeadlines(
-        searchQuery: TopHeadlinesRequest,
+        searchQuery: String,
         mergeStrategy: MergeStrategy<RequestResult<ArticlesResponse>> = RequestResponseMergeStrategy(),
     ): Flow<RequestResult<ArticlesResponse>>
 }
@@ -62,7 +62,7 @@ class DefaultNewsRepository @Inject constructor(
     }
 
     override fun getTopHeadlines(
-        searchQuery: TopHeadlinesRequest,
+        searchQuery: String,
         mergeStrategy: MergeStrategy<RequestResult<ArticlesResponse>>
     ): Flow<RequestResult<ArticlesResponse>> {
         val cachedResponse: Flow<RequestResult<ArticlesResponse>> =

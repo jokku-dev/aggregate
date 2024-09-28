@@ -15,7 +15,7 @@
     <string name="russian">Russian</string>
     <string name="swedish">Swedish</string>
     <string name="chinese">Chinese</string>
-
+    <!--Categories-->
     <string name="business">Business</string>
     <string name="entertainment">Entertainment</string>
     <string name="general">General</string>
@@ -23,7 +23,6 @@
     <string name="science">Science</string>
     <string name="sports">Sports</string>
     <string name="technology">Technology</string>
-
     <!--Countries-->
     <string name="united_arab_emirates">United Arab Emirates</string>
     <string name="argentina">Argentina</string>

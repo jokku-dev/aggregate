@@ -1,6 +1,14 @@
 package dev.aggregate.welcome
 
+import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import dagger.hilt.android.lifecycle.HiltViewModel
+import dev.aggregate.data.CategoryType
+import dev.aggregate.data.LocalDataProvider
+import dev.aggregate.data.repository.PreferencesRepository
+import dev.aggregate.model.UserData
+import dev.aggregate.model.ui.UiCategory
+import dev.aggregate.model.ui.UiOnBoardingPage
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
@@ -10,28 +18,33 @@ import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
-import kotlin.code
-import kotlin.collections.any
+import javax.inject.Inject
 
 interface WelcomeViewModel {
+    val onBoardingUiState: StateFlow<OnBoardingState>
+    val favoriteCategoriesUiState: StateFlow<FavoriteCategoriesState>
     fun setLaunchScreen(screen: String)
+    fun switchIsCountryFavorite(
+        country: String,
+        preferred: Boolean
+    )
+
     fun switchIsCategoryFavorite(
-        categoryCode: dev.aggregate.app.data.UrlParameter,
+        category: String,
         preferred: Boolean
     )
 }
 
-@dagger.hilt.android.lifecycle.HiltViewModel
-class MainWelcomeViewModel @javax.inject.Inject constructor(
-    private val preferencesRepository: dev.aggregate.app.data.PreferencesRepository,
-    localDataProvider: dev.aggregate.model.LocalDataProvider,
+@HiltViewModel
+class MainWelcomeViewModel @Inject constructor(
+    private val preferencesRepository: PreferencesRepository,
+    localDataProvider: LocalDataProvider,
     private val dispatcher: CoroutineDispatcher = Dispatchers.Main
-) : dev.aggregate.app.BaseNewsViewModel(), WelcomeViewModel {
+) : ViewModel(), WelcomeViewModel {
 
-    private val userData: Flow<dev.aggregate.app.database.preferences.model.UserData> =
-        preferencesRepository.userData
+    private val userData: Flow<UserData> = preferencesRepository.userData
 
-    val onBoardingUiState: StateFlow<OnBoardingState> = flowOf(
+    override val onBoardingUiState: StateFlow<OnBoardingState> = flowOf(
         OnBoardingState(localDataProvider.provideOnBoardingPages())
     ).stateIn(
         scope = viewModelScope,
@@ -41,41 +54,43 @@ class MainWelcomeViewModel @javax.inject.Inject constructor(
 
     val favoriteCountriesUiState: StateFlow<FavoriteCountriesState> = combine(
         userData,
-        flowOf(localDataProvider.provideNewsCategoriesPreferences(dev.aggregate.model.CategoryType.COUNTRY))
+        flowOf(localDataProvider.provideNewsCategoriesPreferences(CategoryType.COUNTRY))
     ) { userData, countries ->
         FavoriteCountriesState(
             countries = countries.map { country ->
-                if (userData.countryCodes.any { code -> country.code.equals(code.value) })
+                if (userData.countryCodes.any { code -> country.code == code }) {
                     country.copy(selected = true)
-                else
+                } else {
                     country.copy(selected = false)
+                }
             }
         )
     }.stateIn(
         scope = viewModelScope,
         started = SharingStarted.WhileSubscribed(5_000),
         initialValue = FavoriteCountriesState(
-            localDataProvider.provideNewsCategoriesPreferences(dev.aggregate.model.CategoryType.COUNTRY)
+            localDataProvider.provideNewsCategoriesPreferences(CategoryType.COUNTRY)
         )
     )
 
-    val favoriteCategoriesUiState: StateFlow<FavoriteCategoriesState> = combine(
+    override val favoriteCategoriesUiState: StateFlow<FavoriteCategoriesState> = combine(
         userData,
-        flowOf(localDataProvider.provideNewsCategoriesPreferences(dev.aggregate.model.CategoryType.CATEGORY))
+        flowOf(localDataProvider.provideNewsCategoriesPreferences(CategoryType.CATEGORY))
     ) { userData, categories ->
         FavoriteCategoriesState(
             categories = categories.map { category ->
-                if (userData.categoryCodes.any { code -> category.code == code })
+                if (userData.categoryCodes.any { code -> category.code == code }) {
                     category.copy(selected = true)
-                else
+                } else {
                     category.copy(selected = false)
+                }
             }
         )
     }.stateIn(
         scope = viewModelScope,
         started = SharingStarted.WhileSubscribed(5_000),
         initialValue = FavoriteCategoriesState(
-            localDataProvider.provideNewsCategoriesPreferences(dev.aggregate.model.CategoryType.CATEGORY)
+            localDataProvider.provideNewsCategoriesPreferences(CategoryType.CATEGORY)
         )
     )
 
@@ -85,36 +100,39 @@ class MainWelcomeViewModel @javax.inject.Inject constructor(
         }
     }
 
-    override fun switchIsCategoryFavorite(
-        categoryCode: dev.aggregate.app.data.UrlParameter,
+    override fun switchIsCountryFavorite(
+        country: String,
         preferred: Boolean
     ) {
         viewModelScope.launch(dispatcher) {
-            when (categoryCode) {
-                is dev.aggregate.app.data.CountryCode -> preferencesRepository.togglePreferredCountries(
-                    categoryCode,
-                    preferred
-                )
+            preferencesRepository.togglePreferredCountries(
+                country,
+                preferred
+            )
+        }
+    }
 
-                is dev.aggregate.app.data.CategoryCode -> preferencesRepository.togglePreferredCategories(
-                    categoryCode,
-                    preferred
-                )
-
-                else -> return@launch
-            }
+    override fun switchIsCategoryFavorite(
+        category: String,
+        preferred: Boolean
+    ) {
+        viewModelScope.launch(dispatcher) {
+            preferencesRepository.togglePreferredCategories(
+                category,
+                preferred
+            )
         }
     }
 }
 
 data class OnBoardingState(
-    val pages: List<dev.aggregate.app.presentation.model.UiOnBoardingPage> = emptyList()
+    val pages: List<UiOnBoardingPage> = emptyList()
 )
 
 data class FavoriteCountriesState(
-    val countries: List<dev.aggregate.app.presentation.model.UiCategory> = emptyList()
+    val countries: List<UiCategory> = emptyList()
 )
 
 data class FavoriteCategoriesState(
-    val categories: List<dev.aggregate.app.presentation.model.UiCategory> = emptyList()
+    val categories: List<UiCategory> = emptyList()
 )

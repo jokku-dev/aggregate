@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="browse">Browse</string>
+    <string name="can_not_update_latest_news">Can\'t update latest news</string>
+    <string name="data_fetch_error">Data fetch error</string>
+    <string name="discover_things">Discover things of this world</string>
+</resources>

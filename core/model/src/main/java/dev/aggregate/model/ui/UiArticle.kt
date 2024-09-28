@@ -37,4 +37,4 @@ data class UiArticleSource(
     val name: String,
 )
 
-fun List<Article>?.toUiArticles(userData: UserData): List<UiArticle> = map { UiArticle(it, userData) }
+fun List<Article>.toUiArticles(userData: UserData): List<UiArticle> = map { UiArticle(it, userData) }

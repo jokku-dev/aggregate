@@ -5,8 +5,8 @@ import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import dev.aggregate.app.navigation.Screen
-import dev.aggregate.data.local.preferences.PreferencesDataSource
+import dev.aggregate.datastore.PreferencesDataSource
+import dev.aggregate.designsystem.Screen
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -21,9 +21,12 @@ class SplashViewModel @Inject constructor(
 
     init {
         viewModelScope.launch {
-            repository.readLaunchScreen().collect { state ->
-                if (state.isNotEmpty()) _startDestination.value = state
-                else _startDestination.value = Screen.OnBoarding.route
+            repository.userData.collect { state ->
+                if (state.launchScreen.isNotEmpty()) {
+                    _startDestination.value = state.launchScreen
+                } else {
+                    _startDestination.value = Screen.OnBoarding.route
+                }
             }
             _isLoading.value = false
         }

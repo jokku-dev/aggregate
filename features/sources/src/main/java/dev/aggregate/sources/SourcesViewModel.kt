@@ -1,21 +1,25 @@
 package dev.aggregate.sources
 
+import androidx.lifecycle.ViewModel
+import dagger.hilt.android.lifecycle.HiltViewModel
+import dev.aggregate.model.ui.UiNewsSource
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import javax.inject.Inject
 
 interface SourcesViewModel {
     val sourcesState: StateFlow<SourcesState>
 }
 
-@dagger.hilt.android.lifecycle.HiltViewModel
-class MainSourcesViewModel @javax.inject.Inject constructor(
+@HiltViewModel
+class MainSourcesViewModel @Inject constructor(
 
-) : dev.aggregate.app.BaseNewsViewModel(), SourcesViewModel {
+) : ViewModel(), SourcesViewModel {
     private val _sourcesState = MutableStateFlow(SourcesState())
     override val sourcesState = _sourcesState.asStateFlow()
 }
 
 data class SourcesState(
-    val sources: List<dev.aggregate.app.presentation.model.UiNewsSource> = emptyList()
+    val sources: List<UiNewsSource> = emptyList()
 )

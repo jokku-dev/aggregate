@@ -1,30 +1,16 @@
 <resources>
     <string name="app_name">Aggregate</string>
-    <!--On Boarding-->
-    <string name="get_started">Get Started</string>
-    <!--Select Favorite Topics-->
-    <string name="select_your_favorite_topics">Select your favorite topics</string>
-    <string name="select_some_of_your_topics">Select some of your favorite topics to let us suggest better news for you.</string>
-    <!--Homepage-->
-    <string name="browse">Browse</string>
-    <string name="discover_things">Discover things of this world</string>
+
     <string name="temp_category">Category</string>
     <string name="temp_category_capitalized">CATEGORY</string>
     <string name="recommended_for_you">Recommended for you</string>
     <string name="see_all">See All</string>
     <string name="random">Random</string>
-    <string name="can_not_update_latest_news">Can\'t update latest news</string>
-    <!--Categories-->
-    <string name="categories">Categories</string>
-    <string name="thousands_articles">Thousands articles in each category</string>
-    <!--Accessibility-->
-    <string name="bookmarked">bookmarked article</string>
     <!--Errors-->
     <string name="no_articles_found">No articles found by your request</string>
     <string name="no_network_connection">No network connection</string>
     <string name="no_network_connection_with_cache">No network connection. This is outdated news from %s</string>
     <string name="no_response_from_the_server">No response from the server</string>
-    <string name="data_fetch_error">Data fetch error</string>
     <string name="unknown_error">Unknown error</string>
     <string name="unknown_category">Unknown category</string>
 </resources>
