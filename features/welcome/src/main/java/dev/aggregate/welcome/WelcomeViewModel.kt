@@ -24,7 +24,7 @@ interface WelcomeViewModel {
 @dagger.hilt.android.lifecycle.HiltViewModel
 class MainWelcomeViewModel @javax.inject.Inject constructor(
     private val preferencesRepository: dev.aggregate.app.data.PreferencesRepository,
-    localDataProvider: LocalDataProvider,
+    localDataProvider: dev.aggregate.model.LocalDataProvider,
     private val dispatcher: CoroutineDispatcher = Dispatchers.Main
 ) : dev.aggregate.app.BaseNewsViewModel(), WelcomeViewModel {
 
@@ -41,7 +41,7 @@ class MainWelcomeViewModel @javax.inject.Inject constructor(
 
     val favoriteCountriesUiState: StateFlow<FavoriteCountriesState> = combine(
         userData,
-        flowOf(localDataProvider.provideNewsCategoriesPreferences(CategoryType.COUNTRY))
+        flowOf(localDataProvider.provideNewsCategoriesPreferences(dev.aggregate.model.CategoryType.COUNTRY))
     ) { userData, countries ->
         FavoriteCountriesState(
             countries = countries.map { country ->
@@ -55,13 +55,13 @@ class MainWelcomeViewModel @javax.inject.Inject constructor(
         scope = viewModelScope,
         started = SharingStarted.WhileSubscribed(5_000),
         initialValue = FavoriteCountriesState(
-            localDataProvider.provideNewsCategoriesPreferences(CategoryType.COUNTRY)
+            localDataProvider.provideNewsCategoriesPreferences(dev.aggregate.model.CategoryType.COUNTRY)
         )
     )
 
     val favoriteCategoriesUiState: StateFlow<FavoriteCategoriesState> = combine(
         userData,
-        flowOf(localDataProvider.provideNewsCategoriesPreferences(CategoryType.CATEGORY))
+        flowOf(localDataProvider.provideNewsCategoriesPreferences(dev.aggregate.model.CategoryType.CATEGORY))
     ) { userData, categories ->
         FavoriteCategoriesState(
             categories = categories.map { category ->
@@ -75,7 +75,7 @@ class MainWelcomeViewModel @javax.inject.Inject constructor(
         scope = viewModelScope,
         started = SharingStarted.WhileSubscribed(5_000),
         initialValue = FavoriteCategoriesState(
-            localDataProvider.provideNewsCategoriesPreferences(CategoryType.CATEGORY)
+            localDataProvider.provideNewsCategoriesPreferences(dev.aggregate.model.CategoryType.CATEGORY)
         )
     )
 

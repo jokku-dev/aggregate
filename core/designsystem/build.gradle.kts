@@ -24,11 +24,11 @@ android {
 dependencies {
     implementation(libs.androidx.appcompat)
     implementation(libs.androidx.core.ktx)
-    implementation(libs.androidx.compose.runtime.android)
+    implementation(libs.androidx.compose.runtime)
     implementation(libs.material)
     implementation(libs.androidx.material3.android)
     implementation(libs.coil.compose)
-    implementation(libs.androidx.compose.ui.tooling.preview.android)
+    implementation(libs.androidx.compose.ui.tooling.preview)
     implementation(libs.androidx.navigation.runtime.ktx)
     implementation(libs.androidx.navigation.compose)
     testImplementation(libs.junit)

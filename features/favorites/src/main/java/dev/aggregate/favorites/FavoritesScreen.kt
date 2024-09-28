@@ -22,8 +22,13 @@ import androidx.compose.material3.MaterialTheme.colorScheme
 import androidx.compose.material3.MaterialTheme.shapes
 import androidx.compose.material3.MaterialTheme.typography
 import androidx.compose.material3.Text
+import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.ui.Alignment
+import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.ColorFilter
+import androidx.compose.ui.graphics.ColorMatrix
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
@@ -34,29 +39,30 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavHostController
+import dev.aggregate.designsystem.component.HeadlineAndDescriptionText
 import dev.aggregate.designsystem.theme.AggregateTheme
-import dev.aggregate.presentation.entity.UiSelectableCategory
-import dev.aggregate.presentation.model.UiArticle
-import kotlin.apply
-import kotlin.text.category
+import dev.aggregate.model.ui.UiArticle
+import dev.aggregate.model.ui.UiCategorisedArticles
 
-@androidx.compose.runtime.Composable
+@Composable
 fun FavoritesScreen(
     navController: NavHostController,
-    viewModel: dev.aggregate.app.presentation.screens.favorites.FavoritesViewModel = hiltViewModel<dev.aggregate.app.presentation.screens.favorites.DefaultFavoritesViewModel>()
+    viewModel: FavoritesViewModel = hiltViewModel<DefaultFavoritesViewModel>()
 ) {
     val state by viewModel.favoritesUiState.collectAsStateWithLifecycle()
 
-    FavoritesScreenContent(
-        categorisedArticles = (state as? dev.aggregate.app.presentation.screens.favorites.FavoritesState.HasArticles)?.categorisedArticles
-            ?: emptyList()
-    )
+    when (val currentState = state) {
+        is FavoritesState.Success -> FavoritesScreenContent(categorisedArticles = currentState.stateData)
+        is FavoritesState.Failure -> TODO()
+        is FavoritesState.Loading -> TODO()
+    }
+
 }
 
-@androidx.compose.runtime.Composable
+@Composable
 fun FavoritesScreenContent(
-    categorisedArticles: List<UiCategoryArticles>,
-    modifier: androidx.compose.ui.Modifier = androidx.compose.ui.Modifier
+    categorisedArticles: UiCategorisedArticles,
+    modifier: Modifier = Modifier
 ) {
     val scrollState = rememberScrollState()
 
@@ -66,23 +72,23 @@ fun FavoritesScreenContent(
             .statusBarsPadding()
             .padding(top = 24.dp),
         verticalArrangement = Arrangement.Top,
-        horizontalAlignment = androidx.compose.ui.Alignment.Start
+        horizontalAlignment = Alignment.Start
     ) {
-        dev.aggregate.app.ui.HeadlineAndDescriptionText(
-            headline = androidx.compose.ui.res.stringResource(id = dev.aggregate.app.R.string.favorites),
-            description = androidx.compose.ui.res.stringResource(id = dev.aggregate.app.R.string.categories_for_your_taste),
-            modifier = androidx.compose.ui.Modifier.padding(horizontal = 16.dp)
+        HeadlineAndDescriptionText(
+            headline = stringResource(id = R.string.favorites),
+            description = stringResource(id = R.string.categories_for_your_taste),
+            modifier = Modifier.padding(horizontal = 16.dp)
         )
         Column(
-            modifier = androidx.compose.ui.Modifier
+            modifier = Modifier
                 .fillMaxSize()
                 .padding(top = 32.dp)
                 .verticalScroll(state = scrollState)
         ) {
-            repeat(categorisedArticles.size) {
+            repeat(categorisedArticles.localTopHeadlines.size) {
                 CategoryNewsBlock(
-                    category = androidx.compose.ui.res.stringResource(id = categorisedArticles[it].category.text),
-                    articles = categorisedArticles[it].articles,
+                    category = categorisedArticles.topCategoryArticles[it].category.asString(),
+                    articles = categorisedArticles.localTopHeadlines,
                     onArticleClick = { }
                 )
             }
@@ -90,12 +96,12 @@ fun FavoritesScreenContent(
     }
 }
 
-@androidx.compose.runtime.Composable
+@Composable
 fun CategoryNewsBlock(
     category: String,
-    articles: List<dev.aggregate.app.presentation.model.UiArticle>,
+    articles: List<UiArticle>,
     onArticleClick: () -> Unit,
-    modifier: androidx.compose.ui.Modifier = androidx.compose.ui.Modifier
+    modifier: Modifier = Modifier
 ) {
     val listState = rememberLazyListState()
 
@@ -103,13 +109,13 @@ fun CategoryNewsBlock(
         modifier = modifier
     ) {
         Text(
-            modifier = androidx.compose.ui.Modifier.padding(horizontal = 16.dp),
+            modifier = Modifier.padding(horizontal = 16.dp),
             text = category,
             style = typography.titleLarge,
             color = colorScheme.onSurfaceVariant
         )
         LazyRow(
-            modifier = androidx.compose.ui.Modifier.fillMaxWidth(),
+            modifier = Modifier.fillMaxWidth(),
             state = listState,
             horizontalArrangement = Arrangement.spacedBy(16.dp),
             contentPadding = PaddingValues(horizontal = 16.dp, vertical = 16.dp)
@@ -128,14 +134,14 @@ fun CategoryNewsBlock(
     }
 }
 
-@androidx.compose.runtime.Composable
+@Composable
 fun ArticleCard(
     urlToImage: String,
     bookmarked: Boolean,
     source: String,
     title: String,
     onArticleClick: () -> Unit,
-    modifier: androidx.compose.ui.Modifier = androidx.compose.ui.Modifier
+    modifier: Modifier = Modifier
 ) {
     Box(
         modifier = modifier
@@ -145,12 +151,12 @@ fun ArticleCard(
     ) {
 //        AsyncImage(model = urlToImage, contentDescription = title)
         Image(
-            modifier = androidx.compose.ui.Modifier.fillMaxSize(),
-            painter = androidx.compose.ui.res.painterResource(id = dev.aggregate.app.R.drawable.img_news_mock_1),
+            modifier = Modifier.fillMaxSize(),
+            painter = painterResource(id = R.drawable.img_news_mock_1),
             contentDescription = title,
-            contentScale = androidx.compose.ui.layout.ContentScale.Crop,
-            colorFilter = androidx.compose.ui.graphics.ColorFilter.colorMatrix(
-                androidx.compose.ui.graphics.ColorMatrix().apply {
+            contentScale = ContentScale.Crop,
+            colorFilter = ColorFilter.colorMatrix(
+                ColorMatrix().apply {
                     setToScale(
                         0.5f,
                         0.5f,
@@ -160,23 +166,27 @@ fun ArticleCard(
                 }),
         )
         Column(
-            modifier = androidx.compose.ui.Modifier
+            modifier = Modifier
                 .fillMaxSize()
                 .padding(16.dp),
             verticalArrangement = Arrangement.SpaceBetween
         ) {
             Row(
-                modifier = androidx.compose.ui.Modifier.fillMaxWidth(),
+                modifier = Modifier.fillMaxWidth(),
                 horizontalArrangement = Arrangement.SpaceBetween
             ) {
-                Spacer(modifier = androidx.compose.ui.Modifier.size(24.dp))
+                Spacer(modifier = Modifier.size(24.dp))
                 Icon(
-                    imageVector = if (bookmarked) androidx.compose.ui.graphics.vector.ImageVector.vectorResource(
-                        dev.aggregate.app.R.drawable.ic_bookmark_selected
-                    )
-                    else androidx.compose.ui.graphics.vector.ImageVector.vectorResource(dev.aggregate.app.R.drawable.ic_bookmark),
-                    contentDescription = if (bookmarked) androidx.compose.ui.res.stringResource(id = dev.aggregate.app.R.string.bookmarked)
-                    else androidx.compose.ui.res.stringResource(id = dev.aggregate.app.R.string.not_bookmarked),
+                    imageVector = if (bookmarked) {
+                        ImageVector.vectorResource(R.drawable.ic_bookmark_selected)
+                    } else {
+                        ImageVector.vectorResource(R.drawable.ic_bookmark)
+                    },
+                    contentDescription = if (bookmarked) {
+                        stringResource(id = R.string.bookmarked)
+                    } else {
+                        stringResource(id = R.string.not_bookmarked)
+                    },
                     tint = colorScheme.surface
                 )
             }
@@ -197,28 +207,19 @@ fun ArticleCard(
 }
 
 @Preview(showBackground = true)
-@androidx.compose.runtime.Composable
+@Composable
 fun FavoritesScreenPreview() {
-    dev.aggregate.app.designsystem.theme.AggregateTheme {
+    AggregateTheme {
         FavoritesScreenContent(
-            categorisedArticles = listOf(
-                UiCategoryArticles(
-                    articles = listOf(
-                        dev.aggregate.app.presentation.model.UiArticle(),
-                        dev.aggregate.app.presentation.model.UiArticle(),
-                        dev.aggregate.app.presentation.model.UiArticle()
-                    ),
-                    category = UiSelectableCategory(text = dev.aggregate.app.R.string.sports)
-                )
-            )
+            categorisedArticles = UiCategorisedArticles()
         )
     }
 }
 
 @Preview
-@androidx.compose.runtime.Composable
+@Composable
 fun ArticleCardPreview() {
-    dev.aggregate.app.designsystem.theme.AggregateTheme {
+    AggregateTheme {
         ArticleCard(
             urlToImage = "",
             bookmarked = false,

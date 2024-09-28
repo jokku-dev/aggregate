@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="unknown_category">Unknown category</string>
+    <!--Languages-->
+    <string name="arabic">Arabic</string>
+    <string name="german">German</string>
+    <string name="english">English</string>
+    <string name="spanish">Spanish</string>
+    <string name="french">French</string>
+    <string name="hebrew">Hebrew</string>
+    <string name="italian">Italian</string>
+    <string name="dutch">Dutch</string>
+    <string name="norwegian">Norwegian</string>
+    <string name="portuguese">Portuguese</string>
+    <string name="russian">Russian</string>
+    <string name="swedish">Swedish</string>
+    <string name="chinese">Chinese</string>
+
+    <string name="business">Business</string>
+    <string name="entertainment">Entertainment</string>
+    <string name="general">General</string>
+    <string name="health">Health</string>
+    <string name="science">Science</string>
+    <string name="sports">Sports</string>
+    <string name="technology">Technology</string>
+
+    <!--Countries-->
+    <string name="united_arab_emirates">United Arab Emirates</string>
+    <string name="argentina">Argentina</string>
+    <string name="austria">Austria</string>
+    <string name="australia">Australia</string>
+    <string name="belgium">Belgium</string>
+    <string name="bulgaria">Bulgaria</string>
+    <string name="brazil">Brazil</string>
+    <string name="canada">Canada</string>
+    <string name="switzerland">Switzerland</string>
+    <string name="china">China</string>
+    <string name="colombia">Colombia</string>
+    <string name="cuba">Cuba</string>
+    <string name="czechia">Czechia</string>
+    <string name="germany">Germany</string>
+    <string name="egypt">Egypt</string>
+    <string name="france">France</string>
+    <string name="united_kingdom">United Kingdom</string>
+    <string name="greece">Greece</string>
+    <string name="hong_kong">Hong Kong</string>
+    <string name="hungary">Hungary</string>
+    <string name="indonesia">Indonesia</string>
+    <string name="ireland">Ireland</string>
+    <string name="israel">Israel</string>
+    <string name="india">India</string>
+    <string name="italy">Italy</string>
+    <string name="japan">Japan</string>
+    <string name="republic_of_korea">Republic of Korea</string>
+    <string name="lithuania">Lithuania</string>
+    <string name="latvia">Latvia</string>
+    <string name="morocco">Morocco</string>
+    <string name="mexico">Mexico</string>
+    <string name="malaysia">Malaysia</string>
+    <string name="nigeria">Nigeria</string>
+    <string name="netherlands">Netherlands</string>
+    <string name="norway">Norway</string>
+    <string name="new_zealand">New Zealand</string>
+    <string name="philippines">Philippines</string>
+    <string name="poland">Poland</string>
+    <string name="portugal">Portugal</string>
+    <string name="romania">Romania</string>
+    <string name="serbia">Serbia</string>
+    <string name="russian_federation">Russian Federation</string>
+    <string name="saudi_arabia">Saudi Arabia</string>
+    <string name="sweden">Sweden</string>
+    <string name="singapore">Singapore</string>
+    <string name="slovenia">Slovenia</string>
+    <string name="slovakia">Slovakia</string>
+    <string name="thailand">Thailand</string>
+    <string name="turkey">Turkey</string>
+    <string name="taiwan">Taiwan</string>
+    <string name="ukraine">Ukraine</string>
+    <string name="united_states_of_america">United States of America</string>
+    <string name="venezuela">Venezuela</string>
+    <string name="south_africa">South Africa</string>
+
+    <string name="on_board_first_title">First title</string>
+    <string name="on_board_second_title">Second title</string>
+    <string name="on_board_third_title">Third title</string>
+    <string name="on_board_first_description">First description</string>
+    <string name="on_board_second_description">Second description</string>
+    <string name="on_board_third_description">Third description</string>
+</resources>

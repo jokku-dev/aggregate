@@ -111,7 +111,6 @@ dependencies {
     implementation(projects.core.data)
     implementation(projects.core.designsystem)
     implementation(projects.core.sync)
-    implementation(projects.core.ui)
     implementation(projects.features.topheadlines)
     implementation(projects.features.account)
     implementation(projects.features.bookmarks)

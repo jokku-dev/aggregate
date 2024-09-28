@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="bookmarked">bookmarked article</string>
+    <string name="categories_for_your_taste">Categories for your taste</string>
+    <string name="favorites">Favorites</string>
+    <string name="not_bookmarked">not bookmarked article</string>
+</resources>

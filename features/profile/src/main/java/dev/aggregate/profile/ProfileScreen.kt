@@ -15,7 +15,10 @@ import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.MaterialTheme.colorScheme
 import androidx.compose.material3.MaterialTheme.typography
 import androidx.compose.material3.Text
+import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.ui.Alignment
+import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
@@ -24,11 +27,13 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavHostController
+import dev.aggregate.designsystem.Screen
+import dev.aggregate.designsystem.component.ButtonType
+import dev.aggregate.designsystem.component.CommonColumn
+import dev.aggregate.designsystem.component.PreferencesButton
 import dev.aggregate.designsystem.theme.AggregateTheme
-import dev.aggregate.presentation.navigation.Screen
-import dev.aggregate.ui.PreferencesButton
 
-@androidx.compose.runtime.Composable
+@Composable
 fun ProfileScreen(
     navController: NavHostController,
     viewModel: ProfileViewModel = hiltViewModel<MainProfileViewModel>()
@@ -45,13 +50,16 @@ fun ProfileScreen(
             viewModel.changeNotificationsStatus(status = status)
         },
         onSignInOutClick = {
-            if (state.userSignedIn) viewModel.changeSignInStatus(status = false)
-            else navController.navigate(route = dev.aggregate.app.presentation.navigation.Screen.SignIn.route)
+            if (state.userSignedIn) {
+                viewModel.changeSignInStatus(status = false)
+            } else {
+                navController.navigate(route = Screen.SignIn.route)
+            }
         }
     )
 }
 
-@androidx.compose.runtime.Composable
+@Composable
 fun ProfileScreenContent(
     userSignedIn: Boolean,
     notificationsSwitchedOn: Boolean,
@@ -61,66 +69,67 @@ fun ProfileScreenContent(
 ) {
     val scrollState = rememberScrollState()
 
-    dev.aggregate.app.ui.CommonColumn {
+    CommonColumn {
         Text(
-            text = androidx.compose.ui.res.stringResource(id = dev.aggregate.app.R.string.profile),
+            text = stringResource(id = R.string.profile),
             style = typography.headlineLarge,
             color = colorScheme.onSurfaceVariant,
-            modifier = androidx.compose.ui.Modifier.align(androidx.compose.ui.Alignment.Start)
+            modifier = Modifier.align(Alignment.Start)
         )
         ProfileInfo(
             userSignedIn = userSignedIn,
-            modifier = androidx.compose.ui.Modifier.padding(top = 24.dp)
+            modifier = Modifier.padding(top = 24.dp)
         )
         Column(
-            modifier = androidx.compose.ui.Modifier
+            modifier = Modifier
                 .fillMaxSize()
                 .padding(top = 32.dp)
                 .verticalScroll(state = scrollState),
             verticalArrangement = Arrangement.spacedBy(16.dp)
         ) {
-            dev.aggregate.app.ui.PreferencesButton(
-                title = dev.aggregate.app.R.string.notifications,
-                buttonType = dev.aggregate.app.ui.ButtonType.SWITCH,
+            PreferencesButton(
+                title = stringResource(R.string.notifications),
+                buttonType = ButtonType.SWITCH,
                 checked = notificationsSwitchedOn,
                 onCheckedChanged = onNotificationsCheckedChanged
             )
-            dev.aggregate.app.ui.PreferencesButton(
-                title = dev.aggregate.app.R.string.language,
-                buttonType = dev.aggregate.app.ui.ButtonType.DIRECTION,
-                onClick = { navigate(dev.aggregate.app.presentation.navigation.Screen.Language.route) }
+            PreferencesButton(
+                title = stringResource(R.string.language),
+                buttonType = ButtonType.DIRECTION,
+                onClick = { navigate(Screen.Language.route) }
             )
-            if (userSignedIn)
-                dev.aggregate.app.ui.PreferencesButton(
-                    title = dev.aggregate.app.R.string.change_password,
-                    buttonType = dev.aggregate.app.ui.ButtonType.DIRECTION,
-                    onClick = { navigate(dev.aggregate.app.presentation.navigation.Screen.ChangePassword.route) }
+            if (userSignedIn) {
+                PreferencesButton(
+                    title = stringResource(R.string.change_password),
+                    buttonType = ButtonType.DIRECTION,
+                    onClick = { navigate(Screen.ChangePassword.route) }
                 )
-            dev.aggregate.app.ui.PreferencesButton(
-                title = dev.aggregate.app.R.string.privacy,
-                buttonType = dev.aggregate.app.ui.ButtonType.DIRECTION,
-                modifier = androidx.compose.ui.Modifier.padding(top = 16.dp),
-                onClick = { navigate(dev.aggregate.app.presentation.navigation.Screen.Privacy.route) }
+            }
+            PreferencesButton(
+                title = stringResource(R.string.privacy),
+                buttonType = ButtonType.DIRECTION,
+                modifier = Modifier.padding(top = 16.dp),
+                onClick = { navigate(Screen.Privacy.route) }
             )
-            dev.aggregate.app.ui.PreferencesButton(
-                title = dev.aggregate.app.R.string.terms_and_conditions,
-                buttonType = dev.aggregate.app.ui.ButtonType.DIRECTION,
-                onClick = { navigate(dev.aggregate.app.presentation.navigation.Screen.TermsAndConditions.route) }
+            PreferencesButton(
+                title = stringResource(R.string.terms_and_conditions),
+                buttonType = ButtonType.DIRECTION,
+                onClick = { navigate(Screen.TermsAndConditions.route) }
             )
-            dev.aggregate.app.ui.PreferencesButton(
-                title = if (userSignedIn) dev.aggregate.app.R.string.sign_out else dev.aggregate.app.R.string.sign_in,
-                buttonType = dev.aggregate.app.ui.ButtonType.SIGN_IN_OUT,
-                modifier = androidx.compose.ui.Modifier.padding(top = 16.dp),
+            PreferencesButton(
+                title = if (userSignedIn) stringResource(R.string.sign_out) else stringResource(R.string.sign_in),
+                buttonType = ButtonType.SIGN_IN_OUT,
+                modifier = Modifier.padding(top = 16.dp),
                 onClick = onSignInOutClick
             )
         }
     }
 }
 
-@androidx.compose.runtime.Composable
+@Composable
 fun ProfileInfo(
     userSignedIn: Boolean,
-    modifier: androidx.compose.ui.Modifier = androidx.compose.ui.Modifier
+    modifier: Modifier = Modifier
 ) {
     if (userSignedIn) {
         Row(
@@ -128,19 +137,19 @@ fun ProfileInfo(
                 .fillMaxWidth()
                 .wrapContentHeight(),
             horizontalArrangement = Arrangement.Start,
-            verticalAlignment = androidx.compose.ui.Alignment.CenterVertically
+            verticalAlignment = Alignment.CenterVertically
         ) {
             Image(
-                painter = androidx.compose.ui.res.painterResource(id = dev.aggregate.app.R.drawable.img_avatar_mock),
-                contentDescription = androidx.compose.ui.res.stringResource(id = dev.aggregate.app.R.string.profile_image),
-                modifier = androidx.compose.ui.Modifier
+                painter = painterResource(id = R.drawable.img_avatar_mock),
+                contentDescription = stringResource(id = R.string.profile_image),
+                modifier = Modifier
                     .size(72.dp)
                     .clip(shape = CircleShape)
             )
             Column(
-                modifier = androidx.compose.ui.Modifier.padding(start = 24.dp),
+                modifier = Modifier.padding(start = 24.dp),
                 verticalArrangement = Arrangement.Center,
-                horizontalAlignment = androidx.compose.ui.Alignment.Start
+                horizontalAlignment = Alignment.Start
             ) {
                 Text(
                     text = "Name Surname",
@@ -158,9 +167,9 @@ fun ProfileInfo(
 }
 
 @Preview(showBackground = true)
-@androidx.compose.runtime.Composable
+@Composable
 fun SignedInProfileScreenPreview() {
-    dev.aggregate.app.designsystem.theme.AggregateTheme {
+    AggregateTheme {
         ProfileScreenContent(
             userSignedIn = true,
             notificationsSwitchedOn = true,
@@ -169,5 +178,4 @@ fun SignedInProfileScreenPreview() {
             onSignInOutClick = {}
         )
     }
-
 }

@@ -57,7 +57,6 @@ dependencies {
     implementation(libs.dagger.hilt.android)
     implementation(libs.kotlinx.coroutines.android)
 
-    implementation(projects.core.ui)
     implementation(projects.core.designsystem)
     implementation(projects.core.model)
     implementation(projects.core.datastore)

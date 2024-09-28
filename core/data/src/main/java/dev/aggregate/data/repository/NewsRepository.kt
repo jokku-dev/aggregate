@@ -1,7 +1,5 @@
 package dev.aggregate.data.repository
 
-import dev.aggregate.data.CategoryCode
-import dev.aggregate.data.CountryCode
 import dev.aggregate.data.RequestResult
 import dev.aggregate.data.map
 import dev.aggregate.data.toArticleEntity
@@ -30,10 +28,10 @@ import kotlinx.coroutines.flow.onEach
 import javax.inject.Inject
 
 interface NewsRepository {
-    fun getLocalTopHeadlines(country: CountryCode): Flow<ArticlesResponse>
+    fun getLocalTopHeadlines(country: String): Flow<ArticlesResponse>
     fun getFavoriteTopHeadlines(
-        countries: Set<CountryCode>,
-        categories: Set<CategoryCode>
+        countries: Set<String>,
+        categories: Set<String>
     ): Flow<List<ArticlesResponse>>
 
     fun observeRandomArticles(): Flow<Set<String>>
@@ -48,13 +46,13 @@ class DefaultNewsRepository @Inject constructor(
     private val network: NewsApi,
     private val topHeadlinesDao: TopHeadlinesDao,
 ) : NewsRepository {
-    override fun getLocalTopHeadlines(country: CountryCode): Flow<ArticlesResponse> {
+    override fun getLocalTopHeadlines(country: String): Flow<ArticlesResponse> {
         TODO()
     }
 
     override fun getFavoriteTopHeadlines(
-        countries: Set<CountryCode>,
-        categories: Set<CategoryCode>
+        countries: Set<String>,
+        categories: Set<String>
     ): Flow<List<ArticlesResponse>> {
         TODO("Not yet implemented")
     }

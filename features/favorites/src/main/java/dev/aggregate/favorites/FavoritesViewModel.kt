@@ -1,40 +1,46 @@
 package dev.aggregate.favorites
 
+import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import dev.aggregate.presentation.model.UiCategorisedArticles
+import dagger.hilt.android.lifecycle.HiltViewModel
+import dev.aggregate.data.LocalDataProvider
+import dev.aggregate.data.repository.NewsRepository
+import dev.aggregate.data.repository.PreferencesRepository
+import dev.aggregate.model.ArticlesResponse
+import dev.aggregate.model.TopCategoryType
+import dev.aggregate.model.ui.UiCategorisedArticles
+import dev.aggregate.sync.SyncStatusMonitor
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.flow.combine
-import kotlinx.coroutines.flow.filterNot
-import kotlinx.coroutines.flow.filterNotNull
 import kotlinx.coroutines.flow.flatMapLatest
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.onStart
 import kotlinx.coroutines.flow.stateIn
+import javax.inject.Inject
 
 interface FavoritesViewModel {
     val favoritesUiState: StateFlow<FavoritesState>
 
     fun getFavoriteCategoryArticles(
-        countries: Set<dev.aggregate.app.data.CountryCode>,
-        categories: Set<dev.aggregate.app.data.CategoryCode>,
-        topCategoryType: dev.aggregate.app.database.preferences.model.TopCategoryType
-    ): Flow<dev.aggregate.app.presentation.model.UiCategorisedArticles>
+        countries: Set<String>,
+        categories: Set<String>,
+        topCategoryType: TopCategoryType
+    ): Flow<UiCategorisedArticles>
 }
 
 // Exceptions from offline first repo is rare but still shall be caught by .catch or .retry
-@dagger.hilt.android.lifecycle.HiltViewModel
-class DefaultFavoritesViewModel @javax.inject.Inject constructor(
-    syncStatusMonitor: dev.aggregate.app.data.sync.SyncStatusMonitor,
-    private val newsRepository: dev.aggregate.app.data.NewsRepository,
-    private val preferencesRepository: dev.aggregate.app.data.PreferencesRepository,
-    private val localDataProvider: dev.aggregate.app.presentation.screens.welcome.LocalDataProvider,
+@HiltViewModel
+class DefaultFavoritesViewModel @Inject constructor(
+    syncStatusMonitor: SyncStatusMonitor,
+    private val newsRepository: NewsRepository,
+    private val preferencesRepository: PreferencesRepository,
+    private val localDataProvider: LocalDataProvider,
     private val dispatcher: CoroutineDispatcher = Dispatchers.Main
-) : dev.aggregate.app.BaseNewsViewModel(), FavoritesViewModel {
+) : ViewModel(), FavoritesViewModel {
 
     private val bookmarkedArticles = preferencesRepository.userData.map { data ->
         data.bookmarkedArticleIds
@@ -60,17 +66,17 @@ class DefaultFavoritesViewModel @javax.inject.Inject constructor(
         .stateIn(
             scope = viewModelScope,
             started = SharingStarted.WhileSubscribed(5_000),
-            initialValue = FavoritesState.Loading
+            initialValue = FavoritesState.Loading()
         )
 
     override fun getFavoriteCategoryArticles(
-        countries: Set<dev.aggregate.app.data.CountryCode>,
-        categories: Set<dev.aggregate.app.data.CategoryCode>,
-        topCategoryType: dev.aggregate.app.database.preferences.model.TopCategoryType
-    ): Flow<dev.aggregate.app.presentation.model.UiCategorisedArticles> =
+        countries: Set<String>,
+        categories: Set<String>,
+        topCategoryType: TopCategoryType
+    ): Flow<UiCategorisedArticles> =
         if (countries.isEmpty() && categories.isEmpty()) {
             // Need to add location or at least system language request
-            newsRepository.getLocalTopHeadlines(country = dev.aggregate.app.data.CountryCode.RU)
+            newsRepository.getLocalTopHeadlines(country = TODO())
                 .mapToUiCategorisedArticles(bookmarkedArticles, localDataProvider)
         } else {
             newsRepository.getFavoriteTopHeadlines(countries = countries, categories = categories)
@@ -78,42 +84,34 @@ class DefaultFavoritesViewModel @javax.inject.Inject constructor(
         }
 }
 
-sealed interface FavoritesState {
-    data object Loading : FavoritesState
-    data class Success(val categorisedArticles: dev.aggregate.app.presentation.model.UiCategorisedArticles) :
-        FavoritesState
-}
-
-private fun Flow<List<dev.aggregate.app.data.model.ArticlesResponse>>.mapToUiCategorisedArticles(
+private fun Flow<List<ArticlesResponse>>.mapToUiCategorisedArticles(
     bookmarkedArticleIds: Flow<Set<String>>,
-    localDataProvider: dev.aggregate.app.presentation.screens.welcome.LocalDataProvider,
-    topCategoryType: dev.aggregate.app.database.preferences.model.TopCategoryType
-): Flow<dev.aggregate.app.presentation.model.UiCategorisedArticles> {
-    val categorisedArticles =
-        mutableListOf<dev.aggregate.app.presentation.model.UiCategorisedArticles>()
+    localDataProvider: LocalDataProvider,
+    topCategoryType: TopCategoryType
+): Flow<UiCategorisedArticles> {
+    val categorisedArticles = mutableListOf<UiCategorisedArticles>()
 
-    filterNot { it.isEmpty() }
-        .combine(bookmarkedArticleIds) { newsResponses, bookmarkedArticles ->
-            countries.forEach { countryCode ->
-                val byCountryResponses = newsResponses.filter { response ->
-                    response.countryId == countryCode.value
-                }
-
-            }
-        }
+    TODO()
+//    filterNot { it.isEmpty() }
+//        .combine(bookmarkedArticleIds) { newsResponses, bookmarkedArticles ->
+//            countries.forEach { countryCode ->
+//                val byCountryResponses = newsResponses.filter { response ->
+//                    response.countryId == countryCode.value
+//                }
+//            }
+//        }
 }
 
-private fun Flow<dev.aggregate.app.data.model.ArticlesResponse>.mapToUiCategorisedArticles(
+private fun Flow<ArticlesResponse>.mapToUiCategorisedArticles(
     bookmarkedArticleIds: Flow<Set<String>>,
-    localDataProvider: dev.aggregate.app.presentation.screens.welcome.LocalDataProvider
-): Flow<dev.aggregate.app.presentation.model.UiCategorisedArticles> {
-    return filterNotNull().map { response ->
-        dev.aggregate.app.presentation.model.UiCategorisedArticles(
-            localTopHeadlines = dev.aggregate.app.data.mapList()
-        )
-    }
+    localDataProvider: LocalDataProvider
+): Flow<UiCategorisedArticles> {
+    TODO()
+//    return filterNotNull().map { response ->
+//        UiCategorisedArticles(localTopHeadlines = data.mapList())
+//    }
 }
 
-private fun Flow<dev.aggregate.app.presentation.model.UiCategorisedArticles>.mapToFavoritesState(): Flow<FavoritesState> =
-    map<dev.aggregate.app.presentation.model.UiCategorisedArticles, FavoritesState>(FavoritesState::Success)
-        .onStart { emit(FavoritesState.Loading) }
+private fun Flow<UiCategorisedArticles>.mapToFavoritesState(): Flow<FavoritesState> =
+    map<UiCategorisedArticles, FavoritesState>(FavoritesState::Success)
+        .onStart { emit(FavoritesState.Loading()) }

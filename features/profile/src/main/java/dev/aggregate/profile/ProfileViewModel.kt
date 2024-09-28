@@ -2,6 +2,9 @@ package dev.aggregate.profile
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import dagger.hilt.android.lifecycle.HiltViewModel
+import dev.aggregate.data.repository.NewsRepository
+import dev.aggregate.model.ui.UiAppLanguage
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
@@ -9,6 +12,7 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
+import javax.inject.Inject
 
 interface ProfileViewModel {
     val profileState: StateFlow<ProfileState>
@@ -18,9 +22,9 @@ interface ProfileViewModel {
     fun changeAppLanguage(language: Int): Job
 }
 
-@dagger.hilt.android.lifecycle.HiltViewModel
-class MainProfileViewModel @javax.inject.Inject constructor(
-    private val newsRepository: dev.aggregate.app.data.NewsRepository,
+@HiltViewModel
+class MainProfileViewModel @Inject constructor(
+    private val newsRepository: NewsRepository,
     private val dispatcher: CoroutineDispatcher = Dispatchers.Main
 ) : ViewModel(), ProfileViewModel {
 
@@ -43,5 +47,5 @@ class MainProfileViewModel @javax.inject.Inject constructor(
 data class ProfileState(
     val userSignedIn: Boolean = true,
     val notificationsSwitchedOn: Boolean = false,
-    val languages: List<dev.aggregate.app.presentation.model.UiAppLanguage> = emptyList()
+    val languages: List<UiAppLanguage> = emptyList()
 )

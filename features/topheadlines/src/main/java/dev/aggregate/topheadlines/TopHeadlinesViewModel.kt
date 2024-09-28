@@ -1,6 +1,5 @@
 package dev.aggregate.topheadlines
 
-//noinspection SuspiciousImport
 import android.R
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope

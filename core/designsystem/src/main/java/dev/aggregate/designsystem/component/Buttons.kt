@@ -107,7 +107,7 @@ fun SignInWithButton(
 
 @Composable
 fun PreferencesButton(
-    title: Int,
+    title: String,
     buttonType: ButtonType,
     modifier: Modifier = Modifier,
     onClick: () -> Unit = {},
@@ -128,7 +128,7 @@ fun PreferencesButton(
         verticalAlignment = Alignment.CenterVertically
     ) {
         Text(
-            text = stringResource(id = title),
+            text = title,
             style = typography.titleLarge,
             color = if (selected) colorScheme.surface else colorScheme.onBackground,
         )
@@ -136,7 +136,7 @@ fun PreferencesButton(
             ButtonType.DIRECTION -> {
                 Icon(
                     imageVector = ImageVector.vectorResource(R.drawable.ic_arrow_right),
-                    contentDescription = stringResource(id = title),
+                    contentDescription = title,
                     tint = colorScheme.onBackground
                 )
             }
@@ -148,7 +148,7 @@ fun PreferencesButton(
                     } else {
                         ImageVector.vectorResource(R.drawable.ic_login)
                     },
-                    contentDescription = stringResource(id = title),
+                    contentDescription = title,
                     tint = colorScheme.onBackground
                 )
             }
@@ -210,34 +210,34 @@ fun PreferencesButtonPreview() {
     AggregateTheme {
         Column {
             PreferencesButton(
-                title = R.string.notifications,
+                title = stringResource(R.string.notifications),
                 onClick = {},
                 buttonType = ButtonType.SWITCH,
                 checked = true
             )
             PreferencesButton(
-                title = R.string.notifications,
+                title = stringResource(R.string.notifications),
                 onClick = {},
                 buttonType = ButtonType.SWITCH,
                 checked = false
             )
             PreferencesButton(
-                title = R.string.language,
+                title = stringResource(R.string.language),
                 onClick = {},
                 buttonType = ButtonType.DIRECTION
             )
             PreferencesButton(
-                title = R.string.sign_in,
+                title = stringResource(R.string.sign_in),
                 onClick = {},
                 buttonType = ButtonType.SIGN_IN_OUT
             )
             PreferencesButton(
-                title = R.string.system,
+                title = stringResource(R.string.system),
                 onClick = {},
                 buttonType = ButtonType.SELECT
             )
             PreferencesButton(
-                title = R.string.system,
+                title = stringResource(R.string.system),
                 onClick = {},
                 buttonType = ButtonType.SELECT,
                 selected = true
