@@ -9,8 +9,8 @@ import androidx.work.OutOfQuotaPolicy
 import androidx.work.WorkerParameters
 import dagger.assisted.Assisted
 import dagger.assisted.AssistedInject
-import dev.aggregate.common.network.di.Dispatcher
-import dev.aggregate.common.network.di.NewsDispatchers
+import dev.aggregate.common.di.Dispatcher
+import dev.aggregate.common.di.NewsDispatchers
 import dev.aggregate.data.repository.NewsRepository
 import dev.aggregate.data.repository.PreferencesRepository
 import dev.aggregate.sync.Synchronizer

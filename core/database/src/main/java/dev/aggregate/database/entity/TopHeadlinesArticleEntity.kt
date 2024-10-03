@@ -5,12 +5,12 @@ import androidx.room.Embedded
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 import dev.aggregate.database.utils.DatabaseConstants.ARTICLE_SOURCE_
-import dev.aggregate.database.utils.DatabaseConstants.BOOKMARKED_ARTICLES
+import dev.aggregate.database.utils.DatabaseConstants.TOP_HEADLINES_ARTICLES
 
 @Entity(
-    tableName = BOOKMARKED_ARTICLES
+    tableName = TOP_HEADLINES_ARTICLES
 )
-data class BookmarkedArticleEntity(
+data class TopHeadlinesArticleEntity(
     @PrimaryKey(autoGenerate = true) val id: Long,
     @ColumnInfo(name = "author") val author: String?,
     @ColumnInfo(name = "content") val content: String?,

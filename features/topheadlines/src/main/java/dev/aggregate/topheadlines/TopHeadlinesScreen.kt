@@ -51,8 +51,8 @@ fun TopHeadlinesScreen(
         is TopHeadlinesState.Loading -> TODO("Not implemented")
         is TopHeadlinesState.None -> TODO("Not implemented")
         is TopHeadlinesState.Success -> TopHeadlinesScreenContent(
-            categories = currentState.stateData.categories,
-            uiArticles = currentState.stateData.articles,
+            categories = TODO("Not implemented"),
+            uiArticles = currentState.stateData,
             search = search,
             onSearchChanged = { newSearch -> search = newSearch },
             selectCategory = { category -> viewModel.selectCategory(category) },

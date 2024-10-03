@@ -1,11 +1,11 @@
 package dev.aggregate.data
 
+import dev.aggregate.model.network.Category
+import dev.aggregate.model.network.Country
+import dev.aggregate.model.network.Language
 import dev.aggregate.model.ui.UiCategory
 import dev.aggregate.model.ui.UiOnBoardingPage
 import dev.aggregate.model.ui.UiText
-import dev.aggregate.network.model.Category
-import dev.aggregate.network.model.Country
-import dev.aggregate.network.model.Language
 
 enum class CategoryType {
     LANGUAGE, CATEGORY, COUNTRY

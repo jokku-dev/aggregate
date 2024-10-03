@@ -34,8 +34,8 @@ android {
 
 dependencies {
     implementation(libs.androidx.annotation)
-    implementation(platform(libs.androidx.compose.bom))
     implementation(libs.androidx.compose.runtime)
     implementation(libs.androidx.compose.ui)
     implementation(libs.kotlinx.serialization.core)
+    implementation(projects.core.common)
 }

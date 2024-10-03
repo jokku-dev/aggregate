@@ -6,8 +6,9 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import dev.aggregate.data.LocalDataProvider
 import dev.aggregate.data.repository.NewsRepository
 import dev.aggregate.data.repository.PreferencesRepository
-import dev.aggregate.model.ArticlesResponse
+import dev.aggregate.model.Article
 import dev.aggregate.model.TopCategoryType
+import dev.aggregate.model.ui.UiArticle
 import dev.aggregate.model.ui.UiCategorisedArticles
 import dev.aggregate.sync.SyncStatusMonitor
 import kotlinx.coroutines.CoroutineDispatcher
@@ -26,8 +27,8 @@ interface FavoritesViewModel {
     val favoritesUiState: StateFlow<FavoritesState>
 
     fun getFavoriteCategoryArticles(
-        countries: Set<String>,
-        categories: Set<String>,
+        country: String,
+        category: String,
         topCategoryType: TopCategoryType
     ): Flow<UiCategorisedArticles>
 }
@@ -57,8 +58,8 @@ class DefaultFavoritesViewModel @Inject constructor(
     override val favoritesUiState: StateFlow<FavoritesState> = preferencesRepository.userData
         .map { userData ->
             getFavoriteCategoryArticles(
-                userData.countryCodes,
-                userData.categoryCodes,
+                userData.countryCode.name,
+                userData.categoryCode.name,
                 userData.topCategoryType
             ).mapToFavoritesState()
         }
@@ -70,13 +71,13 @@ class DefaultFavoritesViewModel @Inject constructor(
         )
 
     override fun getFavoriteCategoryArticles(
-        countries: Set<String>,
-        categories: Set<String>,
+        country: String,
+        category: String,
         topCategoryType: TopCategoryType
     ): Flow<UiCategorisedArticles> =
-        if (countries.isEmpty() && categories.isEmpty()) {
+        if (country.isEmpty() && category.isEmpty()) {
             // Need to add location or at least system language request
-            newsRepository.getLocalTopHeadlines(country = TODO())
+            newsRepository.getTopHeadlines(request = TODO())
                 .mapToUiCategorisedArticles(bookmarkedArticles, localDataProvider)
         } else {
             newsRepository.getFavoriteTopHeadlines(countries = countries, categories = categories)
@@ -84,14 +85,14 @@ class DefaultFavoritesViewModel @Inject constructor(
         }
 }
 
-private fun Flow<List<ArticlesResponse>>.mapToUiCategorisedArticles(
+private fun Flow<List<UiArticle>>.mapToUiCategorisedArticles(
     bookmarkedArticleIds: Flow<Set<String>>,
     localDataProvider: LocalDataProvider,
     topCategoryType: TopCategoryType
 ): Flow<UiCategorisedArticles> {
     val categorisedArticles = mutableListOf<UiCategorisedArticles>()
 
-    TODO()
+    TODO("Not implemented")
 //    filterNot { it.isEmpty() }
 //        .combine(bookmarkedArticleIds) { newsResponses, bookmarkedArticles ->
 //            countries.forEach { countryCode ->
@@ -102,11 +103,11 @@ private fun Flow<List<ArticlesResponse>>.mapToUiCategorisedArticles(
 //        }
 }
 
-private fun Flow<ArticlesResponse>.mapToUiCategorisedArticles(
+private fun Flow<List<Article>>.mapToUiCategorisedArticles(
     bookmarkedArticleIds: Flow<Set<String>>,
     localDataProvider: LocalDataProvider
 ): Flow<UiCategorisedArticles> {
-    TODO()
+    TODO("Not implemented")
 //    return filterNotNull().map { response ->
 //        UiCategorisedArticles(localTopHeadlines = data.mapList())
 //    }

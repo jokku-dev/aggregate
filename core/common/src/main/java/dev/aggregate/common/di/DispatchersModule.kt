@@ -1,4 +1,4 @@
-package dev.aggregate.common.network.di
+package dev.aggregate.common.di
 
 import dagger.Module
 import dagger.Provides

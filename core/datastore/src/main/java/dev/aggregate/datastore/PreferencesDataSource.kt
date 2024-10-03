@@ -4,6 +4,8 @@ import android.util.Log
 import androidx.datastore.core.DataStore
 import dev.aggregate.model.DarkThemeConfig
 import dev.aggregate.model.UserData
+import dev.aggregate.model.network.Category
+import dev.aggregate.model.network.Country
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.catch
 import java.io.IOException
@@ -19,10 +21,10 @@ interface PreferencesDataSource {
 
     val userData: Flow<UserData>
 
-    suspend fun setPreferredCountries(countryCodes: Set<String>)
-    suspend fun togglePreferredCountries(countryCode: String, preferred: Boolean)
-    suspend fun setPreferredCategories(categories: Set<String>)
-    suspend fun togglePreferredCategories(categoryCode: String, preferred: Boolean)
+    suspend fun setPreferredCountry(country: Country)
+//    suspend fun togglePreferredCountries(country: Country, preferred: Boolean)
+    suspend fun setPreferredCategory(category: Category)
+//    suspend fun togglePreferredCategories(category: Category, preferred: Boolean)
     suspend fun updateBookmarkedArticles(articleId: String, bookmarked: Boolean)
     suspend fun setDarkThemeConfig(darkThemeConfig: DarkThemeConfig)
     suspend fun setLaunchScreen(screen: String)
@@ -40,40 +42,40 @@ class NewsPreferencesDataSource @Inject constructor(
         }
     }
 
-    override suspend fun setPreferredCountries(countryCodes: Set<String>) {
+    override suspend fun setPreferredCountry(country: Country) {
         try {
-            preferences.updateData { data -> data.copy(countryCodes = countryCodes) }
+            preferences.updateData { data -> data.copy(countryCode = country) }
         } catch (exception: IOException) {
             logException(exception)
         }
     }
 
-    override suspend fun togglePreferredCountries(countryCode: String, preferred: Boolean) {
+    /*override suspend fun togglePreferredCountries(country: Country) {
         try {
             preferences.updateData { data ->
                 data.copy(
-                    countryCodes =
+                    countryCode =
                     if (preferred) {
-                        data.countryCodes.plusElement(countryCode)
+                        data.countryCodes.plusElement(country)
                     } else {
-                        data.countryCodes.minusElement(countryCode)
+                        data.countryCodes.minusElement(country)
                     }
                 )
             }
         } catch (exception: IOException) {
             logException(exception)
         }
-    }
+    }*/
 
-    override suspend fun setPreferredCategories(categories: Set<String>) {
+    override suspend fun setPreferredCategory(category: Category) {
         try {
-            preferences.updateData { data -> data.copy(categoryCodes = categories) }
+            preferences.updateData { data -> data.copy(categoryCode = category) }
         } catch (exception: IOException) {
             logException(exception)
         }
     }
 
-    override suspend fun togglePreferredCategories(categoryCode: String, preferred: Boolean) {
+    /*override suspend fun togglePreferredCategories(categoryCode: String, preferred: Boolean) {
         try {
             preferences.updateData { data ->
                 data.copy(
@@ -88,7 +90,7 @@ class NewsPreferencesDataSource @Inject constructor(
         } catch (exception: IOException) {
             logException(exception)
         }
-    }
+    }*/
 
     override suspend fun updateBookmarkedArticles(articleId: String, bookmarked: Boolean) {
         try {

@@ -2,15 +2,15 @@ package dev.aggregate.network
 
 import androidx.annotation.IntRange
 import com.skydoves.retrofit.adapters.result.ResultCallAdapterFactory
-import dev.aggregate.network.model.Category
-import dev.aggregate.network.model.Country
-import dev.aggregate.network.model.Language
+import dev.aggregate.model.network.Category
+import dev.aggregate.model.network.Country
+import dev.aggregate.model.network.Language
+import dev.aggregate.model.network.SearchIn
+import dev.aggregate.model.network.SortBy
 import dev.aggregate.network.model.NetworkArticle
 import dev.aggregate.network.model.NetworkArticlesResponse
 import dev.aggregate.network.model.NetworkSource
 import dev.aggregate.network.model.NetworkSourcesResponse
-import dev.aggregate.network.model.SearchIn
-import dev.aggregate.network.model.SortBy
 import dev.aggregate.network.util.NewsApiKeyInterceptor
 import kotlinx.serialization.json.Json
 import okhttp3.MediaType.Companion.toMediaType

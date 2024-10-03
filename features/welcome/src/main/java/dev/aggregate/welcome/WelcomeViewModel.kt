@@ -24,15 +24,15 @@ interface WelcomeViewModel {
     val onBoardingUiState: StateFlow<OnBoardingState>
     val favoriteCategoriesUiState: StateFlow<FavoriteCategoriesState>
     fun setLaunchScreen(screen: String)
-    fun switchIsCountryFavorite(
-        country: String,
-        preferred: Boolean
-    )
+//    fun switchIsCountryFavorite(
+//        country: String,
+//        preferred: Boolean
+//    )
 
-    fun switchIsCategoryFavorite(
-        category: String,
-        preferred: Boolean
-    )
+//    fun switchIsCategoryFavorite(
+//        category: String,
+//        preferred: Boolean
+//    )
 }
 
 @HiltViewModel
@@ -58,7 +58,7 @@ class MainWelcomeViewModel @Inject constructor(
     ) { userData, countries ->
         FavoriteCountriesState(
             countries = countries.map { country ->
-                if (userData.countryCodes.any { code -> country.code == code }) {
+                if (userData.countryCode?.name == country.code) {
                     country.copy(selected = true)
                 } else {
                     country.copy(selected = false)
@@ -79,7 +79,7 @@ class MainWelcomeViewModel @Inject constructor(
     ) { userData, categories ->
         FavoriteCategoriesState(
             categories = categories.map { category ->
-                if (userData.categoryCodes.any { code -> category.code == code }) {
+                if (userData.categoryCode?.name == category.code) {
                     category.copy(selected = true)
                 } else {
                     category.copy(selected = false)
@@ -100,29 +100,29 @@ class MainWelcomeViewModel @Inject constructor(
         }
     }
 
-    override fun switchIsCountryFavorite(
-        country: String,
-        preferred: Boolean
-    ) {
-        viewModelScope.launch(dispatcher) {
-            preferencesRepository.togglePreferredCountries(
-                country,
-                preferred
-            )
-        }
-    }
+//    override fun switchIsCountryFavorite(
+//        country: String,
+//        preferred: Boolean
+//    ) {
+//        viewModelScope.launch(dispatcher) {
+//            preferencesRepository.togglePreferredCountries(
+//                country,
+//                preferred
+//            )
+//        }
+//    }
 
-    override fun switchIsCategoryFavorite(
-        category: String,
-        preferred: Boolean
-    ) {
-        viewModelScope.launch(dispatcher) {
-            preferencesRepository.togglePreferredCategories(
-                category,
-                preferred
-            )
-        }
-    }
+//    override fun switchIsCategoryFavorite(
+//        category: String,
+//        preferred: Boolean
+//    ) {
+//        viewModelScope.launch(dispatcher) {
+//            preferencesRepository.togglePreferredCategories(
+//                category,
+//                preferred
+//            )
+//        }
+//    }
 }
 
 data class OnBoardingState(

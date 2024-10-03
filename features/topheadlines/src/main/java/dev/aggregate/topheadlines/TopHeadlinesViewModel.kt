@@ -12,6 +12,7 @@ import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.flatMapLatest
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.stateIn
@@ -39,10 +40,13 @@ class MainTopHeadlinesViewModel @Inject internal constructor(
     val searchQuery: StateFlow<String> = _searchQuery
 
     override val topHeadlinesState: StateFlow<TopHeadlinesState> =
-        _searchQuery.flatMapLatest { query ->
-            getTopHeadlineArticlesUseCase.get().invoke(searchQuery = query)
-                .map { request -> request.toState() }
+        combine(_searchQuery, preferencesDataSource.userData) { query, userData ->
+            query to userData
         }
+            .flatMapLatest { (query, userData) ->
+                getTopHeadlineArticlesUseCase.get().invoke(query, userData)
+                    .map { result -> result.toState() }
+            }
             .stateIn(
                 viewModelScope,
                 SharingStarted.Lazily,

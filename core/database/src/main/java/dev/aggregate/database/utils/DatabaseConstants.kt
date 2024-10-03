@@ -1,10 +1,9 @@
 package dev.aggregate.database.utils
 
 object DatabaseConstants {
-    const val ARTICLE_RESPONSES = "article_responses"
-    const val ARTICLES = "articles"
+    const val EVERYTHING_ARTICLES = "everything_articles"
+    const val TOP_HEADLINES_ARTICLES = "top_headlines_articles"
     const val BOOKMARKED_ARTICLES = "bookmarked_articles"
     const val ARTICLE_SOURCE_ = "article_source_"
-    const val SOURCE_RESPONSES = "source_responses"
     const val SOURCES = "sources"
 }

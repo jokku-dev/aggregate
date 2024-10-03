@@ -1,4 +1,4 @@
-package dev.aggregate.network.model
+package dev.aggregate.model.network
 
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable

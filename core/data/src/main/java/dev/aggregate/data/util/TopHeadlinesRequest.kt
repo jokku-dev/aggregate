@@ -1,7 +1,7 @@
 package dev.aggregate.data.util
 
-import dev.aggregate.network.model.Category
-import dev.aggregate.network.model.Country
+import dev.aggregate.model.network.Category
+import dev.aggregate.model.network.Country
 
 sealed interface TopHeadlinesRequest {
     val query: String?
