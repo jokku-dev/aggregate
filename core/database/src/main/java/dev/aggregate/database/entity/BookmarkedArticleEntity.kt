@@ -16,7 +16,7 @@ data class BookmarkedArticleEntity(
     @ColumnInfo(name = "content") val content: String?,
     @ColumnInfo(name = "description") val description: String?,
     @ColumnInfo(name = "published_at") val publishedAt: String?,
-    @ColumnInfo(name = "source") @Embedded(prefix = ARTICLE_SOURCE_) val source: ArticleSource,
+    @Embedded(prefix = ARTICLE_SOURCE_) val source: ArticleEntitySource,
     @ColumnInfo(name = "title") val title: String?,
     @ColumnInfo(name = "url") val url: String?,
     @ColumnInfo(name = "url_to_image") val urlToImage: String?,

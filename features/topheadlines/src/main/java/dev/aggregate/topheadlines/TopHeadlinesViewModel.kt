@@ -3,11 +3,12 @@ package dev.aggregate.topheadlines
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
+import dev.aggregate.common.di.Dispatcher
+import dev.aggregate.common.di.NewsDispatchers
 import dev.aggregate.data.repository.NewsRepository
-import dev.aggregate.datastore.PreferencesDataSource
+import dev.aggregate.data.repository.PreferencesRepository
 import dev.aggregate.model.ui.UiCategory
 import kotlinx.coroutines.CoroutineDispatcher
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
@@ -32,15 +33,15 @@ interface TopHeadlinesViewModel {
 class MainTopHeadlinesViewModel @Inject internal constructor(
     private val getTopHeadlineArticlesUseCase: Provider<GetTopHeadlineArticlesUseCase>,
     private val newsRepository: NewsRepository,
-    private val preferencesDataSource: PreferencesDataSource,
-    private val dispatcher: CoroutineDispatcher = Dispatchers.Main
+    private val preferencesRepository: PreferencesRepository,
+    @Dispatcher(NewsDispatchers.MAIN) private val dispatcher: CoroutineDispatcher
 ) : TopHeadlinesViewModel, ViewModel() {
 
     private val _searchQuery = MutableStateFlow("")
     val searchQuery: StateFlow<String> = _searchQuery
 
     override val topHeadlinesState: StateFlow<TopHeadlinesState> =
-        combine(_searchQuery, preferencesDataSource.userData) { query, userData ->
+        combine(_searchQuery, preferencesRepository.userData) { query, userData ->
             query to userData
         }
             .flatMapLatest { (query, userData) ->

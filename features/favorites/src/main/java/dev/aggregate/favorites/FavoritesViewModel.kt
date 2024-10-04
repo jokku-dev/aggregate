@@ -27,8 +27,8 @@ interface FavoritesViewModel {
     val favoritesUiState: StateFlow<FavoritesState>
 
     fun getFavoriteCategoryArticles(
-        country: String,
-        category: String,
+        country: String?,
+        category: String?,
         topCategoryType: TopCategoryType
     ): Flow<UiCategorisedArticles>
 }
@@ -58,8 +58,8 @@ class DefaultFavoritesViewModel @Inject constructor(
     override val favoritesUiState: StateFlow<FavoritesState> = preferencesRepository.userData
         .map { userData ->
             getFavoriteCategoryArticles(
-                userData.countryCode.name,
-                userData.categoryCode.name,
+                userData.countryCode?.name,
+                userData.categoryCode?.name,
                 userData.topCategoryType
             ).mapToFavoritesState()
         }
@@ -71,18 +71,18 @@ class DefaultFavoritesViewModel @Inject constructor(
         )
 
     override fun getFavoriteCategoryArticles(
-        country: String,
-        category: String,
+        country: String?,
+        category: String?,
         topCategoryType: TopCategoryType
-    ): Flow<UiCategorisedArticles> =
-        if (country.isEmpty() && category.isEmpty()) {
-            // Need to add location or at least system language request
-            newsRepository.getTopHeadlines(request = TODO())
-                .mapToUiCategorisedArticles(bookmarkedArticles, localDataProvider)
-        } else {
-            newsRepository.getFavoriteTopHeadlines(countries = countries, categories = categories)
-                .mapToUiCategorisedArticles(bookmarkedArticles, localDataProvider, topCategoryType)
-        }
+    ): Flow<UiCategorisedArticles> = TODO("Not implemented")
+//        if (country.isEmpty() && category.isEmpty()) {
+//            // Need to add location or at least system language request
+//            newsRepository.getTopHeadlines(request = )
+//                .mapToUiCategorisedArticles(bookmarkedArticles, localDataProvider)
+//        } else {
+//            newsRepository.getFavoriteTopHeadlines(countries = countries, categories = categories)
+//                .mapToUiCategorisedArticles(bookmarkedArticles, localDataProvider, topCategoryType)
+//        }
 }
 
 private fun Flow<List<UiArticle>>.mapToUiCategorisedArticles(

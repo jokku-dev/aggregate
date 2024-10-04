@@ -30,7 +30,7 @@ android {
         // supported cpu architectures (our app is only for mobile phones)
         ndk {
             // noinspection ChromeOsAbiSupport
-            abiFilters += setOf("armeabi-v7a", "arm64-v8a")
+            abiFilters += setOf("armeabi-v7a", "arm64-v8a", "x86_64")
         }
     }
 
@@ -64,14 +64,11 @@ android {
         }
     }
     compileOptions {
-        sourceCompatibility = JavaVersion.VERSION_1_8
-        targetCompatibility = JavaVersion.VERSION_1_8
+        sourceCompatibility = JavaVersion.VERSION_11
+        targetCompatibility = JavaVersion.VERSION_11
     }
     kotlinOptions {
-        jvmTarget = "1.8"
-    }
-    buildFeatures {
-        compose = true
+        jvmTarget = "11"
     }
     packaging {
         resources {
@@ -103,11 +100,10 @@ dependencies {
     implementation(libs.androidx.material3.android)
     implementation(libs.androidx.navigation.compose)
     implementation(libs.androidx.profileinstaller)
-    implementation(platform(libs.androidx.compose.bom))
     implementation(libs.dagger.hilt.android)
-    "baselineProfile"(project(":baselineprofile"))
     kapt(libs.dagger.hilt.compiler)
 
+    baselineProfile(projects.baselineprofile)
     implementation(projects.core.data)
     implementation(projects.core.designsystem)
     implementation(projects.core.sync)

@@ -10,6 +10,7 @@
     <string name="forgot_password_question">Forgot Password?</string>
     <string name="i_am_happy_to_see_you_again">I am happy to see you again. You can continue where you left off by logging in.</string>
     <string name="i_guess_you_are_new_around">Hello, I guess you are new around here. You can start using the application after sign up.</string>
+    <string name="new_password">New Password</string>
     <string name="next">Next</string>
     <string name="or">or</string>
     <string name="password_hint">Password</string>

@@ -12,5 +12,5 @@ data class NetworkArticleSource(
     /**
      * Source name
      */
-    @SerialName("name") val name: String?
+    @SerialName("name") val name: String
 )

@@ -10,7 +10,7 @@ import dev.aggregate.data.util.BySourceRequest
 import dev.aggregate.data.util.MergeStrategy
 import dev.aggregate.data.util.RequestResponseMergeStrategy
 import dev.aggregate.data.util.TopHeadlinesRequest
-import dev.aggregate.database.dao.TopHeadlinesDao
+import dev.aggregate.database.NewsDatabase
 import dev.aggregate.database.entity.TopHeadlinesArticleEntity
 import dev.aggregate.model.Article
 import dev.aggregate.network.NewsApi
@@ -36,7 +36,7 @@ interface NewsRepository {
 
 class DefaultNewsRepository @Inject constructor(
     private val network: NewsApi,
-    private val topHeadlinesDao: TopHeadlinesDao,
+    private val database: NewsDatabase,
 ) : NewsRepository {
     override fun observeBookmarkedArticles(articleIds: Set<String>): Flow<RequestResult<List<Article>>> {
         TODO("Not yet implemented")
@@ -106,15 +106,13 @@ class DefaultNewsRepository @Inject constructor(
         data: NetworkArticlesResponse<NetworkArticle>,
     ) {
         val articleEntities = data.articles.map { netArticle -> netArticle.toEntity() }
-        topHeadlinesDao.upsertTopHeadlinesArticles(articleEntities)
+        database.topHeadlinesDao.upsertTopHeadlinesArticles(articleEntities)
     }
 
     private fun getTopHeadlinesFromDatabase(): Flow<RequestResult<List<TopHeadlinesArticleEntity>>> {
-        val dbRequest = topHeadlinesDao.observeTopHeadlines()
+        val dbRequest = database.topHeadlinesDao.observeTopHeadlines()
             .map<List<TopHeadlinesArticleEntity>, RequestResult<List<TopHeadlinesArticleEntity>>> {
-                RequestResult.Success(
-                    it
-                )
+                RequestResult.Success(it)
             }
         val init = flowOf<RequestResult<List<TopHeadlinesArticleEntity>>>(RequestResult.InProgress())
         return merge(init, dbRequest)

@@ -19,16 +19,16 @@ data class UiArticle(
         bookmarkedArticleIds: Set<String>,
         viewedArticleIds: Set<String>
     ) : this(
-        author = article.author,
-        bookmarked = article.id in bookmarkedArticleIds,
-        content = article.content,
-        description = article.description,
-        publishedAt = article.publishedAt,
-        source = UiArticleSource(article.source.id, article.source.name),
-        title = article.title,
-        url = article.url,
-        urlToImage = article.urlToImage,
-        viewed = article.id in viewedArticleIds,
+        author = article.author.toString(),
+        bookmarked = article.id.toString() in bookmarkedArticleIds,
+        content = article.content.toString(),
+        description = article.description.toString(),
+        publishedAt = article.publishedAt.toString(),
+        source = UiArticleSource(article.source?.id.toString(), article.source?.name.toString()),
+        title = article.title.toString(),
+        url = article.url.toString(),
+        urlToImage = article.urlToImage.toString(),
+        viewed = article.id.toString() in viewedArticleIds,
     )
 }
 

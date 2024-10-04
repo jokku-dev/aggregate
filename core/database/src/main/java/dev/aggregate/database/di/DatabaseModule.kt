@@ -9,24 +9,21 @@ import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
 import dev.aggregate.database.NewsDatabase
 import dev.aggregate.database.NewsRoomDatabase
-import dev.aggregate.database.dao.TopHeadlinesDao
 import javax.inject.Singleton
 
 @Module
 @InstallIn(SingletonComponent::class)
 object DatabaseModule {
-
-    @Provides
-    fun provideNewsDao(database: NewsRoomDatabase): TopHeadlinesDao = database.topHeadlinesDao()
-
     @Singleton
     @Provides
-    fun provideDatabase(@ApplicationContext context: Context): NewsDatabase {
-        val newsRoomDatabase = Room.databaseBuilder(
+    fun provideRoomDatabase(@ApplicationContext context: Context): NewsRoomDatabase {
+        return Room.databaseBuilder(
             context,
             NewsRoomDatabase::class.java,
             "news"
         ).build()
-        return NewsDatabase(newsRoomDatabase)
     }
+
+    @Provides
+    fun provideDatabase(roomDatabase: NewsRoomDatabase): NewsDatabase = NewsDatabase(roomDatabase)
 }

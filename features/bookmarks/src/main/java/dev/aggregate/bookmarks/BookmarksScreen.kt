@@ -41,7 +41,7 @@ fun BookmarksScreen(
 
     if (state is BookmarksState.Success) {
         BookmarksScreenContent(
-            articles = state.bookmarkedArticles,
+            articles = state.stateData,
             openArticle = { article ->
 //            viewModel.setChosenArticle(article)
                 navController.navigate(route = Screen.ArticleScreen.route)
@@ -125,7 +125,8 @@ fun BookmarksScreenPreview() {
                     description = "",
                     publishedAt = "2023-04-25T08:36",
                     source = UiArticleSource(id = "", name = "The Washington Post"),
-                    title = "Fox News' sudden firing of Tucker Carlson may have come down to one simple calculation - CNN",
+                    title = "Fox News' sudden firing of Tucker Carlson " +
+                            "may have come down to one simple calculation - CNN",
                     url = "",
                     urlToImage = "",
                     viewed = false
@@ -137,7 +138,8 @@ fun BookmarksScreenPreview() {
                     description = "",
                     publishedAt = "2023-04-25T08:36",
                     source = UiArticleSource(id = "", name = "The Washington Post"),
-                    title = "Fox News' sudden firing of Tucker Carlson may have come down to one simple calculation - CNN",
+                    title = "Fox News' sudden firing of Tucker Carlson " +
+                            "may have come down to one simple calculation - CNN",
                     url = "",
                     urlToImage = "",
                     viewed = false
@@ -149,7 +151,8 @@ fun BookmarksScreenPreview() {
                     description = "",
                     publishedAt = "2023-04-25T08:36",
                     source = UiArticleSource(id = "", name = "The Washington Post"),
-                    title = "Fox News' sudden firing of Tucker Carlson may have come down to one simple calculation - CNN",
+                    title = "Fox News' sudden firing of Tucker Carlson " +
+                            "may have come down to one simple calculation - CNN",
                     url = "",
                     urlToImage = "",
                     viewed = false

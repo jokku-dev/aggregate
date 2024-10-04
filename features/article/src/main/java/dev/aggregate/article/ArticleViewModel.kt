@@ -3,20 +3,18 @@ package dev.aggregate.article
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import androidx.navigation.toRoute
 import dagger.hilt.android.lifecycle.HiltViewModel
-import dev.aggregate.article.navigation.ArticleRoute
 import dev.aggregate.data.repository.NewsRepository
 import dev.aggregate.data.repository.PreferencesRepository
 import dev.aggregate.model.ui.UiArticle
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.flow.stateIn
 import javax.inject.Inject
 
 interface ArticleViewModel {
-    val topicId: String
     val articleUiState: StateFlow<ArticleUiState>
 
 //    fun setChosenArticle(uiArticle: UiArticle)
@@ -31,13 +29,8 @@ class BaseArticleViewModel @Inject constructor(
     newsRepository: NewsRepository
 ) : ViewModel(), ArticleViewModel {
 
-    override val topicId = savedStateHandle.toRoute<ArticleRoute>().id
 
-    override val articleUiState: StateFlow<ArticleUiState> = newsUiState(
-        topicId = topicId,
-        preferencesRepository = preferencesRepository,
-        newsRepository = newsRepository,
-    )
+    override val articleUiState: StateFlow<ArticleUiState> = flowOf(ArticleUiState.Success(UiArticle()))
         .stateIn(
             scope = viewModelScope,
             started = SharingStarted.WhileSubscribed(5_000),

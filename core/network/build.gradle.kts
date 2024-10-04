@@ -26,25 +26,25 @@ android {
     }
 
     compileOptions {
-        sourceCompatibility = JavaVersion.VERSION_1_8
-        targetCompatibility = JavaVersion.VERSION_1_8
+        sourceCompatibility = JavaVersion.VERSION_11
+        targetCompatibility = JavaVersion.VERSION_11
     }
 
     kotlinOptions {
-        jvmTarget = "1.8"
+        jvmTarget = "11"
     }
 }
 
 dependencies {
-    implementation(libs.retrofit)
+    implementation(libs.androidx.annotation)
+    implementation(libs.dagger.hilt.android)
     implementation(libs.kotlinx.coroutines.core)
     implementation(libs.kotlinx.serialization.json)
     implementation(libs.okhttp.logging.interceptor)
-    implementation(libs.androidx.annotation)
-    implementation(libs.retrofit.converter.kotlinx.serialization)
+    implementation(libs.retrofit)
     implementation(libs.retrofit.adapters.result)
+    implementation(libs.retrofit.converter.kotlinx.serialization)
     implementation(libs.retrofit.responseTypeKeeper)
-    implementation(libs.dagger.hilt.android)
-    kapt(libs.dagger.hilt.compiler)
     implementation(projects.core.model)
+    kapt(libs.dagger.hilt.compiler)
 }

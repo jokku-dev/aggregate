@@ -10,7 +10,6 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.catch
 import java.io.IOException
 import javax.inject.Inject
-import javax.inject.Singleton
 
 const val USER_PREFERENCES = "UserPreferences"
 const val FAILED_TO_UPDATE_USER_PREFERENCES = "Failed to update user preferences"
@@ -18,7 +17,6 @@ const val FAILED_TO_COPY_USER_PREFERENCES = "Failed to copy user preferences"
 const val FAILED_TO_READ_USER_PREFERENCES = "Failed to read user preferences"
 
 interface PreferencesDataSource {
-
     val userData: Flow<UserData>
 
     suspend fun setPreferredCountry(country: Country)
@@ -31,7 +29,6 @@ interface PreferencesDataSource {
     suspend fun setUserLoggedIn(loggedIn: Boolean)
 }
 
-@Singleton
 class NewsPreferencesDataSource @Inject constructor(
     private val preferences: DataStore<UserData>
 ) : PreferencesDataSource {

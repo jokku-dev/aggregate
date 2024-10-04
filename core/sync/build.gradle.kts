@@ -24,26 +24,27 @@ android {
         }
     }
     compileOptions {
-        sourceCompatibility = JavaVersion.VERSION_1_8
-        targetCompatibility = JavaVersion.VERSION_1_8
+        sourceCompatibility = JavaVersion.VERSION_11
+        targetCompatibility = JavaVersion.VERSION_11
     }
     kotlinOptions {
-        jvmTarget = "1.8"
+        jvmTarget = "11"
     }
 }
 
 dependencies {
-    implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.appcompat)
+    implementation(platform(libs.androidx.compose.bom))
     implementation(libs.androidx.compose.runtime)
-    implementation(libs.material)
+    implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.hilt.common)
+    implementation(libs.androidx.hilt.work)
     implementation(libs.androidx.lifecycle.livedata)
     implementation(libs.androidx.tracing.ktx)
-    implementation(libs.dagger.hilt.android)
     implementation(libs.androidx.work.ktx)
-    implementation(libs.androidx.hilt.work)
+    implementation(libs.dagger.hilt.android)
     implementation(libs.kotlinx.coroutines.core)
+    implementation(libs.material)
     implementation(projects.core.common)
     implementation(projects.core.data)
     implementation(projects.core.datastore)
