@@ -106,7 +106,7 @@ dependencies {
     baselineProfile(projects.baselineprofile)
     implementation(projects.core.data)
     implementation(projects.core.designsystem)
-    implementation(projects.core.sync)
+    implementation(projects.core.model)
     implementation(projects.features.topheadlines)
     implementation(projects.features.account)
     implementation(projects.features.bookmarks)

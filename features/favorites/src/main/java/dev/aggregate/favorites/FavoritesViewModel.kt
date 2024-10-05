@@ -10,7 +10,6 @@ import dev.aggregate.model.Article
 import dev.aggregate.model.TopCategoryType
 import dev.aggregate.model.ui.UiArticle
 import dev.aggregate.model.ui.UiCategorisedArticles
-import dev.aggregate.sync.SyncStatusMonitor
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
@@ -36,23 +35,14 @@ interface FavoritesViewModel {
 // Exceptions from offline first repo is rare but still shall be caught by .catch or .retry
 @HiltViewModel
 class DefaultFavoritesViewModel @Inject constructor(
-    syncStatusMonitor: SyncStatusMonitor,
     private val newsRepository: NewsRepository,
     private val preferencesRepository: PreferencesRepository,
     private val localDataProvider: LocalDataProvider,
     private val dispatcher: CoroutineDispatcher = Dispatchers.Main
 ) : ViewModel(), FavoritesViewModel {
-
     private val bookmarkedArticles = preferencesRepository.userData.map { data ->
         data.bookmarkedArticleIds
     }
-
-    val isSyncing = syncStatusMonitor.isSyncing
-        .stateIn(
-            scope = viewModelScope,
-            started = SharingStarted.WhileSubscribed(5_000),
-            initialValue = false
-        )
 
     @OptIn(ExperimentalCoroutinesApi::class)
     override val favoritesUiState: StateFlow<FavoritesState> = preferencesRepository.userData

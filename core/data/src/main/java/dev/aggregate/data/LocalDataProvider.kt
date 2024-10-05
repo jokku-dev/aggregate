@@ -6,6 +6,7 @@ import dev.aggregate.model.network.Language
 import dev.aggregate.model.ui.UiCategory
 import dev.aggregate.model.ui.UiOnBoardingPage
 import dev.aggregate.model.ui.UiText
+import javax.inject.Inject
 
 enum class CategoryType {
     LANGUAGE, CATEGORY, COUNTRY
@@ -20,7 +21,7 @@ interface LocalDataProvider {
     ): UiText
 }
 
-class LocalDataProviderFactory : LocalDataProvider {
+class LocalDataProviderFactory @Inject constructor() : LocalDataProvider {
 
     override fun provideCategoryNameByCode(
         type: CategoryType,

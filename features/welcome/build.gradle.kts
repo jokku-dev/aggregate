@@ -1,7 +1,9 @@
 plugins {
     alias(libs.plugins.android.library)
+    alias(libs.plugins.dagger.hilt.android)
     alias(libs.plugins.kotlin.android)
     alias(libs.plugins.kotlin.compose)
+    alias(libs.plugins.kotlin.kapt)
 }
 
 android {
@@ -36,7 +38,10 @@ dependencies {
     implementation(libs.dagger.hilt.android)
     implementation(libs.javax.inject)
     implementation(libs.material)
+    kapt(libs.dagger.hilt.compiler)
 
+
+    implementation(projects.core.common)
     implementation(projects.core.data)
     implementation(projects.core.database)
     implementation(projects.core.datastore)

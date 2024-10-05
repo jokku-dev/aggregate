@@ -3,6 +3,8 @@ package dev.aggregate.welcome
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
+import dev.aggregate.common.di.Dispatcher
+import dev.aggregate.common.di.NewsDispatchers
 import dev.aggregate.data.CategoryType
 import dev.aggregate.data.LocalDataProvider
 import dev.aggregate.data.repository.PreferencesRepository
@@ -10,7 +12,6 @@ import dev.aggregate.model.UserData
 import dev.aggregate.model.ui.UiCategory
 import dev.aggregate.model.ui.UiOnBoardingPage
 import kotlinx.coroutines.CoroutineDispatcher
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
@@ -39,7 +40,7 @@ interface WelcomeViewModel {
 class MainWelcomeViewModel @Inject constructor(
     private val preferencesRepository: PreferencesRepository,
     localDataProvider: LocalDataProvider,
-    private val dispatcher: CoroutineDispatcher = Dispatchers.Main
+    @Dispatcher(NewsDispatchers.MAIN) private val dispatcher: CoroutineDispatcher
 ) : ViewModel(), WelcomeViewModel {
 
     private val userData: Flow<UserData> = preferencesRepository.userData

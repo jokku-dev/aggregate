@@ -33,7 +33,7 @@ fun SelectFavoriteTopicsScreen(
 
     SelectFavoriteTopicsScreenContent(
         categories = state.categories,
-        changeIsTopicFavorite = { topic -> /*viewModel.switchIsTopicFavorite(topic)*/ },
+        changeIsTopicFavorite = { topic -> },
         onButtonClick = {
 //            viewModel.setFavoriteTopics(state.categories)
             viewModel.setLaunchScreen(Screen.TopHeadlines.route)

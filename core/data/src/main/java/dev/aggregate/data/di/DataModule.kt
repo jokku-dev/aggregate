@@ -4,6 +4,8 @@ import dagger.Binds
 import dagger.Module
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
+import dev.aggregate.data.LocalDataProvider
+import dev.aggregate.data.LocalDataProviderFactory
 import dev.aggregate.data.repository.CompositeNewsPreferencesRepository
 import dev.aggregate.data.repository.DefaultNewsRepository
 import dev.aggregate.data.repository.NewsPreferencesRepository
@@ -24,4 +26,7 @@ abstract class DataModule {
     abstract fun bindCompositeNewsPreferencesRepository(
         impl: CompositeNewsPreferencesRepository
     ): NewsPreferencesRepository
+
+    @Binds
+    abstract fun bindLocalDataProvider(impl: LocalDataProviderFactory): LocalDataProvider
 }
