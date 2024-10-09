@@ -60,8 +60,8 @@ interface NewsApi {
         @Query("country") country: Country? = null,
         @Query("category") category: Category? = null,
         @Query("q") query: String? = null,
-        @Query("pageSize") @IntRange(from = 0, to = 100) pageSize: Int = 100,
-        @Query("page") @IntRange(from = 1) page: Int = 1,
+        @Query("pageSize") @IntRange(from = 0, to = 100) pageSize: Int? = null,
+        @Query("page") @IntRange(from = 1) page: Int? = null,
     ): Result<NetworkArticlesResponse<NetworkArticle>>
 
     /**
@@ -73,8 +73,8 @@ interface NewsApi {
     suspend fun topHeadlinesBySource(
         @Query("sources") sources: List<String>? = null,
         @Query("q") query: String? = null,
-        @Query("pageSize") @IntRange(from = 0, to = 100) pageSize: Int = 100,
-        @Query("page") @IntRange(from = 1) page: Int = 1,
+        @Query("pageSize") @IntRange(from = 0, to = 100) pageSize: Int? = null,
+        @Query("page") @IntRange(from = 1) page: Int? = null,
     ): Result<NetworkArticlesResponse<NetworkArticle>>
 
     /**

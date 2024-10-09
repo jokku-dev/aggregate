@@ -1,32 +1,38 @@
 package dev.aggregate.designsystem
 
+const val HOME = "topHeadlines"
+const val FAVORITES = "favorites"
+const val SOURCES = "sources"
+const val BOOKMARKS = "bookmarks"
+const val PROFILE = "profile"
+
 sealed class Screen(val route: String) {
     object OnBoarding : Screen("onBoarding")
     object SelectFavoriteTopics : Screen("selectFavoriteTopics")
 
     object Favorites : BottomNavigationScreen(
-        route = "favorites",
+        route = FAVORITES,
         icon = R.drawable.ic_favorite
     )
 
     object TopHeadlines : BottomNavigationScreen(
-        route = "topHeadlines",
+        route = HOME,
         icon = R.drawable.ic_chart
     )
 
     object Sources : BottomNavigationScreen(
-        route = "sources",
+        route = SOURCES,
         icon = R.drawable.ic_sources
     )
 
     object Bookmarks : BottomNavigationScreen(
-        route = "bookmarks",
+        route = BOOKMARKS,
         icon = R.drawable.ic_bookmark,
         badgeCount = 12
     )
 
     object Profile : BottomNavigationScreen(
-        route = "profile",
+        route = PROFILE,
         icon = R.drawable.ic_profile
     )
 

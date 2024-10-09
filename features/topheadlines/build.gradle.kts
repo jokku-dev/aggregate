@@ -55,6 +55,7 @@ dependencies {
     implementation(libs.androidx.navigation.runtime)
     implementation(libs.coil.compose)
     implementation(libs.dagger.hilt.android)
+    implementation(libs.kotlinx.collections.immutable)
     implementation(libs.kotlinx.coroutines.android)
     kapt(libs.dagger.hilt.compiler)
 

@@ -47,7 +47,7 @@ fun OnBoardingScreen(
     viewModel: WelcomeViewModel = hiltViewModel<MainWelcomeViewModel>()
 ) {
     val state by viewModel.onBoardingUiState.collectAsStateWithLifecycle()
-    val pagerState = rememberPagerState{ state.pages.size }
+    val pagerState = rememberPagerState { state.pages.size }
     val scope = rememberCoroutineScope()
 
     OnBoardingScreenContent(
@@ -56,7 +56,7 @@ fun OnBoardingScreen(
         onButtonClick = {
             // scrollToPage is suspend and therefore requires scope
             scope.launch {
-                if (pagerState.currentPage < state.pages.size) {
+                if (pagerState.currentPage + 1 < state.pages.size) {
                     pagerState.scrollToPage(pagerState.currentPage + 1)
                 } else {
                     viewModel.setLaunchScreen(Screen.SelectFavoriteTopics.route)
@@ -90,44 +90,12 @@ fun OnBoardingScreenContent(
                 description = stringResource(id = pages[page].description),
             )
         }
-        Column(
-            modifier = Modifier.fillMaxWidth(),
-            horizontalAlignment = Alignment.CenterHorizontally,
-            verticalArrangement = Arrangement.Bottom
-        ) {
-            Row(
-                Modifier
-                    .wrapContentHeight()
-                    .fillMaxWidth()
-                    .align(Alignment.CenterHorizontally)
-                    .padding(bottom = 32.dp),
-                horizontalArrangement = Arrangement.Center
-            ) {
-                repeat(pagerState.pageCount) { iteration ->
-                    val color = if (pagerState.currentPage == iteration) colorScheme.primary else colorScheme.secondary
-                    Box(
-                        modifier = Modifier
-                            .padding(2.dp)
-                            .clip(CircleShape)
-                            .background(color)
-                            .size(16.dp)
-                    )
-                }
-            }
-            BigActionButton(
-                modifier = Modifier
-                    .padding(bottom = 16.dp)
-                    .padding(horizontal = 16.dp),
-                text = if (pagerState.currentPage < pages.size) {
-                    stringResource(id = R.string.next)
-                } else {
-                    stringResource(id = R.string.get_started)
-                },
-                onClick = onButtonClick
-            )
-        }
+        PagerSelectorAndButton(
+            pages = pages,
+            pagerState = pagerState,
+            onButtonClick = onButtonClick
+        )
     }
-
 }
 
 @Composable
@@ -168,11 +136,64 @@ fun PagerScreen(
     }
 }
 
+@Composable
+fun PagerSelectorAndButton(
+    pages: List<UiOnBoardingPage>,
+    pagerState: PagerState,
+    onButtonClick: () -> Unit
+) {
+    Column(
+        modifier = Modifier.fillMaxWidth(),
+        horizontalAlignment = Alignment.CenterHorizontally,
+        verticalArrangement = Arrangement.Bottom
+    ) {
+        Row(
+            Modifier
+                .wrapContentHeight()
+                .fillMaxWidth()
+                .align(Alignment.CenterHorizontally)
+                .padding(bottom = 32.dp),
+            horizontalArrangement = Arrangement.Center
+        ) {
+            repeat(pagerState.pageCount) { iteration ->
+                val color = if (pagerState.currentPage == iteration) {
+                    colorScheme.primary
+                } else {
+                    colorScheme.secondary
+                }
+                Box(
+                    modifier = Modifier
+                        .padding(2.dp)
+                        .clip(CircleShape)
+                        .background(color)
+                        .size(16.dp)
+                )
+            }
+        }
+        BigActionButton(
+            modifier = Modifier
+                .padding(bottom = 16.dp)
+                .padding(horizontal = 16.dp),
+            text = if (pagerState.currentPage + 1 < pages.size) {
+                stringResource(id = R.string.next)
+            } else {
+                stringResource(id = R.string.get_started)
+            },
+            onClick = onButtonClick
+        )
+    }
+}
+
 @Preview(showBackground = true)
 @Composable
 fun OnBoardingScreenPreview() {
     AggregateTheme {
-        OnBoardingScreenContent(
+        PagerScreen(
+            painterResource(R.drawable.img_onboarding),
+            stringResource(R.string.on_board_first_title),
+            stringResource(R.string.on_board_first_description)
+        )
+        PagerSelectorAndButton(
             pages = listOf(
                 UiOnBoardingPage(
                     R.drawable.img_onboarding,
@@ -190,7 +211,7 @@ fun OnBoardingScreenPreview() {
                     R.string.on_board_third_description
                 )
             ),
-            pagerState = rememberPagerState{ 3 },
+            pagerState = rememberPagerState { 1 },
             onButtonClick = {}
         )
     }

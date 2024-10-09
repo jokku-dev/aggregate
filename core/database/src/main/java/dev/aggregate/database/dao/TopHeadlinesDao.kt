@@ -9,6 +9,9 @@ import kotlinx.coroutines.flow.Flow
 @Dao
 interface TopHeadlinesDao : BookmarksDao {
     @Query("SELECT * FROM TOP_HEADLINES_ARTICLES")
+    suspend fun getTopHeadlines(): List<TopHeadlinesArticleEntity>
+
+    @Query("SELECT * FROM TOP_HEADLINES_ARTICLES")
     fun observeTopHeadlines(): Flow<List<TopHeadlinesArticleEntity>>
 
     @Upsert

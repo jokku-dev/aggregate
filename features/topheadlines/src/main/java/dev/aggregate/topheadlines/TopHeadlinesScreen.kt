@@ -12,7 +12,7 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.text.KeyboardActionScope
 import androidx.compose.material3.CircularProgressIndicator
-import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.MaterialTheme.colorScheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -33,40 +33,39 @@ import dev.aggregate.designsystem.component.ArticleItem
 import dev.aggregate.designsystem.component.CategoryItem
 import dev.aggregate.designsystem.component.HeadlineAndDescriptionText
 import dev.aggregate.designsystem.component.SearchTextField
-import dev.aggregate.designsystem.theme.AggregateTheme
 import dev.aggregate.model.ui.UiArticle
 import dev.aggregate.model.ui.UiCategory
+import kotlinx.collections.immutable.ImmutableList
 
 @Composable
 fun TopHeadlinesScreen(
     navController: NavHostController,
-    viewModel: TopHeadlinesViewModel = hiltViewModel<MainTopHeadlinesViewModel>()
+    viewModel: TopHeadlinesViewModel = hiltViewModel<MainTopHeadlinesViewModel>(),
+    modifier: Modifier = Modifier
 ) {
-    val state by viewModel.topHeadlinesState.collectAsStateWithLifecycle()
+    val articlesState by viewModel.topHeadlinesState.collectAsStateWithLifecycle()
+    val categoriesState by viewModel.categoriesState.collectAsStateWithLifecycle()
 
     var search by rememberSaveable { mutableStateOf("") }
 
-    when (val currentState = state) {
-        is TopHeadlinesState.Failure -> TODO("Not implemented")
-        is TopHeadlinesState.Loading -> TODO("Not implemented")
-        is TopHeadlinesState.None -> TODO("Not implemented")
-        is TopHeadlinesState.Success -> TopHeadlinesScreenContent(
-            categories = TODO("Not implemented"),
-            uiArticles = currentState.stateData,
-            search = search,
-            onSearchChanged = { newSearch -> search = newSearch },
-            selectCategory = { category -> viewModel.selectCategory(category) },
-            keyboardAction = {},
-            onArticleClick = {}
-        )
-    }
+    TopHeadlinesScreenInterface(
+        categories = categoriesState.categories,
+        state = articlesState,
+        search = search,
+        modifier = modifier,
+        onSearchChanged = { newSearch -> search = newSearch },
+        selectCategory = { category -> viewModel.selectCategory(category) },
+        keyboardAction = {},
+        onArticleClick = {}
+    )
 }
 
 @Composable
-fun TopHeadlinesScreenContent(
+fun TopHeadlinesScreenInterface(
     categories: List<UiCategory>,
-    uiArticles: List<UiArticle>,
+    state: TopHeadlinesState,
     search: String,
+    modifier: Modifier = Modifier,
     onSearchChanged: (String) -> Unit,
     selectCategory: (UiCategory) -> Unit,
     keyboardAction: KeyboardActionScope.() -> Unit,
@@ -107,106 +106,76 @@ fun TopHeadlinesScreenContent(
                 )
             }
         }
-        LazyColumn(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(horizontal = 16.dp),
-            verticalArrangement = Arrangement.spacedBy(16.dp),
-            horizontalAlignment = Alignment.CenterHorizontally
-        ) {
-            items(count = uiArticles.size) {
-                ArticleItem(
-                    image = uiArticles[it].urlToImage,
-                    title = uiArticles[it].title,
-                    publishedAt = uiArticles[it].publishedAt,
-                    bookmarked = uiArticles[it].bookmarked,
-                    onItemClick = onArticleClick
-                )
-            }
+        when (state) {
+            is TopHeadlinesState.Error -> ErrorMessage(
+                articles = state.articles,
+                modifier = modifier,
+                onArticleClick = onArticleClick
+            )
+            is TopHeadlinesState.InProgress -> ProgressIndicator(
+                articles = state.articles,
+                modifier = modifier,
+                onArticleClick = onArticleClick
+            )
+            is TopHeadlinesState.None -> Unit
+            is TopHeadlinesState.Success -> ArticlesList(
+                articles = state.articles,
+                modifier = modifier,
+                onArticleClick = onArticleClick
+            )
         }
     }
 }
 
 @Composable
-fun EmptyTopHeadlines() {
-
-}
-
-@Composable
-fun ArticlesDuringUpdate(
-    search: String,
-    onSearchChanged: (String) -> Unit,
-    keyboardAction: KeyboardActionScope.() -> Unit,
+fun ProgressIndicator(
+    articles: ImmutableList<UiArticle>?,
+    modifier: Modifier = Modifier,
+    onArticleClick: () -> Unit
 ) {
-    Column(
-        modifier = Modifier
-            .fillMaxWidth()
-            .systemBarsPadding()
-            .padding(top = 24.dp),
-        horizontalAlignment = Alignment.CenterHorizontally,
-        verticalArrangement = Arrangement.Top
-    ) {
-        HeadlineAndDescriptionText(
-            headline = stringResource(id = R.string.browse),
-            description = stringResource(id = R.string.discover_things),
-            modifier = Modifier.padding(horizontal = 16.dp)
-        )
-        SearchTextField(
-            search = search,
-            onSearchChange = { newSearch -> onSearchChanged(newSearch) },
-            keyboardAction = keyboardAction,
-            modifier = Modifier
-                .padding(horizontal = 16.dp)
-                .padding(top = 32.dp)
-        )
+    Column {
         Box(
-            modifier = Modifier
-                .padding(8.dp)
-                .fillMaxWidth(),
+            modifier
+                .fillMaxWidth()
+                .padding(8.dp),
             contentAlignment = Alignment.Center
         ) {
             CircularProgressIndicator()
         }
+        if (articles != null) {
+            ArticlesList(
+                articles = articles,
+                modifier = modifier,
+                onArticleClick = onArticleClick
+            )
+        }
     }
 }
 
 @Composable
-fun TopHeadlinesWithError(
-    search: String,
-    onSearchChanged: (String) -> Unit,
-    keyboardAction: KeyboardActionScope.() -> Unit,
+fun ErrorMessage(
+    articles: ImmutableList<UiArticle>?,
+    modifier: Modifier = Modifier,
+    onArticleClick: () -> Unit
 ) {
-    Column(
-        modifier = Modifier
-            .fillMaxWidth()
-            .systemBarsPadding()
-            .padding(top = 24.dp),
-        horizontalAlignment = Alignment.CenterHorizontally,
-        verticalArrangement = Arrangement.Top
-    ) {
-        HeadlineAndDescriptionText(
-            headline = stringResource(id = R.string.browse),
-            description = stringResource(id = R.string.discover_things),
-            modifier = Modifier.padding(horizontal = 16.dp)
-        )
-        SearchTextField(
-            search = search,
-            onSearchChange = { newSearch -> onSearchChanged(newSearch) },
-            keyboardAction = keyboardAction,
-            modifier = Modifier
-                .padding(horizontal = 16.dp)
-                .padding(top = 32.dp)
-        )
+    Column {
         Box(
-            modifier = Modifier
-                .padding(8.dp)
+            modifier
                 .fillMaxWidth()
-                .background(color = MaterialTheme.colorScheme.error),
+                .background(colorScheme.error)
+                .padding(8.dp),
             contentAlignment = Alignment.Center
         ) {
             Text(
                 text = stringResource(R.string.data_fetch_error),
-                color = MaterialTheme.colorScheme.onError
+                color = colorScheme.onError
+            )
+        }
+        if (articles != null) {
+            ArticlesList(
+                articles = articles,
+                modifier = modifier,
+                onArticleClick = onArticleClick
             )
         }
     }
@@ -214,19 +183,28 @@ fun TopHeadlinesWithError(
 
 @Preview(showBackground = true)
 @Composable
-fun TopHeadlinesScreenPreview(
-    @PreviewParameter(ArticlesPreviewProvider::class, limit = 1) articles: List<UiArticle>
+fun ArticlesList(
+    @PreviewParameter(ArticlesPreviewProvider::class, limit = 1)
+    articles: List<UiArticle>,
+    modifier: Modifier = Modifier,
+    onArticleClick: () -> Unit = {}
 ) {
-    AggregateTheme {
-        TopHeadlinesScreenContent(
-            categories = emptyList(),
-            uiArticles = articles,
-            search = "",
-            onSearchChanged = {},
-            selectCategory = {},
-            keyboardAction = {},
-            onArticleClick = {}
-        )
+    LazyColumn(
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(horizontal = 16.dp),
+        verticalArrangement = Arrangement.spacedBy(16.dp),
+        horizontalAlignment = Alignment.CenterHorizontally
+    ) {
+        items(count = articles.size) {
+            ArticleItem(
+                image = articles[it].urlToImage,
+                title = articles[it].title,
+                publishedAt = articles[it].publishedAt,
+                bookmarked = articles[it].bookmarked,
+                onItemClick = onArticleClick
+            )
+        }
     }
 }
 

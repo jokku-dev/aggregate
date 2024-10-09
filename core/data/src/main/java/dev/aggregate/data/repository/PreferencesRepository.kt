@@ -3,17 +3,15 @@ package dev.aggregate.data.repository
 import dev.aggregate.datastore.PreferencesDataSource
 import dev.aggregate.model.DarkThemeConfig
 import dev.aggregate.model.UserData
-import dev.aggregate.model.network.Category
-import dev.aggregate.model.network.Country
 import kotlinx.coroutines.flow.Flow
 import javax.inject.Inject
 
 interface PreferencesRepository {
     val userData: Flow<UserData>
 
-    suspend fun setPreferredCountry(countryCode: Country)
+    suspend fun setPreferredCountry(countryCode: String)
 //    suspend fun togglePreferredCountries(countryCode: String, preferred: Boolean)
-    suspend fun setPreferredCategory(categoryCode: Category)
+    suspend fun setFavoriteCategory(categoryCode: String?)
 //    suspend fun togglePreferredCategories(categoryCode: String, preferred: Boolean)
     suspend fun updateBookmarkedArticles(articleId: String, bookmarked: Boolean)
     suspend fun setDarkThemeConfig(darkThemeConfig: DarkThemeConfig)
@@ -27,7 +25,7 @@ class UserPreferencesRepository @Inject constructor(
 
     override val userData: Flow<UserData> = preferences.userData
 
-    override suspend fun setPreferredCountry(countryCode: Country) {
+    override suspend fun setPreferredCountry(countryCode: String) {
         preferences.setPreferredCountry(countryCode)
     }
 
@@ -35,8 +33,8 @@ class UserPreferencesRepository @Inject constructor(
         preferences.togglePreferredCountries(countryCode, preferred)
     }*/
 
-    override suspend fun setPreferredCategory(categoryCode: Category) {
-        preferences.setPreferredCategory(categoryCode)
+    override suspend fun setFavoriteCategory(categoryCode: String?) {
+        preferences.setFavoriteCategory(categoryCode)
     }
 
 //    override suspend fun togglePreferredCategories(categoryCode: String, preferred: Boolean) {

@@ -4,8 +4,6 @@ import android.util.Log
 import androidx.datastore.core.DataStore
 import dev.aggregate.model.DarkThemeConfig
 import dev.aggregate.model.UserData
-import dev.aggregate.model.network.Category
-import dev.aggregate.model.network.Country
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.catch
 import java.io.IOException
@@ -19,9 +17,9 @@ const val FAILED_TO_READ_USER_PREFERENCES = "Failed to read user preferences"
 interface PreferencesDataSource {
     val userData: Flow<UserData>
 
-    suspend fun setPreferredCountry(country: Country)
+    suspend fun setPreferredCountry(country: String)
 //    suspend fun togglePreferredCountries(country: Country, preferred: Boolean)
-    suspend fun setPreferredCategory(category: Category)
+    suspend fun setFavoriteCategory(category: String?)
 //    suspend fun togglePreferredCategories(category: Category, preferred: Boolean)
     suspend fun updateBookmarkedArticles(articleId: String, bookmarked: Boolean)
     suspend fun setDarkThemeConfig(darkThemeConfig: DarkThemeConfig)
@@ -39,9 +37,9 @@ class NewsPreferencesDataSource @Inject constructor(
         }
     }
 
-    override suspend fun setPreferredCountry(country: Country) {
+    override suspend fun setPreferredCountry(country: String) {
         try {
-            preferences.updateData { data -> data.copy(countryCode = country) }
+            preferences.updateData { data -> data.copy(favoriteCountry = country) }
         } catch (exception: IOException) {
             logException(exception)
         }
@@ -64,9 +62,9 @@ class NewsPreferencesDataSource @Inject constructor(
         }
     }*/
 
-    override suspend fun setPreferredCategory(category: Category) {
+    override suspend fun setFavoriteCategory(category: String?) {
         try {
-            preferences.updateData { data -> data.copy(categoryCode = category) }
+            preferences.updateData { data -> data.copy(favoriteCategory = category) }
         } catch (exception: IOException) {
             logException(exception)
         }

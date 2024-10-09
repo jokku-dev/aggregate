@@ -13,14 +13,13 @@ import androidx.compose.ui.Modifier
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.currentBackStackEntryAsState
 import dev.aggregate.app.navigation.Navigation
+import dev.aggregate.designsystem.BOOKMARKS
+import dev.aggregate.designsystem.FAVORITES
+import dev.aggregate.designsystem.HOME
+import dev.aggregate.designsystem.PROFILE
+import dev.aggregate.designsystem.SOURCES
 import dev.aggregate.designsystem.component.BottomBar
 import dev.aggregate.designsystem.theme.AggregateTheme
-
-private const val HOME = "home"
-private const val FAVORITES = "favorites"
-private const val SOURCES = "sources"
-private const val BOOKMARKS = "bookmarks"
-private const val PROFILE = "profile"
 
 @Composable
 fun AggregateApp(

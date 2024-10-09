@@ -1,5 +1,6 @@
 package dev.aggregate.data.repository
 
+import dev.aggregate.common.util.Logger
 import dev.aggregate.data.RequestResult
 import dev.aggregate.data.map
 import dev.aggregate.data.toArticle
@@ -17,7 +18,10 @@ import dev.aggregate.network.NewsApi
 import dev.aggregate.network.model.NetworkArticle
 import dev.aggregate.network.model.NetworkArticlesResponse
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.asFlow
+import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.combine
+import kotlinx.coroutines.flow.flatMapLatest
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.flow.map
@@ -37,8 +41,11 @@ interface NewsRepository {
 class DefaultNewsRepository @Inject constructor(
     private val network: NewsApi,
     private val database: NewsDatabase,
+    private val logger: Logger
 ) : NewsRepository {
-    override fun observeBookmarkedArticles(articleIds: Set<String>): Flow<RequestResult<List<Article>>> {
+    override fun observeBookmarkedArticles(
+        articleIds: Set<String>
+    ): Flow<RequestResult<List<Article>>> {
         TODO("Not yet implemented")
     }
 
@@ -46,29 +53,23 @@ class DefaultNewsRepository @Inject constructor(
         request: TopHeadlinesRequest,
         mergeStrategy: MergeStrategy<RequestResult<List<Article>>>
     ): Flow<RequestResult<List<Article>>> {
-        val cachedResponse: Flow<RequestResult<List<Article>>> = getTopHeadlinesFromDatabase().map { result ->
-            result.map { entities ->
-                entities.map { entity ->
-                    entity.toArticle()
+        val cachedResponse: Flow<RequestResult<List<Article>>> = getTopHeadlinesFromDatabase()
+        val remoteArticles: Flow<RequestResult<List<Article>>> = getTopHeadlinesFromServer(request)
+        return cachedResponse.combine(remoteArticles, mergeStrategy::merge)
+            .flatMapLatest { result ->
+                if (result is RequestResult.Success) {
+                    database.topHeadlinesDao.observeTopHeadlines()
+                        .map { entities -> entities.map { it.toArticle() } }
+                        .map { RequestResult.Success(it) }
+                } else {
+                    flowOf(result)
                 }
             }
-        }
-
-        val remoteArticles: Flow<RequestResult<List<Article>>> = getTopHeadlinesFromServer(request).map { result ->
-            result.map { response ->
-                response.articles.map { article ->
-                    article.toArticle()
-                }
-            }
-        }
-        return cachedResponse.combine(remoteArticles) { entities, netObj ->
-            mergeStrategy.merge(entities, netObj)
-        }
     }
 
     private fun getTopHeadlinesFromServer(
         request: TopHeadlinesRequest,
-    ): Flow<RequestResult<NetworkArticlesResponse<NetworkArticle>>> {
+    ): Flow<RequestResult<List<Article>>> {
         val netRequest = flow {
             when (request) {
                 is ByCountryAndCategoryRequest -> emit(
@@ -93,29 +94,52 @@ class DefaultNewsRepository @Inject constructor(
         }
             .onEach { result ->
                 if (result.isSuccess) {
-                    saveNetResponseToCache(checkNotNull(result.getOrThrow()))
+                    saveNetResponseToCache(result.getOrThrow().articles)
+                }
+            }
+            .onEach { result ->
+                if (result.isFailure) {
+                    logger.e(
+                        LOG_TAG,
+                        "Error getting data from server. Cause = ${result.exceptionOrNull()}"
+                    )
                 }
             }
             .map { it.toRequestResult() }
         val init =
             flowOf<RequestResult<NetworkArticlesResponse<NetworkArticle>>>(RequestResult.InProgress())
-        return merge(init, netRequest)
+        return merge(init, netRequest).map { result ->
+            result.map { response ->
+                response.articles.map { article -> article.toArticle() }
+            }
+        }
     }
 
-    private suspend fun saveNetResponseToCache(
-        data: NetworkArticlesResponse<NetworkArticle>,
-    ) {
-        val articleEntities = data.articles.map { netArticle -> netArticle.toEntity() }
+    private suspend fun saveNetResponseToCache(articles: List<NetworkArticle>) {
+        val articleEntities = articles.map { netArticle -> netArticle.toEntity() }
         database.topHeadlinesDao.upsertTopHeadlinesArticles(articleEntities)
     }
 
-    private fun getTopHeadlinesFromDatabase(): Flow<RequestResult<List<TopHeadlinesArticleEntity>>> {
-        val dbRequest = database.topHeadlinesDao.observeTopHeadlines()
+    private fun getTopHeadlinesFromDatabase(): Flow<RequestResult<List<Article>>> {
+        val dbRequest = database.topHeadlinesDao::getTopHeadlines.asFlow()
             .map<List<TopHeadlinesArticleEntity>, RequestResult<List<TopHeadlinesArticleEntity>>> {
                 RequestResult.Success(it)
             }
-        val init = flowOf<RequestResult<List<TopHeadlinesArticleEntity>>>(RequestResult.InProgress())
-        return merge(init, dbRequest)
+            .catch {
+                logger.e(LOG_TAG, "Error getting from database. Cause = $it")
+                emit(RequestResult.Error(error = it))
+            }
+        val init =
+            flowOf<RequestResult<List<TopHeadlinesArticleEntity>>>(RequestResult.InProgress())
+        return merge(init, dbRequest).map { result ->
+            result.map { entities ->
+                entities.map { entity -> entity.toArticle() }
+            }
+        }
+    }
+
+    private companion object {
+        const val LOG_TAG = "ArticlesRepository"
     }
 
 //    override fun getFavoriteTopHeadlines(

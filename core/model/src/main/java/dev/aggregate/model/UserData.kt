@@ -1,13 +1,11 @@
 package dev.aggregate.model
 
-import dev.aggregate.model.network.Category
-import dev.aggregate.model.network.Country
 import kotlinx.serialization.Serializable
 
 @Serializable
 data class UserData(
-    val categoryCode: Category? = null,
-    val countryCode: Country? = null,
+    val favoriteCategory: String? = null,
+    val favoriteCountry: String? = null,
     val sources: List<String> = emptyList(),
     val bookmarkedArticleIds: Set<String> = emptySet(),
     val viewedArticleIds: Set<String> = emptySet(),

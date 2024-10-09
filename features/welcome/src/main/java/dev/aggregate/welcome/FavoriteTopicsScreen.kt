@@ -5,14 +5,12 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
-import androidx.lifecycle.compose.LocalLifecycleOwner
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavHostController
 import dev.aggregate.designsystem.Screen
@@ -33,17 +31,14 @@ fun SelectFavoriteTopicsScreen(
 
     SelectFavoriteTopicsScreenContent(
         categories = state.categories,
-        changeIsTopicFavorite = { topic -> },
+        changeIsTopicFavorite = { topic -> viewModel.changeSelectedTopic(topic) },
         onButtonClick = {
-//            viewModel.setFavoriteTopics(state.categories)
+            viewModel.chooseFavoriteTopic(state.selectedCategory)
             viewModel.setLaunchScreen(Screen.TopHeadlines.route)
             navController.popBackStack(route = Screen.SelectFavoriteTopics.route, inclusive = true)
             navController.navigate(route = Screen.TopHeadlines.route)
         }
     )
-    LaunchedEffect(key1 = LocalLifecycleOwner.current) {
-//        viewModel.getFavoriteTopics()
-    }
 }
 
 @Composable

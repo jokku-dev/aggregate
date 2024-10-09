@@ -48,8 +48,8 @@ class DefaultFavoritesViewModel @Inject constructor(
     override val favoritesUiState: StateFlow<FavoritesState> = preferencesRepository.userData
         .map { userData ->
             getFavoriteCategoryArticles(
-                userData.countryCode?.name,
-                userData.categoryCode?.name,
+                userData.favoriteCountry,
+                userData.favoriteCategory,
                 userData.topCategoryType
             ).mapToFavoritesState()
         }
