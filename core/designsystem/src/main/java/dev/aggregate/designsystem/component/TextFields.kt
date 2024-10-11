@@ -201,8 +201,9 @@ fun PasswordTextField(
 fun SearchTextField(
     search: String,
     onSearchChange: (String) -> Unit,
-    keyboardAction: KeyboardActionScope.() -> Unit,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    onDoneKeyboardAction: KeyboardActionScope.() -> Unit = {},
+    onSearchKeyboardAction: KeyboardActionScope.() -> Unit = {},
 ) {
     OutlinedTextField(
         value = search,
@@ -249,7 +250,10 @@ fun SearchTextField(
             keyboardType = KeyboardType.Text,
             imeAction = ImeAction.Search
         ),
-        keyboardActions = KeyboardActions(onDone = keyboardAction)
+        keyboardActions = KeyboardActions(
+            onDone = onDoneKeyboardAction,
+            onSearch = onSearchKeyboardAction
+        )
     )
 }
 
@@ -322,12 +326,12 @@ fun SearchTextFieldPreview() {
             SearchTextField(
                 search = "Search",
                 onSearchChange = {},
-                keyboardAction = {}
+                onDoneKeyboardAction = {}
             )
             SearchTextField(
                 search = "Search",
                 onSearchChange = {},
-                keyboardAction = {}
+                onDoneKeyboardAction = {}
             )
         }
     }

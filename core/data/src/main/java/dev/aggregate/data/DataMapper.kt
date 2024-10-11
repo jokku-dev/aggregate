@@ -48,14 +48,14 @@ fun TopHeadlinesArticleEntity.toArticle(): Article {
 
 fun NetworkArticleSource.toEntity(): ArticleEntitySource {
     return ArticleEntitySource(
-        id = id ?: name,
+        id = id,
         name = name
     )
 }
 
 fun NetworkArticleSource.toSource(): ArticleSource {
     return ArticleSource(
-        id = id ?: name,
+        id = id,
         name = name
     )
 }

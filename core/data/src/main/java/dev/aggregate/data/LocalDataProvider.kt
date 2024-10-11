@@ -13,7 +13,7 @@ enum class CategoryType {
 }
 
 interface LocalDataProvider {
-    fun provideNewsCategoriesPreferences(type: CategoryType): List<UiCategory>
+    fun provideNewsCategories(type: CategoryType): List<UiCategory>
     fun provideOnBoardingPages(): List<UiOnBoardingPage>
     fun provideCategoryNameByCode(
         type: CategoryType,
@@ -27,13 +27,13 @@ class LocalDataProviderFactory @Inject constructor() : LocalDataProvider {
         type: CategoryType,
         code: String
     ): UiText {
-        return provideNewsCategoriesPreferences(type)
+        return provideNewsCategories(type)
             .find { uiCategory ->
                 uiCategory.code == code
             }?.name ?: UiText.StringResource(R.string.unknown_category)
     }
 
-    override fun provideNewsCategoriesPreferences(type: CategoryType): List<UiCategory> {
+    override fun provideNewsCategories(type: CategoryType): List<UiCategory> {
         return when (type) {
             CategoryType.LANGUAGE -> listOf(
                 UiCategory(

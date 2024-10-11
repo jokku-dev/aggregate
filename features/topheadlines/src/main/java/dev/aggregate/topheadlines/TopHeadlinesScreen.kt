@@ -44,18 +44,18 @@ fun TopHeadlinesScreen(
     modifier: Modifier = Modifier
 ) {
     val articlesState by viewModel.topHeadlinesState.collectAsStateWithLifecycle()
-    val categoriesState by viewModel.categoriesState.collectAsStateWithLifecycle()
+    val categories by viewModel.categoriesState.collectAsStateWithLifecycle()
 
-    var search by rememberSaveable { mutableStateOf("") }
+    var searchQuery by rememberSaveable { mutableStateOf("") }
 
     TopHeadlinesScreenInterface(
-        categories = categoriesState.categories,
+        categories = categories,
         state = articlesState,
-        search = search,
+        search = searchQuery,
         modifier = modifier,
-        onSearchChanged = { newSearch -> search = newSearch },
+        onSearchChanged = { newSearch -> searchQuery = newSearch },
         selectCategory = { category -> viewModel.selectCategory(category) },
-        keyboardAction = {},
+        keyboardAction = { viewModel.addSearchQuery(searchQuery) },
         onArticleClick = {}
     )
 }
@@ -87,7 +87,7 @@ fun TopHeadlinesScreenInterface(
         SearchTextField(
             search = search,
             onSearchChange = { newSearch -> onSearchChanged(newSearch) },
-            keyboardAction = keyboardAction,
+            onSearchKeyboardAction = keyboardAction,
             modifier = Modifier
                 .padding(horizontal = 16.dp)
                 .padding(top = 32.dp)

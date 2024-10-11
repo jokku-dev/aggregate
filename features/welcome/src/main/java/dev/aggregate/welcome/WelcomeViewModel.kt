@@ -9,7 +9,6 @@ import dev.aggregate.data.CategoryType
 import dev.aggregate.data.LocalDataProvider
 import dev.aggregate.data.repository.PreferencesRepository
 import dev.aggregate.model.UserData
-import dev.aggregate.model.ui.UiCategories
 import dev.aggregate.model.ui.UiCategory
 import dev.aggregate.model.ui.UiOnBoardingPage
 import kotlinx.coroutines.CoroutineDispatcher
@@ -25,7 +24,7 @@ import javax.inject.Inject
 
 interface WelcomeViewModel {
     val onBoardingUiState: StateFlow<OnBoardingState>
-    val favoriteCategoriesUiState: StateFlow<UiCategories>
+    val favoriteCategoriesUiState: StateFlow<List<UiCategory>>
     fun setLaunchScreen(screen: String)
     fun chooseFavoriteTopic(topic: UiCategory?)
     fun changeSelectedTopic(topic: UiCategory)
@@ -58,39 +57,35 @@ class MainWelcomeViewModel @Inject internal constructor(
         initialValue = OnBoardingState(localDataProvider.provideOnBoardingPages())
     )
 
-    override val favoriteCategoriesUiState: StateFlow<UiCategories> = combine(
+    override val favoriteCategoriesUiState: StateFlow<List<UiCategory>> = combine(
         userData,
-        flowOf(localDataProvider.provideNewsCategoriesPreferences(CategoryType.CATEGORY)),
+        flowOf(localDataProvider.provideNewsCategories(CategoryType.CATEGORY)),
         selectedCategoryState
     ) { userData, categories, selected ->
-        val categoriesWithSelection = categories.map { category ->
+        categories.map { category ->
             when {
                 userData.favoriteCategory == category.code && selected == null -> {
                     category.copy(selected = true)
                 }
+
                 selected == category -> {
                     category.copy(selected = true)
                 }
+
                 else -> {
                     category.copy(selected = false)
                 }
             }
         }
-        UiCategories(
-            categories = categoriesWithSelection,
-            selectedCategory = categoriesWithSelection.find { category -> category.selected }
-        )
     }.stateIn(
         scope = viewModelScope,
         started = SharingStarted.WhileSubscribed(5_000),
-        initialValue = UiCategories(
-            categories = localDataProvider.provideNewsCategoriesPreferences(CategoryType.CATEGORY)
-        )
+        initialValue = emptyList()
     )
 
     val favoriteCountriesUiState: StateFlow<FavoriteCountriesState> = combine(
         userData,
-        flowOf(localDataProvider.provideNewsCategoriesPreferences(CategoryType.COUNTRY))
+        flowOf(localDataProvider.provideNewsCategories(CategoryType.COUNTRY))
     ) { userData, countries ->
         FavoriteCountriesState(
             countries = countries.map { country ->
@@ -105,7 +100,7 @@ class MainWelcomeViewModel @Inject internal constructor(
         scope = viewModelScope,
         started = SharingStarted.WhileSubscribed(5_000),
         initialValue = FavoriteCountriesState(
-            localDataProvider.provideNewsCategoriesPreferences(CategoryType.COUNTRY)
+            localDataProvider.provideNewsCategories(CategoryType.COUNTRY)
         )
     )
 

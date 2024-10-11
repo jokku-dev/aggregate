@@ -22,7 +22,7 @@ data class NetworkArticle(
     /**
      * The date and time that the article was published, in UTC (+000)
      */
-    @SerialName("publishedAt") @Serializable(with = DateTimeUtcSerializer::class)
+    @[SerialName("publishedAt") Serializable(with = DateTimeUtcSerializer::class)]
     val publishedAt: Date?,
     /**
      * The source this article came from.

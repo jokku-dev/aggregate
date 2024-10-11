@@ -56,7 +56,7 @@ fun CategoryItem(
             .clip(shapes.large)
             .background(color = if (selected) colorScheme.primary else colorScheme.secondary)
             .padding(horizontal = 16.dp)
-            .clickable(onClick = onItemClick),
+            .clickable(enabled = !selected) { if (!selected) onItemClick() },
         contentAlignment = Alignment.Center
     ) {
         Text(

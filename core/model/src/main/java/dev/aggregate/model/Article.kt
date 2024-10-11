@@ -19,6 +19,6 @@ data class Article(
 }
 
 data class ArticleSource(
-    val id: String,
-    val name: String,
+    val id: String?,
+    val name: String?,
 )

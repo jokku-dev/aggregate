@@ -117,6 +117,7 @@ class DefaultNewsRepository @Inject constructor(
 
     private suspend fun saveNetResponseToCache(articles: List<NetworkArticle>) {
         val articleEntities = articles.map { netArticle -> netArticle.toEntity() }
+        database.topHeadlinesDao.deleteTopHeadlinesArticles()
         database.topHeadlinesDao.upsertTopHeadlinesArticles(articleEntities)
     }
 
