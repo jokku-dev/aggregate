@@ -6,14 +6,13 @@ plugins {
     alias(libs.plugins.kotlin.android)
     alias(libs.plugins.kotlin.kapt)
     alias(libs.plugins.kotlin.serialization)
+    id("android.base.config")
 }
 
 android {
     namespace = "dev.aggregate.network"
-    compileSdk = libs.versions.androidSdk.compile.get().toInt()
 
     defaultConfig {
-        minSdk = libs.versions.androidSdk.min.get().toInt()
         // setting field for generated BuildConfig class
         val properties = Properties()
         properties.load(project.rootProject.file("local.properties").inputStream())
@@ -23,11 +22,6 @@ android {
 
     buildFeatures {
         buildConfig = true
-    }
-
-    compileOptions {
-        sourceCompatibility = JavaVersion.VERSION_11
-        targetCompatibility = JavaVersion.VERSION_11
     }
 
     kotlinOptions {

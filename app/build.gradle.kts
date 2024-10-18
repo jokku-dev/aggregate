@@ -5,20 +5,17 @@ plugins {
     alias(libs.plugins.kotlin.android)
     alias(libs.plugins.kotlin.compose)
     alias(libs.plugins.kotlin.kapt)
+    id("android.base.config")
 }
 
 android {
     namespace = "dev.aggregate.app"
-    compileSdk = libs.versions.androidSdk.compile.get().toInt()
 
     defaultConfig {
         applicationId = "dev.aggregate.app"
-        minSdk = libs.versions.androidSdk.min.get().toInt()
         targetSdk = libs.versions.androidSdk.target.get().toInt()
         versionCode = 1
         versionName = "1.0"
-
-        testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         vectorDrawables {
             useSupportLibrary = true
         }
@@ -33,7 +30,6 @@ android {
             abiFilters += setOf("armeabi-v7a", "arm64-v8a", "x86_64")
         }
     }
-
     signingConfigs {
         create("release") {
             storeFile = File(rootDir, "aggregatekeystore.jks")
@@ -62,10 +58,6 @@ android {
             // our project files
             proguardFile(file("proguard/"))
         }
-    }
-    compileOptions {
-        sourceCompatibility = JavaVersion.VERSION_11
-        targetCompatibility = JavaVersion.VERSION_11
     }
     kotlinOptions {
         jvmTarget = "11"

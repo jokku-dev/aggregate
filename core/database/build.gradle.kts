@@ -4,20 +4,11 @@ plugins {
     alias(libs.plugins.kotlin.android)
     alias(libs.plugins.kotlin.kapt)
     alias(libs.plugins.ksp)
+    id("android.base.config")
 }
 
 android {
     namespace = "dev.aggregate.database"
-    compileSdk = libs.versions.androidSdk.compile.get().toInt()
-
-    defaultConfig {
-        minSdk = libs.versions.androidSdk.min.get().toInt()
-    }
-
-    compileOptions {
-        sourceCompatibility = JavaVersion.VERSION_11
-        targetCompatibility = JavaVersion.VERSION_11
-    }
 
     kotlinOptions {
         jvmTarget = "11"

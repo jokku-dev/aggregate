@@ -38,8 +38,8 @@ interface TopHeadlinesViewModel {
 class MainTopHeadlinesViewModel @Inject internal constructor(
     private val getTopHeadlineArticlesUseCase: Provider<GetTopHeadlineArticlesUseCase>,
     private val newsRepository: NewsRepository,
-    private val preferencesRepository: PreferencesRepository,
-    private val localDataProvider: LocalDataProvider,
+    preferencesRepository: PreferencesRepository,
+    localDataProvider: LocalDataProvider,
     @Dispatcher(NewsDispatchers.MAIN) private val dispatcher: CoroutineDispatcher
 ) : TopHeadlinesViewModel, ViewModel() {
     private val searchQuery: MutableStateFlow<String?> = MutableStateFlow(null)

@@ -8,11 +8,9 @@ import dev.aggregate.common.di.NewsDispatchers
 import dev.aggregate.data.CategoryType
 import dev.aggregate.data.LocalDataProvider
 import dev.aggregate.data.repository.PreferencesRepository
-import dev.aggregate.model.UserData
 import dev.aggregate.model.ui.UiCategory
 import dev.aggregate.model.ui.UiOnBoardingPage
 import kotlinx.coroutines.CoroutineDispatcher
-import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
@@ -45,8 +43,6 @@ class MainWelcomeViewModel @Inject internal constructor(
     localDataProvider: LocalDataProvider,
     @Dispatcher(NewsDispatchers.MAIN) private val dispatcher: CoroutineDispatcher
 ) : ViewModel(), WelcomeViewModel {
-
-    private val userData: Flow<UserData> = preferencesRepository.userData
     private val selectedCategoryState: MutableStateFlow<UiCategory?> = MutableStateFlow(null)
 
     override val onBoardingUiState: StateFlow<OnBoardingState> = flowOf(
@@ -58,7 +54,7 @@ class MainWelcomeViewModel @Inject internal constructor(
     )
 
     override val favoriteCategoriesUiState: StateFlow<List<UiCategory>> = combine(
-        userData,
+        preferencesRepository.userData,
         flowOf(localDataProvider.provideNewsCategories(CategoryType.CATEGORY)),
         selectedCategoryState
     ) { userData, categories, selected ->
@@ -84,7 +80,7 @@ class MainWelcomeViewModel @Inject internal constructor(
     )
 
     val favoriteCountriesUiState: StateFlow<FavoriteCountriesState> = combine(
-        userData,
+        preferencesRepository.userData,
         flowOf(localDataProvider.provideNewsCategories(CategoryType.COUNTRY))
     ) { userData, countries ->
         FavoriteCountriesState(
