@@ -2,14 +2,7 @@ import java.net.URI
 
 pluginManagement {
     repositories {
-        google {
-//            content {
-//                // path restrictions for faster dependency syncing
-//                includeGroupByRegex("com\\.android.*")
-//                includeGroupByRegex("com\\.google.*")
-//                includeGroupByRegex("androidx.*")
-//            }
-        }
+        google()
         gradlePluginPortal()
         mavenCentral()
         maven("https://maven.pkg.jetbrains.space/public/p/compose/dev")
@@ -17,13 +10,7 @@ pluginManagement {
 }
 dependencyResolutionManagement {
     repositories {
-        google {
-//            content {
-//                includeGroupByRegex("com\\.android.*")
-//                includeGroupByRegex("com\\.google.*")
-//                includeGroupByRegex("androidx.*")
-//            }
-        }
+        google()
         mavenCentral()
         maven {
             url = URI("https://androidx.dev/storage/compose-compiler/repository/")
