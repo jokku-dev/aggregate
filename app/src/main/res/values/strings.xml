@@ -1,120 +1,16 @@
 <resources>
     <string name="app_name">Aggregate</string>
-    <!--On Boarding-->
-    <string name="on_board_first_title">First title</string>
-    <string name="on_board_second_title">Second title</string>
-    <string name="on_board_third_title">Third title</string>
-    <string name="on_board_first_description">First description</string>
-    <string name="on_board_second_description">Second description</string>
-    <string name="on_board_third_description">Third description</string>
-    <string name="next">Next</string>
-    <string name="get_started">Get Started</string>
-    <!--Sign In-->
-    <string name="welcome_back">Welcome Back</string>
-    <string name="i_am_happy_to_see_you_again">I am happy to see you again. You can continue where you left off by logging in.</string>
-    <string name="email_hint">Email Address</string>
-    <string name="password_hint">Password</string>
-    <string name="forgot_password_question">Forgot Password?</string>
-    <string name="sign_in">Sign In</string>
-    <string name="or">or</string>
-    <string name="sign_in_with_google">Sign In with Google</string>
-    <string name="sign_in_with_facebook">Sign In with Facebook</string>
-    <string name="do_not_have_an_account">Don\'t have an account?</string>
-    <string name="sign_up">Sign Up</string>
-    <!--Forgot password-->
-    <string name="forgot_password">Forgot Password</string>
-    <string name="we_need_your_email">We need your email address so we can send you the password reset code.</string>
-    <string name="remember_the_password">Remember the password?</string>
-    <string name="try_again">Try again</string>
-    <!--Verification code-->
-    <string name="verification_code">Verification Code</string>
-    <string name="you_need_to_enter_code">You need to enter 4-digit code we send to your</string>
-    <string name="email_address">e-mail address.</string>
-    <string name="confirm">Confirm</string>
-    <string name="did_not_receive_an_email">Didn\'t receive an email?</string>
-    <string name="send_again">Send again</string>
-    <!--Create new password-->
-    <string name="create_new_password">Create New Password</string>
-    <string name="you_can_create_a_new_password">You can create a new password, please don\'t forget it too.</string>
-    <string name="new_password">New Password</string>
-    <string name="repeat_new_password">Repeat New Password</string>
-    <string name="remember_an_old_password">Remember an old password?</string>
-    <!--Sign Up-->
-    <string name="welcome_to_aggregate">Welcome to Aggregate</string>
-    <string name="i_guess_you_are_new_around">Hello, I guess you are new around here. You can start using the application after sign up.</string>
-    <string name="username_hint">Username</string>
-    <string name="repeat_password">Repeat Password</string>
-    <string name="already_have_an_account">Already have an account?</string>
-    <!--Select Favorite Topics-->
-    <string name="select_your_favorite_topics">Select your favorite topics</string>
-    <string name="select_some_of_your_topics">Select some of your favorite topics to let us suggest better news for you.</string>
-    <string name="sports_img">🏈 Sports</string>
-    <string name="politics_img">⚖️ Politics</string>
-    <string name="life_img">🌞 Life</string>
-    <string name="gaming_img">🎮 Gaming</string>
-    <string name="animals_img">🐻 Animals</string>
-    <string name="nature_img">🌴 Nature</string>
-    <string name="food_img">🍔 Food</string>
-    <string name="art_img">🎨 Art</string>
-    <string name="history_img">📜 History</string>
-    <string name="fashion_img">👗 Fashion</string>
-    <!--Homepage-->
-    <string name="browse">Browse</string>
-    <string name="discover_things">Discover things of this world</string>
-    <string name="search">Search</string>
+
     <string name="temp_category">Category</string>
     <string name="temp_category_capitalized">CATEGORY</string>
     <string name="recommended_for_you">Recommended for you</string>
     <string name="see_all">See All</string>
     <string name="random">Random</string>
-    <string name="business">Business</string>
-    <string name="entertainment">Entertainment</string>
-    <string name="general">General</string>
-    <string name="health">Health</string>
-    <string name="science">Science</string>
-    <string name="sports">Sports</string>
-    <string name="technology">Technology</string>
-    <!--Categories-->
-    <string name="categories">Categories</string>
-    <string name="thousands_articles">Thousands articles in each category</string>
-    <string name="covid">😷 Covid-19</string>
-    <string name="middle_east">⚔️ Middle East</string>
-    <!--Bookmarks-->
-    <string name="bookmarks">Bookmarks</string>
-    <string name="saved_articles">Saved articles to the library</string>
-    <string name="you_have_not_saved_any">You haven\'t saved any articles yet. Start reading and bookmarking them now</string>
-    <!--Profile-->
-    <string name="profile">Profile</string>
-    <string name="notifications">Notifications</string>
-    <string name="favorite_topics">Favorite topics</string>
-    <string name="on_boarding">On Boarding</string>
-    <string name="language">Language</string>
-    <string name="change_password">Change Password</string>
-    <string name="privacy">Privacy</string>
-    <string name="terms_and_conditions">Terms &amp; Conditions</string>
-    <string name="sign_out">Sign Out</string>
-    <!--Profile settings-->
-    <string name="system">System</string>
-    <string name="english">English</string>
-    <string name="russian">Russian</string>
-    <string name="current_password">Current Password</string>
-    <string name="terms_and_conditions_text">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
-        Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
-        Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.
-        Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
-        \n\nSed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo.
-        \n\nNemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit, sed quia consequuntur magni dolores eos qui ratione voluptatem sequi nesciunt.
-        \n\nNeque porro quisquam est, qui dolorem ipsum quia dolor sit amet, consectetur, adipisci velit, sed quia non numquam eius modi tempora incidunt ut labore et dolore magnam aliquam quaerat voluptatem.</string>
-    <!--Article-->
-    <string name="author">Author</string>
-    <!--Accessibility-->
-    <string name="bookmarked">bookmarked article</string>
-    <string name="not_bookmarked">not bookmarked article</string>
-    <string name="selected">selected</string>
-    <string name="navigate_back">navigate back</string>
-    <string name="share">share</string>
-    <string name="show_password">show password</string>
-    <string name="hide_password">hide password</string>
-    <string name="voice_input">voice input</string>
-    <string name="profile_image">profile image</string>
+    <!--Errors-->
+    <string name="no_articles_found">No articles found by your request</string>
+    <string name="no_network_connection">No network connection</string>
+    <string name="no_network_connection_with_cache">No network connection. This is outdated news from %s</string>
+    <string name="no_response_from_the_server">No response from the server</string>
+    <string name="unknown_error">Unknown error</string>
+    <string name="unknown_category">Unknown category</string>
 </resources>
